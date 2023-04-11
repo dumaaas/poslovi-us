@@ -1,20 +1,56 @@
-import { Box, TextField, Button, FormLabel } from "@material-ui/core";
+import { Box, TextField, Button, FormLabel, Snackbar } from "@material-ui/core";
 import { useState, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { db } from "../../firebase";
 
 export default function blogCms() {
-  const [value, setValue] = useState("");
-  const handleChange = () => {
-    console.log("change");
-  };
+  const [title, setTitle] = useState("");
+  const [shortDesc, setShortDesc] = useState("");
+  const [url, setUrl] = useState("");
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
   const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
+
+  const handleSnackBarOpen = () => {
+    setShowSnackbar(true);
   };
+
+  const handleSnackBarClose = () => {
+    setShowSnackbar(false);
+  };
+
+  const clearForm = () => {
+    setTitle("");
+    setShortDesc("");
+    setUrl("");
+    editorRef.current.setContent("");
+  };
+
+  const saveBlog = async () => {
+    setIsDisabled(true);
+    var docData = {
+      title: title,
+      short_desc: shortDesc,
+      url: url,
+      content: editorRef.current ? editorRef.current.getContent() : "",
+      published_at: Timestamp.fromDate(new Date()),
+    };
+    await addDoc(collection(db, "blogs"), docData).then(() => {
+      handleSnackBarOpen();
+      setIsDisabled(false);
+      clearForm();
+    });
+  };
+
   return (
     <div>
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={4000}
+        onClose={handleSnackBarClose}
+        message="Uspješno sačuvano!"
+      />
       <h2 className="text-[32px] leading-[40px] text-[#334155] font-bold">
         Vesti
       </h2>
@@ -26,18 +62,24 @@ export default function blogCms() {
               label="Naziv objave"
               variant="outlined"
               className="flex-[45%]"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
             <TextField
               id="outlined-basic"
               label="URL slike"
               variant="outlined"
               className="flex-[45%]"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
             />
             <TextField
               id="outlined-basic"
               label="Kratki opis"
               variant="outlined"
               className="flex-[100%]"
+              value={shortDesc}
+              onChange={(e) => setShortDesc(e.target.value)}
             />
           </div>
           <div className="mt-[20px] flex flex-col gap-[2px]">
@@ -65,7 +107,12 @@ export default function blogCms() {
           </div>
         </Box>
         <div className="mt-[20px]">
-          <Button color="primary" variant="contained">
+          <Button
+            disabled={isDisabled}
+            onClick={saveBlog}
+            color="primary"
+            variant="contained"
+          >
             Sačuvaj
           </Button>
         </div>

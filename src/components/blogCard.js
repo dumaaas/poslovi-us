@@ -5,39 +5,36 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 
 export default function blogCard(props) {
+  console.log(props, 'PROPS')
   return (
     <Link
-      href="/singleBlog"
+      href={`/singleBlog/${props.blog.id}`}
       className={`flex-[30%] block border rounded-xl overflow-hidden p-4 hover:ring-2 ring-red-500 transition-all group duration-200 ease-in-out border-[#6b7280] hover:border-l-8 hover:border-red-500 cursor-pointer relative`}
     >
       <div className="flex justify-between items-start gap-[10px] flex-wrap">
         <div className="flex gap-[15px] items-center">
-          <Image
-            src={logoPic}
+          <img
+            src={props.blog.url}
             alt="prologs-logo"
             className=" max-w-[120px] w-[120px] rounded-[8px]"
-            placeholder="blur"
           />
           <div className="flex flex-col gap-[10px]">
             <h3 className="text-[#334155] text-[26px] leading-[34px] font-bold">
-              Besplatna radionica „Povezivanje tabela u Excelu“
+              {props.blog.title}
             </h3>
             <p className="text-[#6b7280] leading-[20px] text-[14px]">
-              Dragi naši kao što smo i obećali, i ovog meseca nastavljamo sa
-              druženjem, a ovoga puta na besplatnoj radionici „Povezivanje
-              tabela u Excelu“ imaćemo prilike da se pozabavimo različitim
-              mogućnostima koje su nam na raspolaganju kada podatke iz drugih
-              izvora treba prepisati u „našu“ tabelu… ali i greškama koje uvek
-              mogu da se jave prilikom ovog zadatka.
+              {props.blog.short_desc}
             </p>
           </div>
         </div>
       </div>
-      <div className="bg-[#F3F4F6] mt-[15px] text-[#334155] gap-[6px] items-center text-[12px] leading-[16px] font-bold rounded-lg px-2.5 py-1.5 inline-flex">
-      <FontAwesomeIcon className="text-[#334155]" icon="calendar" />
+      {props.blog.published_at && (
+        <div className="bg-[#F3F4F6] mt-[15px] text-[#334155] gap-[6px] items-center text-[12px] leading-[16px] font-bold rounded-lg px-2.5 py-1.5 inline-flex">
+          <FontAwesomeIcon className="text-[#334155]" icon="calendar" />
 
-        10.04.2023
-      </div>
+          {props.blog.published_at.toDate().toLocaleDateString()}
+        </div>
+      )}
       <div className="absolute transition-all duration-200 ease-in-out opacity-0 xl:group-hover:opacity-100 bottom-4 right-4">
         <Link
           href="/"
