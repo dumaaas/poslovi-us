@@ -11,26 +11,32 @@ import NextNProgress from "nextjs-progressbar";
 import { UserContext } from "@/context/userContext";
 import { useState } from "react";
 const clientSideEmotionCache = createEmotionCache();
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import reducerFn from "@/store";
+const myStore = createStore(reducerFn);
 
 export default function App(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   return (
-    <UserContext.Provider value={{isLoggedIn, setIsLoggedIn}}>
-      <CacheProvider value={emotionCache}>
-        <ThemeProvider theme={theme}>
-          <Layout>
-            <NextNProgress
-              color="#EF4444"
-              startPosition={0.3}
-              stopDelayMs={200}
-              height={3}
-              showOnShallow={true}
-            />
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider>
-      </CacheProvider>
+    <UserContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+      <Provider store={myStore}>
+        <CacheProvider value={emotionCache}>
+          <ThemeProvider theme={theme}>
+            <Layout>
+              <NextNProgress
+                color="#EF4444"
+                startPosition={0.3}
+                stopDelayMs={200}
+                height={3}
+                showOnShallow={true}
+              />
+              <Component {...pageProps} />
+            </Layout>
+          </ThemeProvider>
+        </CacheProvider>
+      </Provider>
     </UserContext.Provider>
   );
 }

@@ -13,7 +13,8 @@ import {
   faCalendar,
   faDollarSign,
   faBars,
-  faXmark
+  faXmark,
+  faCheck
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -27,7 +28,8 @@ library.add(
   faCalendar,
   faDollarSign,
   faBars,
-  faXmark
+  faXmark,
+  faCheck
 );
 const outfit = Outfit({ subsets: ["latin"] });
 import { useRouter } from "next/router";

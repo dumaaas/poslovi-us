@@ -31,11 +31,13 @@ export default function ClientBanner(props) {
                 return (
                   <SwiperSlide key={item.id}>
                     {" "}
-                    <img
-                      src={item.url}
-                      alt="prologs-logo"
-                      className="lg:w-[100px] w-[100px]"
-                    />
+                    <a href={item.link} target="_blank">
+                      <img
+                        src={item.url}
+                        alt="prologs-logo"
+                        className="lg:w-[100px] w-[100px]"
+                      />
+                    </a>
                   </SwiperSlide>
                 );
               })}

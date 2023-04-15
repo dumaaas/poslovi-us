@@ -4,12 +4,16 @@ import JobCard from "./jobCard";
 
 export default function JobsHero(props) {
   return (
-    <div style={{backgroundColor: props.background}} className="">
+    <div style={{ backgroundColor: props.background }} className="">
       <div className="container py-8">
         <div className="flex items-center justify-between">
           <div className="flex flex-col">
-            <span className="text-lg font-bold text-red-500">{props.title}</span>
-            <h2 className="text-[#334155] font-semibold mt-4 text-xl lg:text-3xl">{props.description}</h2>
+            <span className="text-lg font-bold text-red-500">
+              {props.title}
+            </span>
+            <h2 className="text-[#334155] font-semibold mt-4 text-xl lg:text-3xl">
+              {props.description}
+            </h2>
           </div>
           <Link
             href={props.link}
@@ -23,12 +27,9 @@ export default function JobsHero(props) {
           </Link>
         </div>
         <div className="flex justify-between gap-[25px] py-[40px] flex-wrap">
-            <JobCard />
-            <JobCard />
-            <JobCard isFeatured={true}/>
-            <JobCard />
-            <JobCard />
-            <JobCard />
+          {props.jobs.map((item) => {
+            return <JobCard key={item.id} job={item} />;
+          })}
         </div>
       </div>
     </div>

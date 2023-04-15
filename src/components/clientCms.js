@@ -5,6 +5,7 @@ import { db } from "../../firebase";
 export default function clientCms() {
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
+  const [link, setLink] = useState("");
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
 
@@ -19,6 +20,7 @@ export default function clientCms() {
   const clearForm = () => {
     setName("");
     setUrl("");
+    setLink("");
   };
 
   const saveClient = async () => {
@@ -26,6 +28,7 @@ export default function clientCms() {
     var docData = {
       title: name,
       url: url,
+      link: link,
       published_at: Timestamp.fromDate(new Date()),
     };
     await addDoc(collection(db, "clients"), docData).then(() => {
@@ -64,6 +67,14 @@ export default function clientCms() {
               className="flex-[45%]"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
+            />
+             <TextField
+              id="outlined-basic"
+              label="Link"
+              variant="outlined"
+              className="flex-[45%]"
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
             />
           </div>
         </Box>

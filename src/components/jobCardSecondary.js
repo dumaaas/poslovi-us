@@ -7,9 +7,9 @@ import Image from "next/image";
 export default function jobCardSecondary(props) {
   return (
     <Link
-      href="/singleJob"
+      href={`/singleJob/${props.job.id}`}
       className={`${
-        props.isFeatured ? "bg-[#FEF08A]" : "bg-white"
+        props.job.featured_plus ? "bg-[#FEF08A]" : "bg-white"
       } flex-[30%] block border rounded-xl overflow-hidden p-4 hover:ring-2 ring-red-500 transition-all group duration-200 ease-in-out border-[#6b7280] hover:border-l-8 hover:border-red-500 cursor-pointer relative`}
     >
       <div className="flex justify-between items-start gap-[10px] flex-wrap">
@@ -22,14 +22,21 @@ export default function jobCardSecondary(props) {
           />
           <div className="flex flex-col">
             <h3 className="text-[#334155] text-[16px] leading-[24px] font-bold">
-              Truck Driver
+              {props.job.position}
             </h3>
-            <p className="text-[#6b7280] leading-[20px] text-[14px]">
-              at Quantify
-            </p>
+            {props.job.offer_type === "offer" && (
+              <p className="text-[#6b7280] leading-[20px] text-[14px]">
+                {props.job.job_type} at {props.job.name}
+              </p>
+            )}
+            {props.job.offer_type === "offering" && (
+              <p className="text-[#6b7280] leading-[20px] text-[14px]">
+                {props.job.name} looking for {props.job.job_type} job
+              </p>
+            )}
           </div>
         </div>
-        {props.isFeatured && (
+        {props.job.featured_plus && (
           <div className="text-[#854d0e] text-sm flex items-center gap-[4px] font-bold">
             <FontAwesomeIcon className=" text-[#854d0e]" icon="star" />
             Izdvojeno
@@ -41,13 +48,13 @@ export default function jobCardSecondary(props) {
           <div className="w-[12px] h-[12px]">
             <Image src={usPic} alt="us-logo" className="w-full h-full" />
           </div>
-          Chicago, USA
+          {props.job.location}
         </div>
         <div
           className={` text-purple-500 gap-[5px] bg-purple-100 items-center text-[12px] leading-[16px] font-bold rounded-lg px-1.5 py-0.5 inline-flex`}
         >
           <FontAwesomeIcon className="text-purple-500 " icon="dollar-sign" />
-          USD80000~/yr
+          {props.job.salary}
         </div>
       </div>
       <div className="absolute transition-all duration-200 ease-in-out opacity-0 xl:group-hover:opacity-100 bottom-4 right-4">

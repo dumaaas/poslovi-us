@@ -1,7 +1,7 @@
 import {
   Box,
   TextField,
-  FormGroup,
+  Snackbar,
   Select,
   MenuItem,
   Button,
@@ -14,19 +14,83 @@ import {
 } from "@material-ui/core";
 import { useState, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
+import { db } from "../../firebase";
+import { cities } from "@/helpers/staticData";
+
 export default function jobsCms() {
-  const [value, setValue] = useState("");
-  const handleChange = () => {
-    console.log("change");
-  };
+  const [name, setName] = useState("");
+  const [url, setUrl] = useState("");
+  const [email, setEmail] = useState("");
+  const [position, setPosition] = useState("");
+  const [salary, setSalary] = useState("");
+  const [location, setLocation] = useState("");
+  const [jobType, setJobType] = useState("");
+  const [shortDesc, setShortDesc] = useState("");
+  const [offerType, setOfferType] = useState("offer");
+  const [featured, setFeatured] = useState(false);
+  const [featuredPlus, setFeaturedPlus] = useState(false);
+
+  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+
   const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
+
+  const handleSnackBarOpen = () => {
+    setShowSnackbar(true);
   };
+
+  const handleSnackBarClose = () => {
+    setShowSnackbar(false);
+  };
+
+  const clearForm = () => {
+    setName("");
+    setShortDesc("");
+    setUrl("");
+    setEmail("");
+    setPosition("");
+    setSalary("");
+    setLocation("");
+    setOfferType("offer");
+    setJobType("");
+    setFeatured(false);
+    setFeaturedPlus(false);
+    editorRef.current.setContent("");
+  };
+
+  const saveJob = async () => {
+    setIsDisabled(true);
+    var docData = {
+      name: name,
+      short_desc: shortDesc,
+      url: url,
+      content: editorRef.current ? editorRef.current.getContent() : "",
+      published_at: Timestamp.fromDate(new Date()),
+      email: email,
+      position: position,
+      salary: salary,
+      location: location,
+      offer_type: offerType,
+      job_type: jobType,
+      featured: featured,
+      featured_plus: featuredPlus,
+    };
+    await addDoc(collection(db, "jobs"), docData).then(() => {
+      handleSnackBarOpen();
+      setIsDisabled(false);
+      clearForm();
+    });
+  };
+
   return (
     <div>
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={4000}
+        onClose={handleSnackBarClose}
+        message="Uspješno sačuvano!"
+      />
       <h2 className="text-[32px] leading-[40px] text-[#334155] font-bold">
         Oglasi
       </h2>
@@ -38,55 +102,73 @@ export default function jobsCms() {
               label="Ime kompanije/Ime prezime"
               variant="outlined"
               className="flex-[30%]"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
             <TextField
               id="outlined-basic"
               label="Email kompanije/klijenta"
               variant="outlined"
               className="flex-[30%]"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               id="outlined-basic"
               label="Naziv pozicije"
               variant="outlined"
               className="flex-[30%]"
+              value={position}
+              onChange={(e) => setPosition(e.target.value)}
             />
             <TextField
               id="outlined-basic"
               label="Plata"
               variant="outlined"
               className="flex-[30%]"
+              value={salary}
+              onChange={(e) => setSalary(e.target.value)}
             />
             <Select
               labelId="demo-simple-select-label"
               variant="outlined"
               id="demo-simple-select"
-              value={value}
-              onChange={handleChange}
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
               className="flex-[30%]"
               placeholder="Lokacija"
             >
-              <MenuItem value={10}>Niksic</MenuItem>
-              <MenuItem value={20}>Podgorica</MenuItem>
-              <MenuItem value={30}>Berane</MenuItem>
+              {cities.map((item, index) => {
+                return (
+                  <MenuItem key={index} value={item.name}>
+                    {item.name}
+                  </MenuItem>
+                );
+              })}
             </Select>
             <TextField
               id="outlined-basic"
               label="Tip posla"
               variant="outlined"
               className="flex-[30%]"
+              value={jobType}
+              onChange={(e) => setJobType(e.target.value)}
             />
             <TextField
               id="outlined-basic"
               label="URL slike"
               variant="outlined"
               className="flex-[100%]"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
             />
             <TextField
               id="outlined-basic"
               label="Kratki opis"
               variant="outlined"
               className="flex-[100%]"
+              value={shortDesc}
+              onChange={(e) => setShortDesc(e.target.value)}
             />
             <div className="flex flex-row gap-[20px] flex-wrap flex-[100%]">
               <FormControl className="flex-[45%]">
@@ -98,16 +180,18 @@ export default function jobsCms() {
                 </FormLabel>
                 <RadioGroup
                   aria-labelledby="demo-radio-buttons-group-label"
-                  defaultValue="female"
+                  defaultValue="offer"
                   name="radio-buttons-group"
+                  value={offerType}
+                  onChange={(e) => setOfferType(e.target.value)}
                 >
                   <FormControlLabel
-                    value="female"
+                    value="offer"
                     control={<Radio />}
                     label="Ponuda"
                   />
                   <FormControlLabel
-                    value="male"
+                    value="offering"
                     control={<Radio />}
                     label="Potražnja"
                   />
@@ -120,8 +204,24 @@ export default function jobsCms() {
                 >
                   Dodatne opcije
                 </FormLabel>
-                <FormControlLabel control={<Checkbox />} label="Izdvojeni" />
-                <FormControlLabel control={<Checkbox />} label="Izdvojeni +" />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={featured}
+                      onChange={(e) => setFeatured(e.target.checked)}
+                    />
+                  }
+                  label="Izdvojeni"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={featuredPlus}
+                      onChange={(e) => setFeaturedPlus(e.target.checked)}
+                    />
+                  }
+                  label="Izdvojeni +"
+                />
               </FormControl>
             </div>
           </div>
@@ -150,7 +250,7 @@ export default function jobsCms() {
           </div>
         </Box>
         <div className="mt-[20px]">
-          <Button onClick={log} color="primary" variant="contained">
+          <Button onClick={saveJob} color="primary" variant="contained">
             Sačuvaj
           </Button>
         </div>

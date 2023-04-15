@@ -60,6 +60,14 @@ export default function Header() {
               Izdvajamo
             </Link>
             <Link
+              href="/clients"
+              className={
+                asPath === "/clients" ? "text-red-500" : "text-[#334155]"
+              }
+            >
+              Klijenti
+            </Link>
+            <Link
               href="/blog"
               className={asPath === "/blog" ? "text-red-500" : "text-[#334155]"}
             >
