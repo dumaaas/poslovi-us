@@ -1,5 +1,6 @@
-import logoPic from "../../public/logo-white.png";
+import logoPic from "../../public/logo.png";
 import Image from "next/image";
+import Link from "next/link";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper";
@@ -49,9 +50,19 @@ export default function ClientBanner(props) {
                 {Array.from({ length: 5 }).map((_, index) => {
                   return (
                     <div
-                      className="h-[80px] max-w-[80px] w-[80px] shine-anim bg-white rounded-[8px]"
+                      className="h-[80px] shine-anim bg-white rounded-[8px] relative flex items-center justify-center"
                       key={index}
-                    ></div>
+                    >
+                      <div className="rounded-[8px] absolute top-0 left-0 w-full h-full bg-white shine-anim opacity-90"></div>
+                      <Link href="/">
+                        <Image
+                          src={logoPic}
+                          alt="prologs-logo"
+                          placeholder="blur"
+                          className="w-[90%] mx-auto"
+                        />
+                      </Link>
+                    </div>
                   );
                 })}
               </div>

@@ -1,7 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PlaceholderSecondaryCard from "./placeholderSecondaryCard";
 import BlogCard from "./blogCard";
 import JobCardSecondary from "./jobCardSecondary";
 import { useEffect, useState } from "react";
+import PlaceholderBlogCard from "./placeholderBlogCard";
 import { useSelector, useDispatch } from "react-redux";
 import facebookIcon from "../../public/facebook-header-icon.svg";
 import instagramIcon from "../../public/instagram-header-icon.svg";
@@ -18,6 +19,10 @@ import { db } from "../../firebase";
 export default function blogHero(props) {
   const dispatch = useDispatch();
   const featuredJobs = useSelector((state) => state.featuredJobs);
+  const isFeaturedJobLoading = useSelector(
+    (state) => state.isFeaturedJobLoading
+  );
+  const isJobLoading = useSelector((state) => state.isJobLoading);
   const blogs = useSelector((state) => state.blogs);
 
   useEffect(() => {
@@ -26,6 +31,7 @@ export default function blogHero(props) {
   }, []);
 
   const getFeaturedJobs = async () => {
+    dispatch({ type: "SET_IS_FEATURED_JOB_LOADING", payload: true });
     const querySnapshot = await getDocs(
       query(
         collection(db, "jobs"),
@@ -51,12 +57,16 @@ export default function blogHero(props) {
         position: doc.data().position,
         salary: doc.data().salary,
         short_desc: doc.data().short_desc,
+        offer_type: doc.data().offer_type
       });
     });
     dispatch({ type: "SET_FEATURED_JOBS", payload: tempData });
+    dispatch({ type: "SET_IS_FEATURED_JOB_LOADING", payload: false });
   };
 
   const getBlogData = async () => {
+    dispatch({ type: "SET_IS_JOB_LOADING", payload: true });
+
     const querySnapshot = await getDocs(collection(db, "blogs"));
     var tempData = [];
     querySnapshot.forEach((doc) => {
@@ -70,6 +80,7 @@ export default function blogHero(props) {
       });
     });
     dispatch({ type: "SET_BLOGS", payload: tempData });
+    dispatch({ type: "SET_IS_JOB_LOADING", payload: false });
   };
   return (
     <div className="container py-12">
@@ -82,9 +93,16 @@ export default function blogHero(props) {
               })}
             </div>
           )}
-          {blogs.length < 1 && (
+          {!isJobLoading && blogs.length < 1 && (
             <div>
               <p>Nije pronađen nijedan rezultat.</p>
+            </div>
+          )}
+          {isJobLoading && blogs.length < 1 && (
+            <div className="grid gap-y-4">
+              {Array.from({ length: 4 }).map((_, index) => {
+                return <PlaceholderBlogCard key={index} />;
+              })}
             </div>
           )}
         </div>
@@ -94,9 +112,19 @@ export default function blogHero(props) {
               Izdvojeni poslovi
             </p>
             <div className="grid gap-y-4">
-              {featuredJobs.map((item, index) => {
-                return <JobCardSecondary job={item} key={index} />;
-              })}
+              {!isFeaturedJobLoading &&
+                featuredJobs.length > 0 &&
+                featuredJobs.map((item, index) => {
+                  return <JobCardSecondary job={item} key={index} />;
+                })}
+
+              {isFeaturedJobLoading && featuredJobs.length < 1 && (
+                <>
+                  {Array.from({ length: 6 }).map((_, index) => {
+                    return <PlaceholderSecondaryCard key={index} />;
+                  })}
+                </>
+              )}
               <p className="px-[8px] py-[4px] rounded-[8px] text-[14px] leading-[20px] bg-red-500 text-white">
                 Želite da izdvojite vaš oglas od ostalih? Kontaktirajte nas.
               </p>

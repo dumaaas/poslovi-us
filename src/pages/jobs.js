@@ -16,12 +16,12 @@ import { useDispatch, useSelector } from "react-redux";
 export default function jobs() {
   const dispatch = useDispatch();
   const jobs = useSelector((state) => state.jobs);
-
   useEffect(() => {
     if (!jobs.length) getJobsData();
   }, []);
 
   const getJobsData = async () => {
+    dispatch({ type: "SET_IS_JOB_LOADING", payload: true });
     const querySnapshot = await getDocs(
       query(
         collection(db, "jobs"),
@@ -50,7 +50,9 @@ export default function jobs() {
         offer_type: doc.data().offer_type,
       });
     });
+
     dispatch({ type: "SET_JOBS", payload: tempData });
+    dispatch({ type: "SET_IS_JOB_LOADING", payload: false });
   };
   return (
     <div>

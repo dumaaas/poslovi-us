@@ -6,8 +6,8 @@ export default function blog() {
   return (
     <div>
       <Hero
-        title="Blog"
-        description="Pročitajte naše najnovije blogove"
+        title="Vesti"
+        description="Pročitajte naše najnovije vesti"
         isBig="false"
       />
       <BlogHero isFeatured={true}/>

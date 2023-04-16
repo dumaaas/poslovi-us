@@ -8,6 +8,8 @@ const reducerFn = (
     featuredJobs: [],
     demandJobs: [],
     blogs: [],
+    isJobLoading: false,
+    isFeaturedJobLoading: false,
   },
   action
 ) => {
@@ -51,6 +53,16 @@ const reducerFn = (
       return {
         ...state,
         blogs: action.payload,
+      };
+    case "SET_IS_JOB_LOADING":
+      return {
+        ...state,
+        isJobLoading: action.payload,
+      };
+    case "SET_IS_FEATURED_JOB_LOADING":
+      return {
+        ...state,
+        isFeaturedJobLoading: action.payload,
       };
     default:
       break;

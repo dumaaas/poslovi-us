@@ -136,6 +136,7 @@ export default function Home() {
         position: doc.data().position,
         salary: doc.data().salary,
         short_desc: doc.data().short_desc,
+        offer_type: doc.data().offer_type
       });
     });
     dispatch({ type: "SET_FEATURED_JOBS", payload: tempData });

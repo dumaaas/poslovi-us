@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import JobCardSecondary from "./jobCardSecondary";
 import { cities, jobType } from "@/helpers/staticData";
+import PlaceholderSecondaryCard from "./placeholderSecondaryCard";
 import facebookIcon from "../../public/facebook-header-icon.svg";
 import instagramIcon from "../../public/instagram-header-icon.svg";
 import Image from "next/image";
@@ -19,15 +20,20 @@ import { db } from "../../firebase";
 export default function jobFilters(props) {
   const dispatch = useDispatch();
   const featuredJobs = useSelector((state) => state.featuredJobs);
+  const isJobLoading = useSelector((state) => state.isJobLoading);
+  const isFeaturedJobLoading = useSelector(
+    (state) => state.isFeaturedJobLoading
+  );
   const [jobsTemp, setJobsTemp] = useState([]);
   const [positionSearch, setPositionSearch] = useState("");
   const [showLocationSelect, setShowLocationSelect] = useState(false);
   const [locationSearch, setLocationSearch] = useState("");
   const [showJobTypeSelect, setShowJobTypeSelect] = useState(false);
   const [jobTypeSearch, setJobTypeSearch] = useState("");
-  const [featuredSearch, setFeaturedSearch] = useState(false);
+  const [featuredSearch, setFeaturedSearch] = useState(null);
   const locationSearchRef = useRef();
   const jobTypeSearchRef = useRef();
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
     if (!featuredJobs.length) getFeaturedJobs();
@@ -45,22 +51,13 @@ export default function jobFilters(props) {
   }, [props.jobs]);
 
   useEffect(() => {
+    console.log("HEJ MALA", isFirstRender.current);
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     filterJobs();
-  }, [positionSearch]);
-
-  useEffect(() => {
-    filterJobs();
-  }, [featuredSearch]);
-
-  useEffect(() => {
-    setShowJobTypeSelect(false);
-    filterJobs();
-  }, [jobTypeSearch]);
-
-  useEffect(() => {
-    setShowLocationSelect(false);
-    filterJobs();
-  }, [locationSearch]);
+  }, [positionSearch, featuredSearch, jobTypeSearch, locationSearch]);
 
   const resetFilters = () => {
     setPositionSearch("");
@@ -100,6 +97,7 @@ export default function jobFilters(props) {
   };
 
   const getFeaturedJobs = async () => {
+    dispatch({ type: "SET_IS_FEATURED_JOB_LOADING", payload: true });
     const querySnapshot = await getDocs(
       query(
         collection(db, "jobs"),
@@ -125,9 +123,11 @@ export default function jobFilters(props) {
         position: doc.data().position,
         salary: doc.data().salary,
         short_desc: doc.data().short_desc,
+        offer_type: doc.data().offer_type,
       });
     });
     dispatch({ type: "SET_FEATURED_JOBS", payload: tempData });
+    dispatch({ type: "SET_IS_FEATURED_JOB_LOADING", payload: false });
   };
   return (
     <div className="container py-12">
@@ -276,7 +276,7 @@ export default function jobFilters(props) {
               jobsTemp.map((item, index) => {
                 return <JobCardSecondary job={item} key={index} />;
               })}
-            {jobsTemp.length < 1 && (
+            {!isJobLoading && jobsTemp.length < 1 && (
               <div className="flex flex-col items-start">
                 <p className="text-[16px] leading-[24px] text-[#334155]">
                   Nije pronađen nijedan rezultat.
@@ -289,6 +289,13 @@ export default function jobFilters(props) {
                 </button>
               </div>
             )}
+            {isJobLoading && jobsTemp.length < 1 && (
+              <>
+                {Array.from({ length: 6 }).map((_, index) => {
+                  return <PlaceholderSecondaryCard key={index} />;
+                })}
+              </>
+            )}
           </div>
         </div>
         {props.isFeatured && (
@@ -297,9 +304,19 @@ export default function jobFilters(props) {
               Izdvajamo
             </p>
             <div className="grid gap-y-4">
-              {featuredJobs.map((item, index) => {
-                return <JobCardSecondary job={item} key={index} />;
-              })}
+              {!isFeaturedJobLoading &&
+                featuredJobs.length > 0 &&
+                featuredJobs.map((item, index) => {
+                  return <JobCardSecondary job={item} key={index} />;
+                })}
+
+              {isFeaturedJobLoading && featuredJobs.length < 1 && (
+                <>
+                  {Array.from({ length: 6 }).map((_, index) => {
+                    return <PlaceholderSecondaryCard key={index} />;
+                  })}
+                </>
+              )}
 
               <p className="px-[8px] py-[4px] rounded-[8px] text-[14px] leading-[20px] bg-red-500 text-white">
                 Želite da izdvojite vaš oglas od ostalih? Kontaktirajte nas.

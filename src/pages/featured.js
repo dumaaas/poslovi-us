@@ -22,6 +22,7 @@ export default function jobs() {
   }, []);
 
   const getFeaturedJobs = async () => {
+    dispatch({ type: "SET_IS_JOB_LOADING", payload: true });
     const querySnapshot = await getDocs(
       query(
         collection(db, "jobs"),
@@ -50,6 +51,7 @@ export default function jobs() {
       });
     });
     dispatch({ type: "SET_FEATURED_JOBS", payload: tempData });
+    dispatch({ type: "SET_IS_JOB_LOADING", payload: false });
   };
   return (
     <div>

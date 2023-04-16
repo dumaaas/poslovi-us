@@ -22,6 +22,7 @@ export default function jobs() {
   }, []);
 
   const getDemandJobs = async () => {
+    dispatch({ type: "SET_IS_JOB_LOADING", payload: true });
     const querySnapshot = await getDocs(
       query(
         collection(db, "jobs"),
@@ -46,10 +47,11 @@ export default function jobs() {
         position: doc.data().position,
         salary: doc.data().salary,
         short_desc: doc.data().short_desc,
-        offer_type: doc.data().offer_type
+        offer_type: doc.data().offer_type,
       });
     });
     dispatch({ type: "SET_DEMAND_JOBS", payload: tempData });
+    dispatch({ type: "SET_IS_JOB_LOADING", payload: false });
   };
   return (
     <div>
@@ -58,7 +60,7 @@ export default function jobs() {
         description="Pretražite listu ljudi, nađite savršeni spoj i zaposlite ga!"
         isBig="false"
       />
-      <JobFilters isFeatured={true} jobs={demandJobs} isOffering={true}/>
+      <JobFilters isFeatured={true} jobs={demandJobs} isOffering={true} />
       <Subscription />
     </div>
   );
