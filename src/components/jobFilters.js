@@ -191,7 +191,7 @@ export default function jobFilters(props) {
                   return (
                     <p
                       key={index}
-                      onClick={() => setLocationSearch(item.name)}
+                      onClick={() => {setLocationSearch(item.name); setShowLocationSelect(false)}}
                       className="text-[14px] leading-[20px] hover:bg-red-100 text-[#334155]  px-[14px] py-[4px]"
                     >
                       {item.name}
@@ -233,7 +233,7 @@ export default function jobFilters(props) {
                   return (
                     <p
                       key={index}
-                      onClick={() => setJobTypeSearch(item.name)}
+                      onClick={() => {setJobTypeSearch(item.name); setShowJobTypeSelect(false)}}
                       className="text-[14px] leading-[20px] hover:bg-red-100 text-[#334155]  px-[14px] py-[4px]"
                     >
                       {item.name}

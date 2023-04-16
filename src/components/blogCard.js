@@ -5,7 +5,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 
 export default function blogCard(props) {
-  console.log(props, 'PROPS')
+  const shortDescFormater = (str) => {
+    if (str.length > 400) {
+      return str.slice(0, 400) + "...";
+    } else {
+      return str;
+    }
+  };
+
   return (
     <Link
       href={`/singleBlog/${props.blog.id}`}
@@ -23,7 +30,7 @@ export default function blogCard(props) {
               {props.blog.title}
             </h3>
             <p className="text-[#6b7280] leading-[20px] text-[14px]">
-              {props.blog.short_desc}
+              {shortDescFormater(props.blog.short_desc)}
             </p>
           </div>
         </div>
