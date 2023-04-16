@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
+import { set } from "nprogress";
 
 export default function singleJob() {
   const [open, setOpen] = useState(false);
@@ -15,10 +16,22 @@ export default function singleJob() {
   const router = useRouter();
   const { id } = router.query;
   const [job, setJob] = useState(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [letter, setLetter] = useState("");
 
   useEffect(() => {
     getJob();
   }, []);
+
+  function checkEmail(email) {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+
+  const submitForm = () => {
+    console.log("Obradi zahtjev...");
+  };
 
   const getJob = async () => {
     const docRef = doc(db, "jobs", id);
@@ -155,6 +168,8 @@ export default function singleJob() {
                       className="border h-[50px] px-[14px] text-[18px] leading-[28px] text-[#334155] rounded-[8px]"
                       type="text"
                       placeholder="Vaše ime i prezime"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                     ></input>
                   </div>
                   <div className="mt-[15px] flex flex-col gap-[5px]">
@@ -165,6 +180,8 @@ export default function singleJob() {
                       className="border h-[50px] px-[14px] text-[18px] leading-[28px] text-[#334155] rounded-[8px]"
                       type="text"
                       placeholder="Vaš email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     ></input>
                   </div>
                   <div className="mt-[15px] flex flex-col gap-[5px]">
@@ -176,9 +193,21 @@ export default function singleJob() {
                       className="border px-[14px] text-[18px] py-[8px] leading-[28px] text-[#334155] rounded-[8px]"
                       type="text"
                       placeholder="Vaše propratno pismo"
+                      value={letter}
+                      onChange={(e) => setLetter(e.target.value)}
                     />
                   </div>
-                  <button className="mt-[25px] px-6 rounded-[10px] h-[50px] text-lg text-white bg-red-500 hover:text-red-500 hover:bg-transparent transition-all ease-in-out duration-250 border-transparent hover:border-red-500 border w-full">
+                  <button
+                    style={{
+                      opacity:
+                        !name.length || !email.length || !letter.length || !checkEmail(email)
+                          ? "0.4"
+                          : "",
+                    }}
+                    disabled={!name.length || !email.length || !letter.length || !checkEmail(email)}
+                    onClick={submitForm}
+                    className="mt-[25px] px-6 rounded-[10px] h-[50px] text-lg text-white bg-red-500 hover:text-red-500 hover:bg-transparent transition-all ease-in-out duration-250 border-transparent hover:border-red-500 border w-full"
+                  >
                     {job.offer_type === "offer"
                       ? "Aplicirajte"
                       : "Pošaljite ponudu"}

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import JobCard from "./jobCard";
-
+import PlaceholderCard from "./placeholderCard";
 export default function JobsHero(props) {
   return (
     <div style={{ backgroundColor: props.background }} className="">
@@ -27,9 +27,17 @@ export default function JobsHero(props) {
           </Link>
         </div>
         <div className="flex justify-between gap-[25px] py-[40px] flex-wrap">
-          {props.jobs.map((item) => {
-            return <JobCard key={item.id} job={item} />;
-          })}
+          {props.jobs.length > 0 &&
+            props.jobs.map((item) => {
+              return <JobCard key={item.id} job={item} />;
+            })}
+          {props.jobs.length < 1 && (
+            <>
+              {Array.from({ length: 6 }).map((_, index) => {
+                return <PlaceholderCard key={index} />;
+              })}
+            </>
+          )}
         </div>
       </div>
     </div>

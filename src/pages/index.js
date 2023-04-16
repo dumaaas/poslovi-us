@@ -181,36 +181,33 @@ export default function Home() {
         isBig="true"
       />
       <ClientBanner clients={clients} />
-      {latestJobs.length > 0 && (
-        <JobsHero
-          link="/jobs"
-          buttonText="Svi poslovi"
-          title="Pronađi posao iz snova"
-          description="Pretraži najnovije mogućnosti za zapošljavanje"
-          background="#fff"
-          jobs={latestJobs}
-        />
-      )}
-      {featuredLatestJobs.length > 0 && (
-        <JobsHero
-          link="/featured"
-          buttonText="Pogledaj izdvojene"
-          title="Izdvajamo za Vas"
-          description="Pretraži izdvojene oglase za posao"
-          background="#FEE2E2"
-          jobs={featuredLatestJobs}
-        />
-      )}
-      {demandLatestJobs.length > 0 && (
-        <JobsHero
-          link="/offers"
-          buttonText="Pogledaj potražnju"
-          title="Pronađi radnika"
-          description="Pretraži najnovije oglase potražnje"
-          background="#fff"
-          jobs={demandLatestJobs}
-        />
-      )}
+
+      <JobsHero
+        link="/jobs"
+        buttonText="Svi poslovi"
+        title="Pronađi posao iz snova"
+        description="Pretraži najnovije mogućnosti za zapošljavanje"
+        background="#fff"
+        jobs={latestJobs}
+      />
+
+      <JobsHero
+        link="/featured"
+        buttonText="Pogledaj izdvojene"
+        title="Izdvajamo za Vas"
+        description="Pretraži izdvojene oglase za posao"
+        background="#FEE2E2"
+        jobs={featuredLatestJobs}
+      />
+
+      <JobsHero
+        link="/offers"
+        buttonText="Pogledaj potražnju"
+        title="Pronađi radnika"
+        description="Pretraži najnovije oglase potražnje"
+        background="#fff"
+        jobs={demandLatestJobs}
+      />
       <Subscription />
     </div>
   );
