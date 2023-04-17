@@ -191,7 +191,10 @@ export default function jobFilters(props) {
                   return (
                     <p
                       key={index}
-                      onClick={() => {setLocationSearch(item.name); setShowLocationSelect(false)}}
+                      onClick={() => {
+                        setLocationSearch(item.name);
+                        setShowLocationSelect(false);
+                      }}
                       className="text-[14px] leading-[20px] hover:bg-red-100 text-[#334155]  px-[14px] py-[4px]"
                     >
                       {item.name}
@@ -233,7 +236,10 @@ export default function jobFilters(props) {
                   return (
                     <p
                       key={index}
-                      onClick={() => {setJobTypeSearch(item.name); setShowJobTypeSelect(false)}}
+                      onClick={() => {
+                        setJobTypeSearch(item.name);
+                        setShowJobTypeSelect(false);
+                      }}
                       className="text-[14px] leading-[20px] hover:bg-red-100 text-[#334155]  px-[14px] py-[4px]"
                     >
                       {item.name}
@@ -271,9 +277,8 @@ export default function jobFilters(props) {
               {jobsTemp.length}
             </p>
           )}
-           {isJobLoading && jobsTemp.length < 1 && (
-            <div className="w-[200px] h-[28px] bg-white shine-anim mb-[20px] rounded-[8px]">
-            </div>
+          {isJobLoading && jobsTemp.length < 1 && (
+            <div className="w-[200px] h-[28px] bg-white shine-anim mb-[20px] rounded-[8px]"></div>
           )}
           <div className="grid gap-y-4">
             {jobsTemp.length > 0 &&
@@ -323,7 +328,10 @@ export default function jobFilters(props) {
               )}
 
               <p className="px-[8px] py-[4px] rounded-[8px] text-[14px] leading-[20px] bg-red-500 text-white">
-                Želite da izdvojite vaš oglas od ostalih? Kontaktirajte nas.
+                Želite da izdvojite vaš oglas od ostalih?{" "}
+                <a href="mailto:markodumnic8@gmail.com" className="underline">
+                  Kontaktirajte nas.
+                </a>
               </p>
               <div className="flex flex-col gap-[20px]">
                 <a
@@ -370,8 +378,11 @@ export default function jobFilters(props) {
         )}
         {!props.isFeatured && (
           <div className="lg:col-span-2">
-            <p className="px-[8px] py-[4px] rounded-[8px] text-[14px] leading-[20px] mb-[20px] bg-red-500 text-white">
-              Želite da izdvojite vaš oglas od ostalih? Kontaktirajte nas.
+            <p className="px-[8px] py-[4px] rounded-[8px] text-[14px] leading-[20px] bg-red-500 text-white">
+              Želite da izdvojite vaš oglas od ostalih?{" "}
+              <a href="mailto:markodumnic8@gmail.com" className="underline">
+                Kontaktirajte nas.
+              </a>
             </p>
             <div className="flex flex-col gap-[20px]">
               <a

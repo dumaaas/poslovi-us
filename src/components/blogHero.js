@@ -57,7 +57,7 @@ export default function blogHero(props) {
         position: doc.data().position,
         salary: doc.data().salary,
         short_desc: doc.data().short_desc,
-        offer_type: doc.data().offer_type
+        offer_type: doc.data().offer_type,
       });
     });
     dispatch({ type: "SET_FEATURED_JOBS", payload: tempData });
@@ -126,7 +126,10 @@ export default function blogHero(props) {
                 </>
               )}
               <p className="px-[8px] py-[4px] rounded-[8px] text-[14px] leading-[20px] bg-red-500 text-white">
-                Želite da izdvojite vaš oglas od ostalih? Kontaktirajte nas.
+                Želite da izdvojite vaš oglas od ostalih?{" "}
+                <a href="mailto:markodumnic8@gmail.com" className="underline">
+                  Kontaktirajte nas.
+                </a>
               </p>
               <div className="flex flex-col gap-[20px]">
                 <a
@@ -173,8 +176,11 @@ export default function blogHero(props) {
         )}
         {!props.isFeatured && (
           <div className="lg:col-span-2">
-            <p className="px-[8px] py-[4px] rounded-[8px] text-[14px] leading-[20px] mb-[20px] bg-red-500 text-white">
-              Želite da izdvojite vaš oglas od ostalih? Kontaktirajte nas.
+            <p className="px-[8px] py-[4px] rounded-[8px] text-[14px] leading-[20px] bg-red-500 text-white">
+              Želite da izdvojite vaš oglas od ostalih?{" "}
+              <a href="mailto:markodumnic8@gmail.com" className="underline">
+                Kontaktirajte nas.
+              </a>
             </p>
             <div className="flex flex-col gap-[20px]">
               <a
