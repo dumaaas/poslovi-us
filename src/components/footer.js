@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function Footer() {
   return (
     <footer className="py-4 bg-red-500">
-      <div className="container flex justify-between text-white gap-[10px]">
+      <div className="container flex justify-between text-white gap-[10px] text-[14px] leading-[18px]">
         <p>Copyright © 2023 • poslovi.us • All Rights Reserved</p>
         <div className="text-white sm:flex gap-[10px] items-center hidden">
           <a href="#">

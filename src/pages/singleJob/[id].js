@@ -43,19 +43,49 @@ export default function singleJob() {
       console.log("Error getting cached document:", e);
     }
   };
+
+  const takeInitials = (name) => {
+    let result = "";
+    for (let i = 0; i < name.length; i++) {
+      const currentChar = name.charAt(i);
+
+      if (
+        currentChar === currentChar.toUpperCase() &&
+        currentChar.match(/[A-Z]/)
+      ) {
+        result += currentChar;
+
+        if (result.length === 2) {
+          break;
+        }
+      }
+    }
+    return result;
+  };
+
   return (
     <div>
       {job && (
         <div className="relative ">
           <div className="py-12 bg-red-100">
             <div className="flex gap-[25px] items-center container">
-              <div className="flex items-center justify-center p-2 rounded-[8px] border border-white w-[120px] h-[120px]">
-                <img
-                  src={job.url}
-                  alt="prologs-logo"
-                  className="w-auto h-auto rounded-[8px]"
-                />
-              </div>
+              {job.offer_type === "offer" && (
+                <div className="flex items-center justify-center p-2 rounded-[8px] border border-white w-[120px] h-[120px]">
+                  <img
+                    src={job.url}
+                    alt="prologs-logo"
+                    className="w-auto h-auto rounded-[8px]"
+                  />
+                </div>
+              )}
+
+              {job.offer_type === "offering" && (
+                <div className="flex items-center justify-center p-2 rounded-[8px] border border-white w-[120px] h-[120px]">
+                  <p className="text-[32px] font-bold text-[#334155]">
+                    {takeInitials(job.name)}
+                  </p>
+                </div>
+              )}
 
               <div className="flex flex-col gap-[8px]">
                 <h3 className="text-[#334155] text-[36px] leading-[40px] font-bold">
@@ -143,16 +173,9 @@ export default function singleJob() {
                   <h1 className="text-[#334155] text-[26px] leading-[32px] font-bold">
                     {job.position}
                   </h1>
-                  {job.offer_type === "offer" && (
-                    <p className="text-[#6b7280] leading-[20px] text-[14px]">
-                      {job.job_type} - {job.name}
-                    </p>
-                  )}
-                  {job.offer_type === "offering" && (
-                    <p className="text-[#6b7280] leading-[20px] text-[14px]">
-                      {job.name} traži {job.job_type} posao
-                    </p>
-                  )}
+                  <p className="text-[#6b7280] leading-[20px] text-[14px]">
+                    {job.job_type} - {job.name}
+                  </p>
                 </div>
                 <div className="p-4">
                   <div className="mt-[15px] flex flex-col gap-[5px]">
