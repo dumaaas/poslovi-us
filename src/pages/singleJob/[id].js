@@ -61,16 +61,9 @@ export default function singleJob() {
                 <h3 className="text-[#334155] text-[36px] leading-[40px] font-bold">
                   {job.position}
                 </h3>
-                {job.offer_type === "offer" && (
-                  <p className="text-[#6b7280] leading-[20px] text-[14px]">
-                    {job.job_type} - {job.name}
-                  </p>
-                )}
-                {job.offer_type === "offering" && (
-                  <p className="text-[#6b7280] leading-[20px] text-[14px]">
-                    {job.name} traži {job.job_type} posao
-                  </p>
-                )}
+                <p className="text-[#6b7280] leading-[20px] text-[14px]">
+                  {job.job_type} - {job.name}
+                </p>
               </div>
             </div>
           </div>
