@@ -73,6 +73,7 @@ export default function Home() {
         position: doc.data().position,
         salary: doc.data().salary,
         short_desc: doc.data().short_desc,
+        offer_type: doc.data().offer_type
       });
     });
     dispatch({ type: "SET_LATEST_JOBS", payload: tempData });
@@ -105,6 +106,7 @@ export default function Home() {
         position: doc.data().position,
         salary: doc.data().salary,
         short_desc: doc.data().short_desc,
+        offer_type: doc.data().offer_type
       });
     });
     dispatch({ type: "SET_FEATURED_LATEST_JOBS", payload: tempData });
@@ -136,7 +138,7 @@ export default function Home() {
         position: doc.data().position,
         salary: doc.data().salary,
         short_desc: doc.data().short_desc,
-        offer_type: doc.data().offer_type
+        offer_type: doc.data().offer_type,
       });
     });
     dispatch({ type: "SET_FEATURED_JOBS", payload: tempData });
@@ -168,6 +170,7 @@ export default function Home() {
         position: doc.data().position,
         salary: doc.data().salary,
         short_desc: doc.data().short_desc,
+        offer_type: doc.data().offer_type
       });
     });
     dispatch({ type: "SET_DEMAND_LATEST_JOBS", payload: tempData });

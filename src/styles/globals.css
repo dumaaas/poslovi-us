@@ -37,6 +37,10 @@ body {
   align-items: center;
 }
 
+.swiper {
+  width: 100% !important;
+}
+
 .swiper-wrapper {
   align-items: center !important;
   min-height: 80px;

@@ -12,41 +12,55 @@ export default function ClientBanner(props) {
     <div>
       {props.clients && (
         <div className="py-6 bg-red-500">
-          <div className="container flex items-center justify-between gap-[60px]">
+          <div className="container flex md:flex-row flex-col items-center justify-between gap-[40px] md:gap-[60px]">
             <div class="text-sm font-medium text-white"> Ko nam veruje? </div>
             {props.clients.length > 0 && (
               <Swiper
-                slidesPerView={5}
-                centeredSlides={true}
+                spaceBetween={0}
+                breakpoints={{
+                  0: {
+                    slidesPerView: 2,
+                  },
+                  581: {
+                    slidesPerView: 3,
+                  },
+                  1024: {
+                    slidesPerView: 4,
+                  },
+                  1280: {
+                    slidesPerView: 4
+                  }
+                }}
+                direction={"horizontal"}
                 loop={true}
                 autoplay={{
-                  delay: 2500,
+                  delay: 2000,
                   disableOnInteraction: false,
                 }}
-                loopedSlidesLimit={false}
+                // loopedSlidesLimit={true}
                 modules={[Autoplay]}
-                onSlideChange={() => console.log("slide change")}
-                onSwiper={(swiper) => console.log(swiper)}
                 className="flex-1 flex items-center justify-between gap-[20px]"
               >
-                {props.clients.map((item) => {
-                  return (
-                    <SwiperSlide key={item.id}>
-                      {" "}
-                      <a href={item.link} target="_blank">
-                        <img
-                          src={item.url}
-                          alt="prologs-logo"
-                          className="lg:w-[100px] w-[100px]"
-                        />
-                      </a>
-                    </SwiperSlide>
-                  );
-                })}
+                <div>
+                  {props.clients.map((item) => {
+                    return (
+                      <SwiperSlide key={item.id}>
+                        {" "}
+                        <a href={item.link} target="_blank">
+                          <img
+                            src={item.url}
+                            alt="prologs-logo"
+                            className="lg:w-[100px] w-[100px]"
+                          />
+                        </a>
+                      </SwiperSlide>
+                    );
+                  })}
+                </div>
               </Swiper>
             )}
             {props.clients.length < 1 && (
-              <div className="flex-1 flex items-center justify-between gap-[20px]">
+              <div className="flex-1 w-full flex items-center justify-between gap-[20px]">
                 {Array.from({ length: 5 }).map((_, index) => {
                   return (
                     <div

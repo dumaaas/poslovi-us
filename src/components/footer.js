@@ -6,12 +6,12 @@ import Image from "next/image";
 export default function Footer() {
   return (
     <footer className="py-4 bg-red-500">
-      <div className="container flex justify-between text-white">
+      <div className="container flex justify-between text-white gap-[10px]">
         <p>Copyright © 2023 • poslovi.us • All Rights Reserved</p>
-        <div className="text-white flex gap-[10px] items-center">
+        <div className="text-white sm:flex gap-[10px] items-center hidden">
           <a href="#">
             <Image
-              className="fill-white"
+              className="fill-white color-white"
               src={facebookIcon}
               alt="facebook-icon"
             />

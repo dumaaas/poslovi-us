@@ -49,24 +49,26 @@ export default function singleJob() {
         <div className="relative ">
           <div className="py-12 bg-red-100">
             <div className="flex gap-[25px] items-center container">
-              <Image
-                src={logoPic}
-                alt="prologs-logo"
-                className="w-[96px] h-[96px] rounded-[8px]"
-                placeholder="blur"
-              />
+              <div className="flex items-center justify-center p-2 rounded-[8px] border border-white w-[120px] h-[120px]">
+                <img
+                  src={job.url}
+                  alt="prologs-logo"
+                  className="w-auto h-auto rounded-[8px]"
+                />
+              </div>
+
               <div className="flex flex-col gap-[8px]">
                 <h3 className="text-[#334155] text-[36px] leading-[40px] font-bold">
                   {job.position}
                 </h3>
                 {job.offer_type === "offer" && (
                   <p className="text-[#6b7280] leading-[20px] text-[14px]">
-                    {job.job_type} at {job.name}
+                    {job.job_type} - {job.name}
                   </p>
                 )}
                 {job.offer_type === "offering" && (
                   <p className="text-[#6b7280] leading-[20px] text-[14px]">
-                    {job.name} looking for {job.job_type} job
+                    {job.name} traži {job.job_type} posao
                   </p>
                 )}
               </div>
@@ -150,12 +152,12 @@ export default function singleJob() {
                   </h1>
                   {job.offer_type === "offer" && (
                     <p className="text-[#6b7280] leading-[20px] text-[14px]">
-                      {job.job_type} at {job.name}
+                      {job.job_type} - {job.name}
                     </p>
                   )}
                   {job.offer_type === "offering" && (
                     <p className="text-[#6b7280] leading-[20px] text-[14px]">
-                      {job.name} looking for {job.job_type} job
+                      {job.name} traži {job.job_type} posao
                     </p>
                   )}
                 </div>
@@ -200,11 +202,19 @@ export default function singleJob() {
                   <button
                     style={{
                       opacity:
-                        !name.length || !email.length || !letter.length || !checkEmail(email)
+                        !name.length ||
+                        !email.length ||
+                        !letter.length ||
+                        !checkEmail(email)
                           ? "0.4"
                           : "",
                     }}
-                    disabled={!name.length || !email.length || !letter.length || !checkEmail(email)}
+                    disabled={
+                      !name.length ||
+                      !email.length ||
+                      !letter.length ||
+                      !checkEmail(email)
+                    }
                     onClick={submitForm}
                     className="mt-[25px] px-6 rounded-[10px] h-[50px] text-lg text-white bg-red-500 hover:text-red-500 hover:bg-transparent transition-all ease-in-out duration-250 border-transparent hover:border-red-500 border w-full"
                   >

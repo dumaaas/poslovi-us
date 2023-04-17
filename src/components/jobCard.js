@@ -12,20 +12,58 @@ export default function JobCard(props) {
       return str;
     }
   };
+  const takeInitials = (name) => {
+    let result = "";
+    for (let i = 0; i < name.length; i++) {
+      const currentChar = name.charAt(i);
+
+      if (
+        currentChar === currentChar.toUpperCase() &&
+        currentChar.match(/[A-Z]/)
+      ) {
+        result += currentChar;
+
+        if (result.length === 2) {
+          break;
+        }
+      }
+    }
+    return result;
+  };
   return (
     <Link
       href={`/singleJob/${props.job.id}`}
       className={`${
         props.job.featured_plus ? "bg-[#FEF08A]" : "bg-white"
-      } flex-[30%] flex flex-col border rounded-xl overflow-hidden p-4 hover:ring-2 ring-red-500 transition-all group duration-200 ease-in-out border-[#6b7280] hover:border-l-8 hover:border-red-500 cursor-pointer relative`}
+      } lg:flex-[30%] md:flex-[45%] flex-[100%] flex flex-col border rounded-xl overflow-hidden p-4 hover:ring-2 ring-red-500 transition-all group duration-200 ease-in-out border-[#6b7280] hover:border-l-8 hover:border-red-500 cursor-pointer relative`}
     >
       <div className="flex justify-between gap-[20px] flex-wrap">
         <div className="flex gap-[15px] items-center">
-          <img
-            src={props.job.url}
-            alt="prologs-logo"
-            className="w-[48px] h-[48px] rounded-[8px]"
-          />
+          {props.job.offer_type === "offer" && (
+            <div
+              className={`${
+                props.job.featured_plus ? "border-[#6b7280]" : "border-white"
+              } rounded-[8px] w-[60px] h-[60px] p-2 bg-red-100 flex items-center justify-center border `}
+            >
+              <img
+                src={props.job.url}
+                alt="prologs-logo"
+                className="h-auto w-auto rounded-[8px]"
+              />
+            </div>
+          )}
+          {props.job.offer_type === "offering" && (
+            <div
+              className={`${
+                props.job.featured_plus ? "border-[#6b7280]" : "border-white"
+              } rounded-[8px] w-[60px] h-[60px] p-2 bg-red-100 flex items-center justify-center border `}
+            >
+              <p className="text-[20px] font-bold text-[#334155]">
+                {takeInitials(props.job.name)}
+              </p>
+            </div>
+          )}
+
           <div className="flex flex-col">
             <h3 className="text-[#334155] text-[16px] leading-[24px] font-bold">
               {props.job.name}

@@ -16,32 +16,32 @@ export default function blogCard(props) {
   return (
     <Link
       href={`/singleBlog/${props.blog.id}`}
-      className={`flex-[30%] block border rounded-xl overflow-hidden p-4 hover:ring-2 ring-red-500 transition-all group duration-200 ease-in-out border-[#6b7280] hover:border-l-8 hover:border-red-500 cursor-pointer relative`}
+      className={`flex-[30%] block border rounded-xl overflow-hidden  hover:ring-2 ring-red-500 transition-all group duration-200 ease-in-out border-[#6b7280] hover:border-l-8 hover:border-red-500 cursor-pointer relative`}
     >
       <div className="flex justify-between items-start gap-[10px] flex-wrap">
-        <div className="flex gap-[15px] items-center">
-          <img
-            src={props.blog.url}
-            alt="prologs-logo"
-            className=" max-w-[120px] w-[120px] rounded-[8px]"
-          />
-          <div className="flex flex-col gap-[10px]">
-            <h3 className="text-[#334155] text-[26px] leading-[34px] font-bold">
+        <div className="flex gap-[15px] items-center lg:flex-row flex-col">
+          <div style={{backgroundImage: `url(${props.blog.url})`}} className="lg:min-h-[220px] h-full lg:w-[250px] w-full min-w-full min-h-[200px]  lg:min-w-[250px] bg-center bg-no-repeat bg-cover">
+
+          </div>
+
+          <div className="flex flex-col gap-[10px] items-start p-4">
+            <h3 className="text-[#334155] lg:text-[26px] lg:leading-[34px] text-[22px] leading-[28px] font-bold">
               {props.blog.title}
             </h3>
             <p className="text-[#6b7280] leading-[20px] text-[14px]">
               {shortDescFormater(props.blog.short_desc)}
             </p>
+            {props.blog.published_at && (
+              <div className="bg-[#F3F4F6] mt-[15px] text-[#334155] gap-[6px] items-center text-[12px] leading-[16px] font-bold rounded-lg px-2.5 py-1.5 inline-flex">
+                <FontAwesomeIcon className="text-[#334155]" icon="calendar" />
+
+                {props.blog.published_at.toDate().toLocaleDateString()}
+              </div>
+            )}
           </div>
         </div>
       </div>
-      {props.blog.published_at && (
-        <div className="bg-[#F3F4F6] mt-[15px] text-[#334155] gap-[6px] items-center text-[12px] leading-[16px] font-bold rounded-lg px-2.5 py-1.5 inline-flex">
-          <FontAwesomeIcon className="text-[#334155]" icon="calendar" />
 
-          {props.blog.published_at.toDate().toLocaleDateString()}
-        </div>
-      )}
       <div className="absolute transition-all duration-200 ease-in-out opacity-0 xl:group-hover:opacity-100 bottom-4 right-4">
         <Link
           href="/"

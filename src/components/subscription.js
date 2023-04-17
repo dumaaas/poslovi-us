@@ -6,8 +6,8 @@ import Image from "next/image";
 export default function subscription() {
   return (
     <div className="pt-[60px] bg-red-100">
-      <div className="p-[40px] pb-0 rounded-[12px] bg-white flex gap-[80px] items-center justify-center container">
-        <div class="w-[350px] h-[390px]">
+      <div className="p-[40px] pb-0 rounded-[12px] bg-white flex gap-[80px] items-end justify-center container">
+        <div class="min-w-[350px] w-[350px] h-[390px] lg:block hidden">
           <div
             class="border-t h-full !border-b-0 bg-white border-gray-900 relative"
             style={{

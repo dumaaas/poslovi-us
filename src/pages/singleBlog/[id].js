@@ -29,18 +29,16 @@ export default function singleBlog() {
     <div className="">
       {blog && (
         <div>
-          <div className="py-12 bg-red-100">
-            <div className="flex gap-[25px] items-center container">
-              <img
-                src={blog.url}
-                alt="prologs-logo"
-                className="w-[96px] h-[96px] rounded-[8px]"
-              />
+          <div style={{backgroundImage: `url(${blog.url})`}} className="relative bg-center bg-no-repeat bg-cover py-44">
+            <div className="absolute top-0 left-0 z-10 w-full h-full bg-black bg-opacity-75">
+
+            </div>
+            <div className="relative z-20 flex gap-[25px] items-center container">
               <div className="flex flex-col gap-[8px]">
-                <h3 className="text-[#334155] text-[40px] leading-[44px] font-bold">
+                <h3 className="text-white text-[40px] leading-[44px] font-bold">
                   {blog.title}
                 </h3>
-                <p className="text-[#334155] leading-[28px] text-[20px]">
+                <p className="leading-[28px] text-[20px] text-red-500">
                   {blog.published_at.toDate().toLocaleDateString()}
                 </p>
               </div>

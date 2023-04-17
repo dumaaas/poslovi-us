@@ -271,6 +271,10 @@ export default function jobFilters(props) {
               {jobsTemp.length}
             </p>
           )}
+           {isJobLoading && jobsTemp.length < 1 && (
+            <div className="w-[200px] h-[28px] bg-white shine-anim mb-[20px] rounded-[8px]">
+            </div>
+          )}
           <div className="grid gap-y-4">
             {jobsTemp.length > 0 &&
               jobsTemp.map((item, index) => {

@@ -18,7 +18,7 @@ export default function Header() {
     });
   };
   return (
-    <header className=" py-[16px]  shadow-[0_5px_5px_-5px_rgba(0,0,0,0.75)]">
+    <header className="lg:block hidden py-[16px]  shadow-[0_5px_5px_-5px_rgba(0,0,0,0.75)]">
       <div className="container flex items-center justify-between">
         <div className=" flex items-center gap-[80px]">
           <Link href="/">
