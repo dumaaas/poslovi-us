@@ -79,11 +79,21 @@ export default function singleJob() {
                 </div>
               )}
 
-              {job.offer_type === "offering" && (
+              {job.offer_type === "offering" && job.url.length < 1 && (
                 <div className="flex items-center justify-center p-2 rounded-[8px] border border-white w-[120px] h-[120px]">
                   <p className="text-[32px] font-bold text-[#334155]">
                     {takeInitials(job.name)}
                   </p>
+                </div>
+              )}
+
+              {job.offer_type === "offering" && job.url.length > 0 && (
+                <div className="flex items-center justify-center rounded-[8px] border border-white w-[120px] h-[120px]">
+                  <img
+                    src={job.url}
+                    alt="prologs-logo"
+                    className="w-auto h-auto rounded-[8px]"
+                  />
                 </div>
               )}
 

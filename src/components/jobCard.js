@@ -52,15 +52,33 @@ export default function JobCard(props) {
               />
             </div>
           )}
-          {props.job.offer_type === "offering" && (
+          {props.job.offer_type === "offering" &&
+            props.job.url.length <
+              1 && (
+                <div
+                  className={`${
+                    props.job.featured_plus
+                      ? "border-[#6b7280]"
+                      : "border-white"
+                  } rounded-[8px] w-[60px] h-[60px] p-2 bg-red-100 flex items-center justify-center border `}
+                >
+                  <p className="text-[20px] font-bold text-[#334155]">
+                    {takeInitials(props.job.name)}
+                  </p>
+                </div>
+              )}
+
+          {props.job.offer_type === "offering" && props.job.url.length > 0 && (
             <div
               className={`${
                 props.job.featured_plus ? "border-[#6b7280]" : "border-white"
-              } rounded-[8px] w-[60px] h-[60px] p-2 bg-red-100 flex items-center justify-center border `}
+              } rounded-[8px] w-[60px] h-[60px] bg-red-100 flex items-center justify-center border `}
             >
-              <p className="text-[20px] font-bold text-[#334155]">
-                {takeInitials(props.job.name)}
-              </p>
+              <img
+                src={props.job.url}
+                alt="prologs-logo"
+                className="h-auto w-auto rounded-[8px]"
+              />
             </div>
           )}
 
