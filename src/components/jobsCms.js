@@ -237,6 +237,7 @@ export default function jobsCms() {
       featured_plus: featuredPlus,
     };
     await addDoc(collection(db, "jobs"), docData).then(() => {
+      getJobData();
       handleSnackBarOpen();
       setIsDisabled(false);
       clearForm();

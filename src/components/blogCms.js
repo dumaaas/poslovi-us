@@ -178,6 +178,7 @@ export default function blogCms() {
       published_at: Timestamp.fromDate(new Date()),
     };
     await addDoc(collection(db, "blogs"), docData).then(() => {
+      getBlogData();
       handleSnackBarOpen();
       setIsDisabled(false);
       clearForm();
