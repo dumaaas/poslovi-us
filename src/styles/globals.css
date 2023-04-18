@@ -115,3 +115,16 @@ body {
 .single-post img {
   @apply border border-red-500
 }
+
+.spin-anim {
+  animation: spinAnim 2s linear infinite;
+}
+
+@keyframes spinAnim {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { set } from "nprogress";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function singleJob() {
   const [open, setOpen] = useState(false);
@@ -29,8 +30,18 @@ export default function singleJob() {
     return regex.test(email);
   }
 
-  const submitForm = () => {
-    console.log("Obradi zahtjev...");
+  const submitForm = (e) => {
+    e.preventDefault();
+    const subject =
+      job.offer_type === "offer"
+        ? `Aplikacija za poziciju: ${job.position}`
+        : `Ponuda za posao: ${job.position}`;
+    const content =
+      `${job.offer_type === "offer" ? 'Poštovani, imate novu aplikaciju za posao:\n' : 'Poštovani, imate novu ponudu za posao:\n'}\nIme i prezime: ${name}\n\nKontakt email: ${email}\n\nPropratno pismo: \n${letter}\n\n`;
+    const mailtoLink = `mailto:${job.email}?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(content)}`;
+    window.location.href = mailtoLink;
   };
 
   const getJob = async () => {
@@ -109,7 +120,10 @@ export default function singleJob() {
           </div>
           <div className="container grid gap-12 py-12 lg:grid-cols-7">
             <div className="order-2 lg:order lg:col-span-5">
-              <div className="single-post" dangerouslySetInnerHTML={{ __html: job.content }} />
+              <div
+                className="single-post"
+                dangerouslySetInnerHTML={{ __html: job.content }}
+              />
             </div>
             <div className="relative lg:col-span-2">
               <div className="lg:sticky lg:top-[20px] z-10 w-full bg-white border-2 border-red-500 rounded-lg">
@@ -255,8 +269,8 @@ export default function singleJob() {
         </div>
       )}
       {!job && (
-        <div className="h-[calc(100vh-100px)] w-full bg-red-100 flex items-center justify-center text-[40px] leading-[50px] text-red-500">
-          Loading...
+        <div className="lg:h-[calc(100vh-154px)] sm:h-[calc(100vh-135px)] h-[calc(100vh-129px)] w-full bg-red-100 flex items-center justify-center text-[40px] leading-[50px] text-red-500">
+          <FontAwesomeIcon icon="fa-solid fa-spinner" className="spin-anim" />
         </div>
       )}
     </div>
