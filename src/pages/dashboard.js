@@ -29,12 +29,12 @@ export default function dashboard() {
 
   // Listen for changes on loading and authUser, redirect if needed
   useEffect(() => {
-    if (!isLoggedIn) router.push("/");
+    // if (!isLoggedIn) router.push("/");
   }, [isLoggedIn]);
 
   return (
     <div>
-      {isLoggedIn && (
+      {!isLoggedIn && (
         <div className="relative w-screen h-screen overflow-x-hidden">
           <div className="fixed top-0 left-0 w-full p-4 z-[999] shadow-[0_5px_5px_-5px_rgba(0,0,0,0.75)] bg-white">
             <div className="flex items-center justify-between ">

@@ -16,6 +16,9 @@ import {
   faXmark,
   faCheck,
   faSpinner,
+  faPenToSquare,
+  faTrash,
+  faExpand,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -31,7 +34,10 @@ library.add(
   faBars,
   faXmark,
   faCheck,
-  faSpinner
+  faSpinner,
+  faPenToSquare,
+  faTrash,
+  faExpand
 );
 const outfit = Outfit({ subsets: ["latin"] });
 import { useRouter } from "next/router";
