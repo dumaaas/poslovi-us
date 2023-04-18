@@ -23,7 +23,7 @@ export default function singleJob() {
 
   useEffect(() => {
     getJob();
-  }, []);
+  }, [id]);
 
   function checkEmail(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -36,8 +36,11 @@ export default function singleJob() {
       job.offer_type === "offer"
         ? `Aplikacija za poziciju: ${job.position}`
         : `Ponuda za posao: ${job.position}`;
-    const content =
-      `${job.offer_type === "offer" ? 'Poštovani, imate novu aplikaciju za posao:\n' : 'Poštovani, imate novu ponudu za posao:\n'}\nIme i prezime: ${name}\n\nKontakt email: ${email}\n\nPropratno pismo: \n${letter}\n\n`;
+    const content = `${
+      job.offer_type === "offer"
+        ? "Poštovani, imate novu aplikaciju za posao:\n"
+        : "Poštovani, imate novu ponudu za posao:\n"
+    }\nIme i prezime: ${name}\n\nKontakt email: ${email}\n\nPropratno pismo: \n${letter}\n\n`;
     const mailtoLink = `mailto:${job.email}?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(content)}`;

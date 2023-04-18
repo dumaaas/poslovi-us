@@ -13,7 +13,7 @@ export default function singleBlog() {
 
   useEffect(() => {
     getBlog();
-  }, []);
+  }, [id]);
 
   const getBlog = async () => {
     const docRef = doc(db, "blogs", id);
