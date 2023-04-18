@@ -81,11 +81,11 @@ body {
   @apply lg:text-xl md:text-lg text-base mb-4
 }
 
-.single-post h2,h3,h4,h5  {
+.single-post h2,.single-post h3,.single-post h4,.single-post h5  {
   @apply lg:text-2xl md:text-xl text-lg font-bold mb-4
 }
 
-.single-post h2 span,h3 span,h4 span,h5 span  {
+.single-post h2 span,.single-post h3 span,.single-post h4 span,.single-post h5 span  {
   @apply lg:text-2xl md:text-xl text-lg font-bold mb-4
 }
 

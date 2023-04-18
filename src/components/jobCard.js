@@ -37,7 +37,7 @@ export default function JobCard(props) {
         props.job.featured_plus ? "bg-[#FEF08A]" : "bg-white"
       } lg:flex-[30%] md:flex-[45%] flex-[100%] flex flex-col border rounded-xl overflow-hidden p-4 hover:ring-2 ring-red-500 transition-all group duration-200 ease-in-out border-[#6b7280] hover:border-l-8 hover:border-red-500 cursor-pointer relative`}
     >
-      <div className="flex justify-between gap-[20px] flex-wrap">
+      <div className="flex justify-between gap-[20px] flex-wrap items-start">
         <div className="flex gap-[15px] items-center">
           {props.job.offer_type === "offer" && (
             <div
