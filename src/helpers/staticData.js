@@ -13,7 +13,7 @@ export const cities = [
   },
 ];
 
-export const jobType = [
+export const jobTypeData = [
     {
         id: 1,
         name: "Full time"

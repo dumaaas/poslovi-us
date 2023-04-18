@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import JobCardSecondary from "./jobCardSecondary";
-import { cities, jobType } from "@/helpers/staticData";
+import { cities, jobTypeData } from "@/helpers/staticData";
 import PlaceholderSecondaryCard from "./placeholderSecondaryCard";
 import facebookIcon from "../../public/facebook-header-icon.svg";
 import instagramIcon from "../../public/instagram-header-icon.svg";
@@ -82,7 +82,6 @@ export default function jobFilters(props) {
   const filterJobs = () => {
     const filteredJobs = [];
     var jobsToFilter = [...props.jobs];
-    console.log(props.jobs, "PROPS JOBS");
     for (const job of jobsToFilter) {
       if (
         (!locationSearch || job.location === locationSearch) &&
@@ -232,7 +231,7 @@ export default function jobFilters(props) {
                     : "scale-75 opacity-0 z-[-1]"
                 } transform scale absolute transition-all ease-in-out duration-200 border w-full max-h-[180px] overflow-auto bg-white rounded-[8px] mt-[2px]`}
               >
-                {jobType.map((item, index) => {
+                {jobTypeData.map((item, index) => {
                   return (
                     <p
                       key={index}

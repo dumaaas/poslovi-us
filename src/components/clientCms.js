@@ -20,10 +20,6 @@ import { useState, useEffect } from "react";
 import {
   collection,
   getDocs,
-  query,
-  orderBy,
-  limit,
-  where,
   updateDoc,
   Timestamp,
   addDoc,
@@ -45,11 +41,12 @@ export default function clientCms() {
   const [isDisabled, setIsDisabled] = useState(false);
   const [page, setPage] = useState(0);
   const [isEdit, setIsEdit] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const clients = useSelector((state) => state.clients);
   const [isExpanded, setIsExpanded] = useState(false);
   const [clientsTemp, setClientsTemp] = useState([]);
   const [search, setSearch] = useState("");
+  const isJobLoading = useSelector((state) => state.isJobLoading);
 
   useEffect(() => {
     if (!clients.length) {
@@ -64,6 +61,7 @@ export default function clientCms() {
   }, [search]);
 
   const getClientData = async () => {
+    dispatch({ type: "SET_IS_JOB_LOADING", payload: true });
     const querySnapshot = await getDocs(collection(db, "clients"));
     var tempData = [];
 
@@ -77,6 +75,7 @@ export default function clientCms() {
         published_at: doc.data().published_at,
       });
     });
+    dispatch({ type: "SET_IS_JOB_LOADING", payload: false });
     dispatch({ type: "SET_CLIENTS", payload: tempData });
     setClientsTemp(tempData);
   };
@@ -163,6 +162,7 @@ export default function clientCms() {
     setLink("");
     setId("");
     setIsEdit(false);
+    setIsExpanded(false);
   };
 
   const saveClient = async () => {
@@ -267,11 +267,12 @@ export default function clientCms() {
       </Accordion>
 
       <div className="flex flex-wrap gap-[20px] items-center justify-between my-[40px]">
-        <h2 className="text-[32px] leading-[40px] text-[#334155] font-bold ">
+        <h2 className="text-[26px] leading-[34px] text-[#334155] font-bold ">
           Prikaz klijenata
         </h2>
-        <div className="w-[350px] h-[56px] relative">
+        <div className="w-[350px] h-[40px] relative">
           <TextField
+            size="small"
             id="outlined-basic"
             label="Pretraga"
             variant="outlined"
@@ -289,23 +290,6 @@ export default function clientCms() {
         <Table
           sx={{ minWidth: 650 }}
           aria-label="simple table"
-          actions={[
-            {
-              icon: "edit",
-              tooltip: "Edit",
-              onClick: (event, rowData) => {
-                setOpen(!open);
-                //alert("You edited company" + rowData.name);
-              },
-            },
-            (rowData) => ({
-              icon: "delete",
-              tooltip: "Delete User",
-              onClick: (event, rowData) =>
-                confirm("You want to delete " + rowData.name), //eslint-disable-line no-restricted-globals
-              disabled: rowData.birthYear < 2000,
-            }),
-          ]}
         >
           <TableHead>
             <TableRow>
@@ -363,10 +347,16 @@ export default function clientCms() {
           </TableBody>
         </Table>
       </TableContainer>
-      {clientsTemp.length < 1 && (
-        <Typography className="flex items-center justify-center w-full text-center py-[20px]">
+      {clientsTemp.length < 1 && !isJobLoading && (
+        <Typography className="flex items-center justify-center w-[140px] rounded-[8px] mx-[auto!important] text-center my-[10px!important] px-[12px] py-[8px] bg-red-500 text-white">
           Nema rezultata.
         </Typography>
+      )}
+      {clientsTemp.length < 1 && isJobLoading && (
+        <FontAwesomeIcon
+          icon="fa-solid fa-spinner"
+          className="text-[30px] spin-anim flex items-center justify-center mx-auto text-red-500 py-[20px]"
+        />
       )}
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
