@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function subscription() {
   return (
     <div className="pt-[60px] bg-red-100">
-      <div className="p-[40px] pb-0 rounded-[12px] bg-white flex gap-[80px] items-end justify-center container">
+      <div className="md:p-[40px] md:pb-0 p-[20px] pb-0 rounded-bl-0 rounded-br-0 rounded-tl-[12px] rounded-tr-[12px]  bg-white flex gap-[80px] items-end justify-center container">
         <div class="min-w-[350px] w-[350px] h-[390px] lg:block hidden">
           <div
             class="border-t h-full !border-b-0 bg-white border-gray-900 relative"
@@ -89,19 +89,19 @@ export default function subscription() {
           </div>
         </div>
         <div className="flex flex-col gap-[15px] w-full max-w-3xl pb-[25px]">
-          <span className="text-red-500 text-[18px] leading-[28px] font-bold">
+          <span className="text-red-500 md:text-[18px] md:leading-[28px] text-[16px] leading-[24px] font-bold">
             Dobijajte obaveštenja o poslovima
           </span>
-          <h1 className="text-[30px] leading-[36px] text-[#334155] font-bold">Preplatite se kako bi dobijali obavještenja o poslovima</h1>
-          <div className="mt-[15px] flex flex-col gap-[5px]">
+          <h1 className="lg:text-[30px] lg:leading-[36px] text-[22px] leading-[30px] text-[#334155] font-bold">Preplatite se kako bi dobijali obavještenja o poslovima</h1>
+          <div className="md:mt-[15px] mt-[8px] flex flex-col gap-[5px]">
             <label className="text-[14px] leading-[20px] font-bold text-[#334155]">Ime</label>
-            <input className="border h-[50px] px-[14px] text-[18px] leading-[28px] text-[#334155] rounded-[8px]" type="text" placeholder="Vaše ime"></input>
+            <input className="border lg:h-[50px] h-[38px] px-[14px] lg:text-[18px] lg:leading-[28px] text-[14px] leading-[20px] text-[#334155] rounded-[8px]" type="text" placeholder="Vaše ime"></input>
           </div>
           <div className="mt-[10px] flex flex-col gap-[5px]">
             <label className="text-[14px] leading-[20px] font-bold text-[#334155]">Email</label>
-            <input className="border h-[50px] px-[14px] text-[18px] leading-[28px] text-[#334155] rounded-[8px]" type="text" placeholder="Vaš email"></input>
+            <input className="border lg:h-[50px] h-[38px] px-[14px] lg:text-[18px] lg:leading-[28px] text-[14px] leading-[20px] text-[#334155] rounded-[8px]" type="text" placeholder="Vaš email"></input>
           </div>
-          <button className="mt-[15px] px-6 rounded-[10px] h-[50px] text-lg text-white bg-red-500 hover:text-red-500 hover:bg-transparent transition-all ease-in-out duration-250 border-transparent hover:border-red-500 border">
+          <button className="md:mt-[15px] mt-[8px] px-6 rounded-[10px] lg:h-[50px] h-[38px] lg:text-lg text-md text-white bg-red-500 hover:text-red-500 hover:bg-transparent transition-all ease-in-out duration-250 border-transparent hover:border-red-500 border">
             Preplatite se!
           </button>
         </div>

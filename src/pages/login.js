@@ -51,7 +51,7 @@ export default function login() {
   };
   return (
     <div className="flex flex-col gap-[15px] justify-center items-center w-screen h-screen px-2 py-12">
-      <div className="max-w-[420px] w-[420px]">
+      <div className="sm:w-[420px] w-[90%]">
         <Link href="/">
           <Image
             src={logoPic}
@@ -60,7 +60,7 @@ export default function login() {
             placeholder="blur"
           />
         </Link>
-        <h2 className="mt-[20px] mb-[40px] text-center text-[36px] leading-[40px] text-[#334155]">
+        <h2 className="mt-[20px] md:mb-[40px] sm:mb-[34px] mb-[28px] text-center lg:text-[36px] lg:leading-[40px] md:text-[32px] md:leading-[38px] sm:text-[28px] sm:leading-[36px] text-[24px] leading-[30px] text-[#334155]">
           Ulogujte se na Vaš nalog
         </h2>
         <div className="mt-[15px] flex flex-col gap-[5px]">
@@ -68,7 +68,7 @@ export default function login() {
             Email
           </label>
           <input
-            className="border h-[50px] px-[14px] text-[18px] leading-[28px] text-[#334155] rounded-[8px]"
+            className="border h-[50px] px-[14px] lg:text-[18px] lg:leading-[28px] text-[16px] leading-[24px] text-[#334155] rounded-[8px]"
             type="text"
             placeholder="Vaš email"
             value={email}
@@ -83,7 +83,7 @@ export default function login() {
             Lozinka
           </label>
           <input
-            className="border h-[50px] px-[14px] text-[18px] leading-[28px] text-[#334155] rounded-[8px]"
+            className="border h-[50px] px-[14px] lg:text-[18px] lg:leading-[28px] text-[16px] leading-[24px] text-[#334155] rounded-[8px]"
             type="password"
             placeholder="Vaša lozinka"
             value={password}
@@ -100,7 +100,7 @@ export default function login() {
         )}
         <button
           onClick={() => login()}
-          className="mt-[25px] px-6 rounded-[10px] h-[50px] text-lg text-white bg-red-500 hover:text-red-500 hover:bg-transparent transition-all ease-in-out duration-250 border-transparent hover:border-red-500 border w-full"
+          className="mt-[25px] px-6 rounded-[10px] lg:h-[50px] h-[44px] lg:text-lg text-base text-white bg-red-500 hover:text-red-500 hover:bg-transparent transition-all ease-in-out duration-250 border-transparent hover:border-red-500 border w-full"
         >
           Ulogujte se
         </button>

@@ -14,7 +14,7 @@ import {
   faDollarSign,
   faBars,
   faXmark,
-  faCheck
+  faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -29,7 +29,7 @@ library.add(
   faDollarSign,
   faBars,
   faXmark,
-  faCheck
+  faCheck,
 );
 const outfit = Outfit({ subsets: ["latin"] });
 import { useRouter } from "next/router";
@@ -43,7 +43,7 @@ export default function Layout({ children }) {
 
   return (
     <>
-      <div className={outfit.className + " bg-white"}>
+      <div className={outfit.className + " bg-white overflow-hidden"}>
         {showHeaderAndFooter() && <Header />}
         <main>{children}</main>
         {showHeaderAndFooter() && <Footer />}

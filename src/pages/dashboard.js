@@ -38,8 +38,8 @@ export default function dashboard() {
         <div className="relative w-screen h-screen overflow-x-hidden">
           <div className="fixed top-0 left-0 w-full p-4 z-[999] shadow-[0_5px_5px_-5px_rgba(0,0,0,0.75)] bg-white">
             <div className="flex items-center justify-between ">
-              <div className="flex flex-row gap-[20px] items-center">
-                <Link href="/" className="mr-[40px]">
+              <div className="flex flex-row md:gap-[20px] gap-[10px] items-center">
+                <Link href="/" className="md:mr-[40px] mr-[10px] sm:block hidden">
                   <Image
                     src={logoPic}
                     alt="prologs-logo"
@@ -80,7 +80,7 @@ export default function dashboard() {
                 <button
                   href="/login"
                   onClick={() => signOutFunc()}
-                  className="cursor-pointer flex items-center text-sm bg-red-500 rounded-[8px] px-4 h-[38px] font-bold text-white border border-transparent hover:text-red-500 hover:bg-transparent hover:border-red-500 transition-all ease-out duration-250"
+                  className="cursor-pointer flex items-center text-sm bg-red-500 rounded-[8px] md:px-4 px-2 md:h-[38px] h-[34px] font-bold text-white border border-transparent hover:text-red-500 hover:bg-transparent hover:border-red-500 transition-all ease-out duration-250"
                 >
                   Logout
                 </button>

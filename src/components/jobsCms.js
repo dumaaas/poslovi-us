@@ -99,7 +99,7 @@ export default function jobsCms() {
           <div className="flex flex-row justify-between gap-[20px] flex-wrap">
             <TextField
               id="outlined-basic"
-              label="Ime kompanije/Ime prezime"
+              label="Ime"
               variant="outlined"
               className="flex-[30%]"
               value={name}
@@ -107,7 +107,7 @@ export default function jobsCms() {
             />
             <TextField
               id="outlined-basic"
-              label="Email kompanije/klijenta"
+              label="Email"
               variant="outlined"
               className="flex-[30%]"
               value={email}

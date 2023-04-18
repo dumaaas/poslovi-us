@@ -3,7 +3,7 @@ export default function ClientsHero(props) {
     <div>
       {props.clients && (
         <div className="container py-12">
-          <div className="flex items-stretch flex-wrap lg:gap-[40px] md:gap-[30px] gap-[25px] justify-between">
+          <div className="flex items-stretch flex-wrap lg:gap-[40px] md:gap-[30px] gap-[20px] justify-between">
             {props.clients.length > 0 &&
               props.clients.map((item, index) => {
                 return (
@@ -16,11 +16,11 @@ export default function ClientsHero(props) {
                     <div className="group-hover:bg-opacity-0 transition-all ease-in-out duration-200 rounded-[8px] absolute top-0 left-0 z-20 w-full h-full bg-black bg-opacity-70"></div>
                     <div className="flex flex-col gap-[20px] group-hover:z-20 transition-all ease-in-out duration-200 z-10 flex items-center justify-center h-full w-full absolute group-hover:top-[50%] group-hover:left-[50%] group-hover:rotate-0 transform translate-x-0 traslate-y-0 group-hover:translate-x-[-50%] group-hover:translate-y-[-50%] top-[36%] left-[49%] rotate-[29deg]">
                       <img alt="img" className="" src={item.url} />
-                      <p className="opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-500 text-red-500 text-[24px] leading-[30px] font-bold">
+                      <p className="opacity-0 group-hover:opacity-100 transition-all ease-in-out duration-500 text-red-500 lg:text-[24px] lg:leading-[30px] text-[20px] leading-[28px] font-bold">
                         {item.name}
                       </p>
                     </div>
-                    <p className="opacity-1 group-hover:opacity-0 transform scale-100 group-hover:scale-75 transition-all ease-in-out duration-200 text-[24px] leading-[30px] font-bold text-white px-[34px] py-[8px] z-30 bg-red-500 rounded-[8px]">
+                    <p className="opacity-1 group-hover:opacity-0 transform scale-100 group-hover:scale-75 transition-all ease-in-out duration-200 lg:text-[24px] lg:leading-[30px] text-[20px] leading-[28px] font-bold text-white lg:px-[34px] lg:py-[8px] px-[30px] py-[7px] z-30 bg-red-500 rounded-[8px]">
                       {item.name}
                     </p>
                   </a>

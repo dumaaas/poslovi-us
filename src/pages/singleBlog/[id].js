@@ -35,17 +35,17 @@ export default function singleBlog() {
             </div>
             <div className="relative z-20 flex gap-[25px] items-center container">
               <div className="flex flex-col gap-[8px]">
-                <h3 className="text-white text-[40px] leading-[44px] font-bold">
+                <h3 className="text-white lg:text-[40px] lg:leading-[44px] md:text-[36px] md:leading-[40px] text-[30px] leading-[36px] font-bold">
                   {blog.title}
                 </h3>
-                <p className="leading-[28px] text-[20px] text-red-500">
+                <p className="md:leading-[28px] md:text-[20px] text-[16px] leading-[24px] text-red-500">
                   {blog.published_at.toDate().toLocaleDateString()}
                 </p>
               </div>
             </div>
           </div>
-          <div className="container py-12">
-            <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+          <div className="container py-10 md:py-12">
+            <div className="single-post" dangerouslySetInnerHTML={{ __html: blog.content }} />
           </div>
         </div>
       )}

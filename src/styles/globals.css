@@ -64,3 +64,54 @@ body {
   background-size: 200% 100%;
   animation: 1s shine linear infinite;
 }
+
+.single-post h1 {
+  @apply lg:text-5xl md:text-4xl text-3xl font-bold mb-4
+}
+
+.single-post h1 > span {
+  @apply lg:text-5xl md:text-4xl text-3xl font-bold mb-4
+}
+
+.single-post p {
+  @apply lg:text-xl md:text-lg text-base mb-4
+}
+
+.single-post p > span {
+  @apply lg:text-xl md:text-lg text-base mb-4
+}
+
+.single-post h2,h3,h4,h5  {
+  @apply lg:text-2xl md:text-xl text-lg font-bold mb-4
+}
+
+.single-post h2 span,h3 span,h4 span,h5 span  {
+  @apply lg:text-2xl md:text-xl text-lg font-bold mb-4
+}
+
+.single-post ul {
+  @apply ml-[20px] list-disc
+}
+
+.single-post ol {
+  @apply ml-[20px] list-decimal
+}
+.single-post li {
+  @apply lg:text-xl md:text-lg text-base mb-4
+}
+
+.single-post li > span {
+  @apply lg:text-xl md:text-lg text-base mb-4
+}
+
+.single-post a {
+  @apply lg:text-xl md:text-lg text-base mb-4 underline cursor-pointer text-red-500
+}
+
+.single-post a > span {
+  @apply lg:text-xl md:text-lg text-base mb-4 cursor-pointer
+}
+
+.single-post img {
+  @apply border border-red-500
+}
