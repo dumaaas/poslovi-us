@@ -1,80 +1,49 @@
-import Image from "next/image";
-import logoPic from "../../../public/logo1.png";
-import usPic from "../../../public/us.svg";
 import Subscription from "@/components/subscription";
+
+import Image from "next/image";
+import usPic from "../../../public/us.svg";
+
 import { Box, Modal } from "@material-ui/core";
+
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
-import { set } from "nprogress";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import {
+  checkEmail,
+  takeInitials,
+  submitJobApplication,
+} from "@/helpers/functions";
+
 export default function singleJob() {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
   const router = useRouter();
   const { id } = router.query;
+
+  const [open, setOpen] = useState(false);
   const [job, setJob] = useState(null);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [letter, setLetter] = useState("");
 
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   useEffect(() => {
     getJob();
   }, [id]);
 
-  function checkEmail(email) {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  }
-
-  const submitForm = (e) => {
-    e.preventDefault();
-    const subject =
-      job.offer_type === "offer"
-        ? `Aplikacija za poziciju: ${job.position}`
-        : `Ponuda za posao: ${job.position}`;
-    const content = `${
-      job.offer_type === "offer"
-        ? "Poštovani, imate novu aplikaciju za posao:\n"
-        : "Poštovani, imate novu ponudu za posao:\n"
-    }\nIme i prezime: ${name}\n\nKontakt email: ${email}\n\nPropratno pismo: \n${letter}\n\n`;
-    const mailtoLink = `mailto:${job.email}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(content)}`;
-    window.location.href = mailtoLink;
-  };
-
   const getJob = async () => {
     const docRef = doc(db, "jobs", id);
-    // Get a document, forcing the SDK to fetch from the offline cache.
     try {
       const doc = await getDoc(docRef);
       setJob(doc.data());
     } catch (e) {
-      console.log("Error getting cached document:", e);
+      console.error("Error getting cached document:", e);
     }
-  };
-
-  const takeInitials = (name) => {
-    let result = "";
-    for (let i = 0; i < name.length; i++) {
-      const currentChar = name.charAt(i);
-
-      if (
-        currentChar === currentChar.toUpperCase() &&
-        currentChar.match(/[A-Z]/)
-      ) {
-        result += currentChar;
-
-        if (result.length === 2) {
-          break;
-        }
-      }
-    }
-    return result;
   };
 
   return (
@@ -258,7 +227,18 @@ export default function singleJob() {
                       !letter.length ||
                       !checkEmail(email)
                     }
-                    onClick={submitForm}
+                    onClick={(e) => {
+                      submitJobApplication(
+                        e,
+                        job.offer_type,
+                        job.position,
+                        job.email,
+                        name,
+                        email,
+                        letter
+                      );
+                      handleClose();
+                    }}
                     className="mt-[25px] px-6 rounded-[10px] md:h-[50px] h-[44px] md:text-lg text-base text-white bg-red-500 hover:text-red-500 hover:bg-transparent transition-all ease-in-out duration-250 border-transparent hover:border-red-500 border w-full"
                   >
                     {job.offer_type === "offer"

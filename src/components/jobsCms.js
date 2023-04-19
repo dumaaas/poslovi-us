@@ -25,11 +25,11 @@ import {
   AccordionDetails,
   Typography,
 } from "@material-ui/core";
-import { useState, useRef, useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import {
   collection,
-  getDocs,
   updateDoc,
   Timestamp,
   addDoc,
@@ -38,12 +38,16 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
+
+import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { cities, jobTypeData } from "@/helpers/staticData";
+
+import { cities, jobTypeData, jobColumns } from "@/helpers/staticData";
+import { getAllJobs } from "@/helpers/functions";
 
 export default function jobsCms() {
   const dispatch = useDispatch();
+
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
   const [email, setEmail] = useState("");
@@ -62,15 +66,17 @@ export default function jobsCms() {
   const [page, setPage] = useState(0);
   const [isEdit, setIsEdit] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const jobs = useSelector((state) => state.jobs);
   const [jobsTemp, setJobsTemp] = useState([]);
   const [search, setSearch] = useState("");
+
+  const jobs = useSelector((state) => state.allJobs);
   const isJobLoading = useSelector((state) => state.isJobLoading);
+
   const editorRef = useRef(null);
 
   useEffect(() => {
     if (!jobs.length) {
-      getJobData();
+      getAllJobs(dispatch, setJobsTemp);
     } else {
       setJobsTemp(jobs);
     }
@@ -80,46 +86,15 @@ export default function jobsCms() {
     filterJobs();
   }, [search]);
 
-  const getJobData = async () => {
-    dispatch({ type: "SET_IS_JOB_LOADING", payload: true });
-    const querySnapshot = await getDocs(collection(db, "jobs"));
-    var tempData = [];
-
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      tempData.push({
-        id: doc.id,
-        name: doc.data().name,
-        url: doc.data().url,
-        content: doc.data().content,
-        short_desc: doc.data().shortDesc,
-        published_at: doc.data().published_at,
-        email: doc.data().email,
-        position: doc.data().position,
-        salary: doc.data().salary,
-        location: doc.data().location,
-        offer_type: doc.data().offer_type,
-        job_type: doc.data().jobType,
-        featured: doc.data().featured,
-        featured_plus: doc.data().featured_plus,
-      });
-    });
-    dispatch({ type: "SET_IS_JOB_LOADING", payload: false });
-    dispatch({ type: "SET_JOBS", payload: tempData });
-    setJobsTemp(tempData);
-  };
-
   const deleteJob = (id) => {
     const docRef = doc(db, "jobs", id);
-
     deleteDoc(docRef)
       .then(() => {
-        console.log("Entire Document has been deleted successfully.");
         handleSnackBarOpen();
-        getJobData();
+        getAllJobs(dispatch, setJobsTemp);;
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -143,8 +118,33 @@ export default function jobsCms() {
       setFeaturedPlus(doc.data().featured_plus);
       editorRef.current.setContent(doc.data().content);
     } catch (e) {
-      console.log("Error getting cached document:", e);
+      console.error("Error getting cached document:", e);
     }
+  };
+
+  const saveJob = async () => {
+    setIsDisabled(true);
+    var docData = {
+      name: name,
+      short_desc: shortDesc,
+      url: url,
+      content: editorRef.current ? editorRef.current.getContent() : "",
+      published_at: Timestamp.fromDate(new Date()),
+      email: email,
+      position: position,
+      salary: salary,
+      location: location,
+      offer_type: offerType,
+      job_type: jobType,
+      featured: featured,
+      featured_plus: featuredPlus,
+    };
+    await addDoc(collection(db, "jobs"), docData).then(() => {
+      getAllJobs(dispatch, setJobsTemp);;
+      handleSnackBarOpen();
+      setIsDisabled(false);
+      clearForm();
+    });
   };
 
   const updateJob = async () => {
@@ -164,13 +164,13 @@ export default function jobsCms() {
       featured_plus: featuredPlus,
     };
     updateDoc(docRef, data)
-      .then((docRef) => {
+      .then(() => {
         clearForm();
-        getJobData();
+        getAllJobs(dispatch, setJobsTemp);;
         handleSnackBarOpen();
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -218,46 +218,6 @@ export default function jobsCms() {
     setIsExpanded(false);
     setIsEdit(false);
   };
-
-  const saveJob = async () => {
-    setIsDisabled(true);
-    var docData = {
-      name: name,
-      short_desc: shortDesc,
-      url: url,
-      content: editorRef.current ? editorRef.current.getContent() : "",
-      published_at: Timestamp.fromDate(new Date()),
-      email: email,
-      position: position,
-      salary: salary,
-      location: location,
-      offer_type: offerType,
-      job_type: jobType,
-      featured: featured,
-      featured_plus: featuredPlus,
-    };
-    await addDoc(collection(db, "jobs"), docData).then(() => {
-      getJobData();
-      handleSnackBarOpen();
-      setIsDisabled(false);
-      clearForm();
-    });
-  };
-
-  const columns = [
-    { id: "name", label: "Ime", minWidth: 170 },
-    { id: "position", label: "Pozicija", minWidth: 100 },
-    { id: "location", label: "Lokacija", minWidth: 100 },
-    { id: "offer_type", label: "Tip oglasa", minWidth: 100 },
-    { id: "salary", label: "Plata", minWidth: 100 },
-    { id: "email", label: "Email", minWidth: 100 },
-    {
-      id: "published_at",
-      label: "Datum objavljivanja",
-      minWidth: 100,
-      format: "date",
-    },
-  ];
 
   return (
     <div>
@@ -498,9 +458,9 @@ export default function jobsCms() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
+              {jobColumns.map((column, index) => (
                 <TableCell
-                  key={column.id}
+                  key={index}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
@@ -514,15 +474,15 @@ export default function jobsCms() {
             {jobsTemp.length > 0 &&
               jobsTemp
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
+                .map((row, index) => {
                   return (
                     <TableRow
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.code}
+                      key={index}
                     >
-                      {columns.map((column, index) => {
+                      {jobColumns.map((column, index) => {
                         const value = row[column.id];
                         return (
                           <TableCell key={index}>
@@ -569,8 +529,8 @@ export default function jobsCms() {
         count={jobsTemp.length}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </div>
   );

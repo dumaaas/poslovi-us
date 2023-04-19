@@ -1,21 +1,19 @@
 import PlaceholderSecondaryCard from "./placeholderSecondaryCard";
 import BlogCard from "./blogCard";
 import JobCardSecondary from "./jobCardSecondary";
-import { useEffect, useState } from "react";
 import PlaceholderBlogCard from "./placeholderBlogCard";
-import { useSelector, useDispatch } from "react-redux";
-import facebookIcon from "../../public/facebook-header-icon.svg";
+
 import instagramIcon from "../../public/instagram-header-icon.svg";
+import facebookIcon from "../../public/facebook-header-icon.svg";
+
+import Link from "next/link";
 import Image from "next/image";
-import {
-  collection,
-  getDocs,
-  query,
-  orderBy,
-  limit,
-  where,
-} from "firebase/firestore";
-import { db } from "../../firebase";
+
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+import { getFeaturedJobs, getBlogData } from "@/helpers/functions";
+
 export default function blogHero(props) {
   const dispatch = useDispatch();
   const featuredJobs = useSelector((state) => state.featuredJobs);
@@ -26,62 +24,10 @@ export default function blogHero(props) {
   const blogs = useSelector((state) => state.blogs);
 
   useEffect(() => {
-    if (!blogs.length) getBlogData();
-    if (!featuredJobs.length) getFeaturedJobs();
+    if (!blogs.length) getBlogData(dispatch);
+    if (!featuredJobs.length) getFeaturedJobs(dispatch);
   }, []);
 
-  const getFeaturedJobs = async () => {
-    dispatch({ type: "SET_IS_FEATURED_JOB_LOADING", payload: true });
-    const querySnapshot = await getDocs(
-      query(
-        collection(db, "jobs"),
-        where("featured", "==", true),
-        where("offer_type", "==", "offer"),
-        orderBy("published_at", "asc")
-      )
-    );
-    var tempData = [];
-
-    querySnapshot.forEach((doc) => {
-      tempData.push({
-        id: doc.id,
-        name: doc.data().name,
-        url: doc.data().url,
-        published_at: doc.data().published_at,
-        content: doc.data().content,
-        email: doc.data().email,
-        featured: doc.data().featured,
-        featured_plus: doc.data().featured_plus,
-        job_type: doc.data().job_type,
-        location: doc.data().location,
-        position: doc.data().position,
-        salary: doc.data().salary,
-        short_desc: doc.data().short_desc,
-        offer_type: doc.data().offer_type,
-      });
-    });
-    dispatch({ type: "SET_FEATURED_JOBS", payload: tempData });
-    dispatch({ type: "SET_IS_FEATURED_JOB_LOADING", payload: false });
-  };
-
-  const getBlogData = async () => {
-    dispatch({ type: "SET_IS_JOB_LOADING", payload: true });
-
-    const querySnapshot = await getDocs(collection(db, "blogs"));
-    var tempData = [];
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      tempData.push({
-        id: doc.id,
-        title: doc.data().title,
-        short_desc: doc.data().short_desc,
-        url: doc.data().url,
-        published_at: doc.data().published_at,
-      });
-    });
-    dispatch({ type: "SET_BLOGS", payload: tempData });
-    dispatch({ type: "SET_IS_JOB_LOADING", payload: false });
-  };
   return (
     <div className="container py-12">
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-9">
@@ -94,8 +40,16 @@ export default function blogHero(props) {
             </div>
           )}
           {!isJobLoading && blogs.length < 1 && (
-            <div>
+            <div className="inline-flex flex flex-col gap-[20px]">
               <p>Nije pronađen nijedan rezultat.</p>
+              <div className="px-[12px] py-[8px] rounded-[8px] bg-red-100">
+                <p>
+                  Pogledajte našu{" "}
+                  <Link href={"/jobs"} className="text-red-500 underline">
+                    ponudu poslova.
+                  </Link>
+                </p>
+              </div>
             </div>
           )}
           {isJobLoading && blogs.length < 1 && (

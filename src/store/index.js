@@ -3,6 +3,7 @@ const reducerFn = (
     latestJobs: [],
     featuredLatestJobs: [],
     demandLatestJobs: [],
+    allJobs: [],
     jobs: [],
     clients: [],
     featuredJobs: [],
@@ -10,6 +11,7 @@ const reducerFn = (
     blogs: [],
     isJobLoading: false,
     isFeaturedJobLoading: false,
+    isLoggedIn: false,
   },
   action
 ) => {
@@ -39,6 +41,11 @@ const reducerFn = (
         ...state,
         jobs: action.payload,
       };
+    case "SET_ALL_JOBS":
+      return {
+        ...state,
+        allJobs: action.payload,
+      };
     case "SET_FEATURED_JOBS":
       return {
         ...state,
@@ -63,6 +70,11 @@ const reducerFn = (
       return {
         ...state,
         isFeaturedJobLoading: action.payload,
+      };
+    case "SET_IS_LOGGED_IN":
+      return {
+        ...state,
+        isLoggedIn: action.payload,
       };
     default:
       break;

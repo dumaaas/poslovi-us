@@ -1,7 +1,10 @@
-import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import JobCard from "./jobCard";
 import PlaceholderCard from "./placeholderCard";
+
+import Link from "next/link";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 export default function JobsHero(props) {
   return (
     <div style={{ backgroundColor: props.background }} className="">

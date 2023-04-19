@@ -1,9 +1,11 @@
-import Image from "next/image";
 import Subscription from "@/components/subscription";
+
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../firebase";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function singleBlog() {
@@ -17,12 +19,11 @@ export default function singleBlog() {
 
   const getBlog = async () => {
     const docRef = doc(db, "blogs", id);
-    // Get a document, forcing the SDK to fetch from the offline cache.
     try {
       const doc = await getDoc(docRef);
       setBlog(doc.data());
     } catch (e) {
-      console.log("Error getting cached document:", e);
+      console.error("Error getting cached document:", e);
     }
   };
 

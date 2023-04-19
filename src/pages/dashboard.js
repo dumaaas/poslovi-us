@@ -1,33 +1,25 @@
 import logoPic from "../../public/logo.png";
+
 import Image from "next/image";
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useSelector, useDispatch } from "react-redux";
+
 import JobsCms from "@/components/jobsCms";
 import ClientCms from "@/components/clientCms";
 import BlogCms from "@/components/blogCms";
-import { useRouter } from "next/router";
-import { useEffect, useContext } from "react";
-import { UserContext } from "@/context/userContext";
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase";
+
+import { signOutFunc } from "@/helpers/functions";
 
 export default function dashboard() {
-  const [activeMenu, setActiveMenu] = useState("jobs");
-  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+  const dispatch = useDispatch();
   const router = useRouter();
 
-  const signOutFunc = () => {
-    signOut(auth)
-      .then(() => {
-        setIsLoggedIn(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  const [activeMenu, setActiveMenu] = useState("jobs");
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
 
-  // Listen for changes on loading and authUser, redirect if needed
   useEffect(() => {
     if (!isLoggedIn) router.push("/");
   }, [isLoggedIn]);
@@ -39,7 +31,10 @@ export default function dashboard() {
           <div className="fixed top-0 left-0 w-full p-4 z-[999] shadow-[0_5px_5px_-5px_rgba(0,0,0,0.75)] bg-white">
             <div className="flex items-center justify-between ">
               <div className="flex flex-row md:gap-[20px] gap-[10px] items-center">
-                <Link href="/" className="md:mr-[40px] mr-[10px] sm:block hidden">
+                <Link
+                  href="/"
+                  className="md:mr-[40px] mr-[10px] sm:block hidden"
+                >
                   <Image
                     src={logoPic}
                     alt="prologs-logo"
@@ -79,7 +74,7 @@ export default function dashboard() {
                 <div className="h-[25px] w-[1px] bg-[#334155] md:block hidden"></div>
                 <button
                   href="/login"
-                  onClick={() => signOutFunc()}
+                  onClick={() => signOutFunc(dispatch)}
                   className="cursor-pointer flex items-center text-sm bg-red-500 rounded-[8px] md:px-4 px-2 md:h-[38px] h-[34px] font-bold text-white border border-transparent hover:text-red-500 hover:bg-transparent hover:border-red-500 transition-all ease-out duration-250"
                 >
                   Logout
@@ -88,7 +83,7 @@ export default function dashboard() {
             </div>
           </div>
 
-          <div className={` px-4 mt-[112px] pb-8 relative z-[99]`}>
+          <div className={`px-4 mt-[112px] pb-8 relative z-[99]`}>
             {activeMenu === "jobs" && <JobsCms />}
             {activeMenu === "clients" && <ClientCms />}
             {activeMenu === "blog" && <BlogCms />}

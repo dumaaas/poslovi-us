@@ -17,11 +17,11 @@ import {
   Typography,
   FormLabel,
 } from "@material-ui/core";
-import { useState, useRef, useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import {
   collection,
-  getDocs,
   updateDoc,
   Timestamp,
   addDoc,
@@ -30,11 +30,16 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
+
+import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { getBlogData } from "@/helpers/functions";
+import { blogColumns } from "@/helpers/staticData";
 
 export default function blogCms() {
   const dispatch = useDispatch();
+
   const [title, setTitle] = useState("");
   const [shortDesc, setShortDesc] = useState("");
   const [url, setUrl] = useState("");
@@ -45,15 +50,16 @@ export default function blogCms() {
   const [page, setPage] = useState(0);
   const [isEdit, setIsEdit] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const blogs = useSelector((state) => state.blogs);
   const [isExpanded, setIsExpanded] = useState(false);
   const [blogsTemp, setBlogsTemp] = useState([]);
   const [search, setSearch] = useState("");
+
+  const blogs = useSelector((state) => state.blogs);
   const isJobLoading = useSelector((state) => state.isJobLoading);
 
   useEffect(() => {
     if (!blogs.length) {
-      getBlogData();
+      getBlogData(dispatch, setBlogsTemp);
     } else {
       setBlogsTemp(blogs);
     }
@@ -63,36 +69,15 @@ export default function blogCms() {
     filterBlogs();
   }, [search]);
 
-  const getBlogData = async () => {
-    dispatch({ type: "SET_IS_JOB_LOADING", payload: true });
-    const querySnapshot = await getDocs(collection(db, "blogs"));
-    var tempData = [];
-
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      tempData.push({
-        id: doc.id,
-        title: doc.data().title,
-        url: doc.data().url,
-        short_desc: doc.data().shortDesc,
-        published_at: doc.data().published_at,
-      });
-    });
-    dispatch({ type: "SET_IS_JOB_LOADING", payload: false });
-    dispatch({ type: "SET_BLOGS", payload: tempData });
-    setBlogsTemp(tempData);
-  };
-
   const deleteBlog = (id) => {
     const docRef = doc(db, "blogs", id);
-
     deleteDoc(docRef)
       .then(() => {
         handleSnackBarOpen();
-        getBlogData();
+        getBlogData(dispatch, setBlogsTemp);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -108,8 +93,25 @@ export default function blogCms() {
       editorRef.current.setContent(doc.data().content);
       setId(id);
     } catch (e) {
-      console.log("Error getting cached document:", e);
+      console.error("Error getting cached document:", e);
     }
+  };
+
+  const saveBlog = async () => {
+    setIsDisabled(true);
+    var docData = {
+      title: title,
+      short_desc: shortDesc,
+      url: url,
+      content: editorRef.current ? editorRef.current.getContent() : "",
+      published_at: Timestamp.fromDate(new Date()),
+    };
+    await addDoc(collection(db, "blogs"), docData).then(() => {
+      getBlogData(dispatch, setBlogsTemp);
+      handleSnackBarOpen();
+      setIsDisabled(false);
+      clearForm();
+    });
   };
 
   const updateBlog = async () => {
@@ -121,13 +123,13 @@ export default function blogCms() {
       url: url,
     };
     updateDoc(docRef, data)
-      .then((docRef) => {
+      .then(() => {
         clearForm();
-        getBlogData();
+        getBlogData(dispatch, setBlogsTemp);
         handleSnackBarOpen();
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -167,34 +169,6 @@ export default function blogCms() {
     setIsEdit(false);
     setIsExpanded(false);
   };
-
-  const saveBlog = async () => {
-    setIsDisabled(true);
-    var docData = {
-      title: title,
-      short_desc: shortDesc,
-      url: url,
-      content: editorRef.current ? editorRef.current.getContent() : "",
-      published_at: Timestamp.fromDate(new Date()),
-    };
-    await addDoc(collection(db, "blogs"), docData).then(() => {
-      getBlogData();
-      handleSnackBarOpen();
-      setIsDisabled(false);
-      clearForm();
-    });
-  };
-
-  const columns = [
-    { id: "title", label: "Title", minWidth: 170 },
-    { id: "url", label: "Slika", minWidth: 100 },
-    {
-      id: "published_at",
-      label: "Datum objavljivanja",
-      minWidth: 100,
-      format: "date",
-    },
-  ];
 
   return (
     <div>
@@ -256,7 +230,7 @@ export default function blogCms() {
                 </FormLabel>
                 <Editor
                   apiKey="3g4bxjjckov07ymyx17x5n0p8wcwjdf1dl5ic88qad0v2ad4"
-                  onInit={(evt, editor) => (editorRef.current = editor)}
+                  onInit={(editor) => (editorRef.current = editor)}
                   initialValue=""
                   init={{
                     branding: false,
@@ -313,9 +287,9 @@ export default function blogCms() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
+              {blogColumns.map((column, index) => (
                 <TableCell
-                  key={column.id}
+                  key={index}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
@@ -329,15 +303,10 @@ export default function blogCms() {
             {blogsTemp.length > 0 &&
               blogsTemp
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
+                .map((row, index) => {
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code}
-                    >
-                      {columns.map((column, index) => {
+                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                      {blogColumns.map((column, index) => {
                         const value = row[column.id];
                         return (
                           <TableCell key={index}>
@@ -384,8 +353,8 @@ export default function blogCms() {
         count={blogsTemp.length}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </div>
   );

@@ -1,19 +1,22 @@
 import logoPic from "../../public/logo.png";
+
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { UserContext } from "@/context/userContext";
-import { useContext } from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase";
-import { useState, useRef, useEffect } from "react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { useRouter } from "next/router";
+import { useState, useRef, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+import { signOutFunc } from "@/helpers/functions";
+
 export default function Header() {
+  const dispatch = useDispatch();
   const { asPath } = useRouter();
-  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const mobileNavRef = useRef(null);
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -36,15 +39,6 @@ export default function Header() {
     document.querySelector("html").style.overflow = menuOpen ? "hidden" : "";
   }, [menuOpen]);
 
-  const signOutFunc = () => {
-    signOut(auth)
-      .then(() => {
-        setIsLoggedIn(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
   return (
     <header className="relative py-[16px] shadow-[0_5px_5px_-5px_rgba(0,0,0,0.75)]">
       <div className="container flex items-center justify-between ">
@@ -122,7 +116,7 @@ export default function Header() {
               </Link>
               <button
                 href="/login"
-                onClick={() => signOutFunc()}
+                onClick={() => signOutFunc(dispatch)}
                 className="cursor-pointer flex items-center text-sm bg-red-500 rounded-[8px] px-4 h-[38px] font-bold text-white border border-transparent hover:text-red-500 hover:bg-transparent hover:border-red-500 transition-all ease-out duration-250"
               >
                 Logout
@@ -242,7 +236,7 @@ export default function Header() {
               </Link>
               <button
                 href="/login"
-                onClick={() => signOutFunc()}
+                onClick={() => signOutFunc(dispatch)}
                 className="cursor-pointer flex items-center justify-center text-sm bg-red-500 rounded-[8px] px-4 h-[38px] font-bold text-white border border-transparent hover:text-red-500 hover:bg-transparent hover:border-red-500 transition-all ease-out duration-250"
               >
                 Logout

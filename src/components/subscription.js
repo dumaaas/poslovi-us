@@ -3,6 +3,7 @@ import companyPic from "../../public/logo1.png";
 import usPic from "../../public/us.svg";
 
 import Image from "next/image";
+
 export default function subscription() {
   return (
     <div className="pt-[60px] bg-red-100 overflow-hidden">
@@ -10,9 +11,9 @@ export default function subscription() {
         <span className="font-semibold z-20 absolute top-[15px] right-[-22px] transform rotate-45 text-center block w-[97px] text-white bg-red-500 font-display text-brand-primary px-2 py-0.5 text-sm tracking-wide">
           Uskoro
         </span>
-        <div class="min-w-[350px] w-[350px] h-[390px] lg:block hidden">
+        <div className="min-w-[350px] w-[350px] h-[390px] lg:block hidden">
           <div
-            class="border-t h-full !border-b-0 bg-white border-gray-900 relative"
+            className="border-t h-full !border-b-0 bg-white border-gray-900 relative"
             style={{
               borderWidth: "18px",
               borderTopLeftRadius: "45px",
@@ -30,7 +31,7 @@ export default function subscription() {
                 placeholder="blur"
               />
               <p className="mt-[15px] text-[14px] leading-[20px] text-[#6b7280]">
-                Hejaa! Stiže lista sa posljednjim dostupnim poslovima
+                Hej! Stiže lista sa posljednjim dostupnim poslovima.
               </p>
               <div className="flex flex-col mt-[20px] justify-start items-start border-b">
                 <div className="flex gap-[15px] items-center">
@@ -42,10 +43,10 @@ export default function subscription() {
                   />
                   <div className="flex flex-col">
                     <h3 className="text-[#334155] text-[14px] leading-[20px] font-bold">
-                      Quantify
+                      Vibe Creative
                     </h3>
                     <p className="text-[#6b7280] leading-[16px] text-[12px]">
-                      Full-time / Senior
+                      Full time 
                     </p>
                   </div>
                 </div>
@@ -57,7 +58,7 @@ export default function subscription() {
                       className="w-full h-full"
                     />
                   </div>
-                  Chicago, USA
+                  Chicago
                 </div>
               </div>
               <div className="flex flex-col mt-[20px] justify-start items-start border-b">
@@ -73,7 +74,7 @@ export default function subscription() {
                       Quantify
                     </h3>
                     <p className="text-[#6b7280] leading-[16px] text-[12px]">
-                      Full-time / Senior
+                      Part time
                     </p>
                   </div>
                 </div>
@@ -85,7 +86,7 @@ export default function subscription() {
                       className="w-full h-full"
                     />
                   </div>
-                  Chicago, USA
+                  New York
                 </div>
               </div>
             </div>

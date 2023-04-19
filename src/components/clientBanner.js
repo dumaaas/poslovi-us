@@ -1,19 +1,18 @@
 import logoPic from "../../public/logo.png";
 import Image from "next/image";
 import Link from "next/link";
-// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper";
 
-// Import Swiper styles
 import "swiper/css";
+
 export default function ClientBanner(props) {
   return (
     <div>
       {props.clients && (
         <div className="py-6 bg-red-500">
           <div className="container flex md:flex-row flex-col items-center justify-between gap-[40px] md:gap-[60px]">
-            <div class="text-sm font-medium text-white"> Ko nam veruje? </div>
+            <div className="text-sm font-medium text-white"> Ko nam veruje? </div>
             {props.clients.length > 0 && (
               <Swiper
                 spaceBetween={0}
@@ -37,7 +36,6 @@ export default function ClientBanner(props) {
                   delay: 2000,
                   disableOnInteraction: false,
                 }}
-                // loopedSlidesLimit={true}
                 modules={[Autoplay]}
                 className="flex-1 flex items-center justify-between gap-[20px]"
               >
@@ -82,7 +80,7 @@ export default function ClientBanner(props) {
               </div>
             )}
 
-            <div class="text-sm font-medium text-white"> I 2000+ više </div>
+            <div className="text-sm font-medium text-white"> I 2000+ više </div>
           </div>
         </div>
       )}

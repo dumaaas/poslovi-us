@@ -1,54 +1,49 @@
 import logoPic from "../../public/logo.png";
+
 import Image from "next/image";
 import Link from "next/link";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-} from "firebase/auth";
-import Router from "next/router";
-import { useContext, useState } from "react";
+
 import { auth } from "../../firebase";
-import { UserContext } from "@/context/userContext";
+import {
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+
+import Router from "next/router";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+import { saveAuthTokens } from "@/helpers/functions";
 
 export default function login() {
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const { setIsLoggedIn } = useContext(UserContext);
+
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+
+  useEffect(() => {
+    if (isLoggedIn) Router.push("/dashboard");
+  });
 
   const login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
-        console.log(user);
-        setIsLoggedIn(true);
+        dispatch({ type: "SET_IS_LOGGED_IN", payload: true });
+        saveAuthTokens(user.accessToken, user.expirationTime);
         Router.push("/dashboard");
       })
       .catch((error) => {
-        console.log(error.message);
+        console.error(error.message);
         setErrorMessage("Neispravni pristupni podaci.");
         setEmail("");
         setPassword("");
-        setIsLoggedIn(false);
+        dispatch({ type: "SET_IS_LOGGED_IN", payload: false });
       });
   };
 
-  const signup = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        console.log(user, "HEJ USER");
-        const user = userCredential.user;
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
-  };
   return (
     <div className="flex flex-col gap-[15px] justify-center items-center w-screen h-screen px-2 py-12">
       <div className="sm:w-[420px] w-[90%]">

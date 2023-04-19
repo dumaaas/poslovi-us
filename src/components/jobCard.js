@@ -1,35 +1,13 @@
-import logoPic from "../../public/logo1.png";
 import usPic from "../../public/us.svg";
+
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { shortDescFormater, takeInitials } from "@/helpers/functions";
+
 export default function JobCard(props) {
-  const shortDescFormater = (str) => {
-    if (str.length > 135) {
-      return str.slice(0, 135) + "...";
-    } else {
-      return str;
-    }
-  };
-  const takeInitials = (name) => {
-    let result = "";
-    for (let i = 0; i < name.length; i++) {
-      const currentChar = name.charAt(i);
-
-      if (
-        currentChar === currentChar.toUpperCase() &&
-        currentChar.match(/[A-Z]/)
-      ) {
-        result += currentChar;
-
-        if (result.length === 2) {
-          break;
-        }
-      }
-    }
-    return result;
-  };
   return (
     <Link
       href={`/singleJob/${props.job.id}`}
@@ -52,21 +30,17 @@ export default function JobCard(props) {
               />
             </div>
           )}
-          {props.job.offer_type === "offering" &&
-            props.job.url.length <
-              1 && (
-                <div
-                  className={`${
-                    props.job.featured_plus
-                      ? "border-[#6b7280]"
-                      : "border-white"
-                  } rounded-[8px] w-[60px] h-[60px] p-2 bg-red-100 flex items-center justify-center border `}
-                >
-                  <p className="text-[20px] font-bold text-[#334155]">
-                    {takeInitials(props.job.name)}
-                  </p>
-                </div>
-              )}
+          {props.job.offer_type === "offering" && props.job.url.length < 1 && (
+            <div
+              className={`${
+                props.job.featured_plus ? "border-[#6b7280]" : "border-white"
+              } rounded-[8px] w-[60px] h-[60px] p-2 bg-red-100 flex items-center justify-center border `}
+            >
+              <p className="text-[20px] font-bold text-[#334155]">
+                {takeInitials(props.job.name)}
+              </p>
+            </div>
+          )}
 
           {props.job.offer_type === "offering" && props.job.url.length > 0 && (
             <div
@@ -122,16 +96,13 @@ export default function JobCard(props) {
           {props.job.position}
         </h4>
         <p className="text-[14px] leading-[20px] text-[#6b7280]">
-          {shortDescFormater(props.job.short_desc)}
+          {shortDescFormater(props.job.short_desc, 135)}
         </p>
         <div className="flex items-center justify-between mt-[3px]">
-          <Link
-            href="/"
-            className=" bg-[#F1F5F9] flex items-center gap-[10px] font-bold text-[#334155] px-3 rounded-[8px] h-[28px] text-[12px] leading-[16px]"
-          >
+          <div className=" bg-[#F1F5F9] flex items-center gap-[10px] font-bold text-[#334155] px-3 rounded-[8px] h-[28px] text-[12px] leading-[16px]">
             Saznaj više
             <FontAwesomeIcon className=" text-[#334155]" icon="arrow-right" />
-          </Link>
+          </div>
           <p className="text-[12px] leading-[16px] text-[#6b7280]">
             {props.job.job_type}
           </p>

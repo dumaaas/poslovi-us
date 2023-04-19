@@ -16,10 +16,10 @@ import {
   AccordionDetails,
   Typography,
 } from "@material-ui/core";
-import { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import {
   collection,
-  getDocs,
   updateDoc,
   Timestamp,
   addDoc,
@@ -28,11 +28,16 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase";
+
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { clientColumns } from "@/helpers/staticData";
+import { getClientData } from "@/helpers/functions";
 
 export default function clientCms() {
   const dispatch = useDispatch();
+
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
   const [link, setLink] = useState("");
@@ -42,15 +47,16 @@ export default function clientCms() {
   const [page, setPage] = useState(0);
   const [isEdit, setIsEdit] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const clients = useSelector((state) => state.clients);
   const [isExpanded, setIsExpanded] = useState(false);
   const [clientsTemp, setClientsTemp] = useState([]);
   const [search, setSearch] = useState("");
+
+  const clients = useSelector((state) => state.clients);
   const isJobLoading = useSelector((state) => state.isJobLoading);
 
   useEffect(() => {
     if (!clients.length) {
-      getClientData();
+      getClientData(dispatch, setClientsTemp);
     } else {
       setClientsTemp(clients);
     }
@@ -60,44 +66,21 @@ export default function clientCms() {
     filterClients();
   }, [search]);
 
-  const getClientData = async () => {
-    dispatch({ type: "SET_IS_JOB_LOADING", payload: true });
-    const querySnapshot = await getDocs(collection(db, "clients"));
-    var tempData = [];
-
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      tempData.push({
-        id: doc.id,
-        name: doc.data().title,
-        url: doc.data().url,
-        link: doc.data().link,
-        published_at: doc.data().published_at,
-      });
-    });
-    dispatch({ type: "SET_IS_JOB_LOADING", payload: false });
-    dispatch({ type: "SET_CLIENTS", payload: tempData });
-    setClientsTemp(tempData);
-  };
-
   const deleteClient = (id) => {
     const docRef = doc(db, "clients", id);
-
     deleteDoc(docRef)
       .then(() => {
-        console.log("Entire Document has been deleted successfully.");
         handleSnackBarOpen();
-        getClientData();
+        getClientData(dispatch, setClientsTemp);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
   const openUpdateClient = async (id) => {
     setIsExpanded(true);
     const docRef = doc(db, "clients", id);
-    // Get a document, forcing the SDK to fetch from the offline cache.
     try {
       const doc = await getDoc(docRef);
       setIsEdit(true);
@@ -106,8 +89,24 @@ export default function clientCms() {
       setLink(doc.data().link);
       setId(id);
     } catch (e) {
-      console.log("Error getting cached document:", e);
+      console.error("Error getting cached document:", e);
     }
+  };
+
+  const saveClient = async () => {
+    setIsDisabled(true);
+    var docData = {
+      title: name,
+      url: url,
+      link: link,
+      published_at: Timestamp.fromDate(new Date()),
+    };
+    await addDoc(collection(db, "clients"), docData).then(() => {
+      getClientData(dispatch, setClientsTemp);
+      handleSnackBarOpen();
+      setIsDisabled(false);
+      clearForm();
+    });
   };
 
   const updateClient = async () => {
@@ -118,13 +117,13 @@ export default function clientCms() {
       url: url,
     };
     updateDoc(docRef, data)
-      .then((docRef) => {
+      .then(() => {
         clearForm();
-        getClientData();
+        getClientData(dispatch, setClientsTemp);
         handleSnackBarOpen();
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   };
 
@@ -164,38 +163,6 @@ export default function clientCms() {
     setIsEdit(false);
     setIsExpanded(false);
   };
-
-  const saveClient = async () => {
-    setIsDisabled(true);
-    var docData = {
-      title: name,
-      url: url,
-      link: link,
-      published_at: Timestamp.fromDate(new Date()),
-    };
-    await addDoc(collection(db, "clients"), docData).then(() => {
-      getClientData();
-      handleSnackBarOpen();
-      setIsDisabled(false);
-      clearForm();
-    });
-  };
-
-  const columns = [
-    { id: "name", label: "Ime", minWidth: 170 },
-    { id: "url", label: "Logo", minWidth: 100 },
-    {
-      id: "link",
-      label: "Link",
-      minWidth: 170,
-    },
-    {
-      id: "published_at",
-      label: "Datum objavljivanja",
-      minWidth: 100,
-      format: "date",
-    },
-  ];
 
   return (
     <div>
@@ -287,15 +254,12 @@ export default function clientCms() {
         </div>
       </div>
       <TableContainer component={Paper}>
-        <Table
-          sx={{ minWidth: 650 }}
-          aria-label="simple table"
-        >
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
+              {clientColumns.map((column, index) => (
                 <TableCell
-                  key={column.id}
+                  key={index}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
@@ -309,15 +273,15 @@ export default function clientCms() {
             {clientsTemp.length > 0 &&
               clientsTemp
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
+                .map((row, index) => {
                   return (
                     <TableRow
                       hover
                       role="checkbox"
                       tabIndex={-1}
-                      key={row.code}
+                      key={index}
                     >
-                      {columns.map((column, index) => {
+                      {clientColumns.map((column, index) => {
                         const value = row[column.id];
                         return (
                           <TableCell key={index}>
@@ -364,8 +328,8 @@ export default function clientCms() {
         count={clientsTemp.length}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </div>
   );

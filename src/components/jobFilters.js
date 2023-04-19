@@ -1,29 +1,28 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import JobCardSecondary from "./jobCardSecondary";
-import { cities, jobTypeData } from "@/helpers/staticData";
 import PlaceholderSecondaryCard from "./placeholderSecondaryCard";
+
 import facebookIcon from "../../public/facebook-header-icon.svg";
 import instagramIcon from "../../public/instagram-header-icon.svg";
+
 import Image from "next/image";
+
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState, useRef } from "react";
-import {
-  collection,
-  getDocs,
-  query,
-  orderBy,
-  limit,
-  where,
-} from "firebase/firestore";
-import { db } from "../../firebase";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { cities, jobTypeData } from "@/helpers/staticData";
+import { getFeaturedJobs } from "@/helpers/functions";
 
 export default function jobFilters(props) {
   const dispatch = useDispatch();
+
   const featuredJobs = useSelector((state) => state.featuredJobs);
   const isJobLoading = useSelector((state) => state.isJobLoading);
   const isFeaturedJobLoading = useSelector(
     (state) => state.isFeaturedJobLoading
   );
+
   const [jobsTemp, setJobsTemp] = useState([]);
   const [positionSearch, setPositionSearch] = useState("");
   const [showLocationSelect, setShowLocationSelect] = useState(false);
@@ -31,16 +30,16 @@ export default function jobFilters(props) {
   const [showJobTypeSelect, setShowJobTypeSelect] = useState(false);
   const [jobTypeSearch, setJobTypeSearch] = useState("");
   const [featuredSearch, setFeaturedSearch] = useState(null);
+
   const locationSearchRef = useRef();
   const jobTypeSearchRef = useRef();
   const isFirstRender = useRef(true);
 
   useEffect(() => {
-    if (!featuredJobs.length) getFeaturedJobs();
-    // Dodaj event listener na document element
+    if (!featuredJobs.length) getFeaturedJobs(dispatch);
+
     document.addEventListener("mousedown", handleClickOutside);
 
-    // Očisti event listener kada se komponenta unmount-uje
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -51,7 +50,6 @@ export default function jobFilters(props) {
   }, [props.jobs]);
 
   useEffect(() => {
-    console.log("HEJ MALA", isFirstRender.current);
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
@@ -67,7 +65,6 @@ export default function jobFilters(props) {
   };
 
   const handleClickOutside = (event) => {
-    // Provjeri da li se kliknulo izvan div1 i div2
     if (
       locationSearchRef.current &&
       !locationSearchRef.current.contains(event.target) &&
@@ -95,39 +92,6 @@ export default function jobFilters(props) {
     setJobsTemp(filteredJobs);
   };
 
-  const getFeaturedJobs = async () => {
-    dispatch({ type: "SET_IS_FEATURED_JOB_LOADING", payload: true });
-    const querySnapshot = await getDocs(
-      query(
-        collection(db, "jobs"),
-        where("featured", "==", true),
-        where("offer_type", "==", "offer"),
-        orderBy("published_at", "asc")
-      )
-    );
-    var tempData = [];
-
-    querySnapshot.forEach((doc) => {
-      tempData.push({
-        id: doc.id,
-        name: doc.data().name,
-        url: doc.data().url,
-        published_at: doc.data().published_at,
-        content: doc.data().content,
-        email: doc.data().email,
-        featured: doc.data().featured,
-        featured_plus: doc.data().featured_plus,
-        job_type: doc.data().job_type,
-        location: doc.data().location,
-        position: doc.data().position,
-        salary: doc.data().salary,
-        short_desc: doc.data().short_desc,
-        offer_type: doc.data().offer_type,
-      });
-    });
-    dispatch({ type: "SET_FEATURED_JOBS", payload: tempData });
-    dispatch({ type: "SET_IS_FEATURED_JOB_LOADING", payload: false });
-  };
   return (
     <div className="container py-12">
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-9">

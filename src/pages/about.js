@@ -1,7 +1,9 @@
 import Hero from "@/components/hero";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/router";
 import Subscription from "@/components/subscription";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { useRouter } from "next/router";
 
 export default function about() {
   const router = useRouter();

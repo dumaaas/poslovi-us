@@ -1,28 +1,13 @@
-import logoPic from "../../public/logo1.png";
 import usPic from "../../public/us.svg";
+
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { takeInitials } from "@/helpers/functions";
+
 export default function jobCardSecondary(props) {
-  const takeInitials = (name) => {
-    let result = "";
-    for (let i = 0; i < name.length; i++) {
-      const currentChar = name.charAt(i);
-
-      if (
-        currentChar === currentChar.toUpperCase() &&
-        currentChar.match(/[A-Z]/)
-      ) {
-        result += currentChar;
-
-        if (result.length === 2) {
-          break;
-        }
-      }
-    }
-    return result;
-  };
   return (
     <Link
       href={`/singleJob/${props.job.id}`}
@@ -45,32 +30,30 @@ export default function jobCardSecondary(props) {
               />
             </div>
           )}
-          {props.job.offer_type === "offering" &&
-            props.job.url.length < 1 && (
-              <div
-                className={`${
-                  props.job.featured_plus ? "border-[#6b7280]" : "border-white"
-                } rounded-[8px] w-[60px] h-[60px] p-2 bg-red-100 flex items-center justify-center border `}
-              >
-                <p className="text-[20px] font-bold text-[#334155]">
-                  {takeInitials(props.job.name)}
-                </p>
-              </div>
-            )}
-          {props.job.offer_type === "offering" &&
-            props.job.url.length > 0 && (
-              <div
-                className={`${
-                  props.job.featured_plus ? "border-[#6b7280]" : "border-white"
-                } rounded-[8px] w-[60px] h-[60px] bg-red-100 flex items-center justify-center border `}
-              >
-                <img
-                  src={props.job.url}
-                  alt="prologs-logo"
-                  className="h-auto w-auto rounded-[8px]"
-                />
-              </div>
-            )}
+          {props.job.offer_type === "offering" && props.job.url.length < 1 && (
+            <div
+              className={`${
+                props.job.featured_plus ? "border-[#6b7280]" : "border-white"
+              } rounded-[8px] w-[60px] h-[60px] p-2 bg-red-100 flex items-center justify-center border `}
+            >
+              <p className="text-[20px] font-bold text-[#334155]">
+                {takeInitials(props.job.name)}
+              </p>
+            </div>
+          )}
+          {props.job.offer_type === "offering" && props.job.url.length > 0 && (
+            <div
+              className={`${
+                props.job.featured_plus ? "border-[#6b7280]" : "border-white"
+              } rounded-[8px] w-[60px] h-[60px] bg-red-100 flex items-center justify-center border `}
+            >
+              <img
+                src={props.job.url}
+                alt="prologs-logo"
+                className="h-auto w-auto rounded-[8px]"
+              />
+            </div>
+          )}
           <div className="flex flex-col">
             <h3 className="text-[#334155] text-[16px] leading-[24px] font-bold">
               {props.job.position}
@@ -103,13 +86,10 @@ export default function jobCardSecondary(props) {
         </div>
       </div>
       <div className="absolute transition-all duration-200 ease-in-out opacity-0 xl:group-hover:opacity-100 bottom-4 right-4">
-        <Link
-          href="/"
-          className=" bg-red-500 flex items-center gap-[10px] font-bold text-white px-3 rounded-[8px] h-[28px] text-[12px] leading-[16px]"
-        >
+        <div className=" bg-red-500 flex items-center gap-[10px] font-bold text-white px-3 rounded-[8px] h-[28px] text-[12px] leading-[16px]">
           Detaljnije
           <FontAwesomeIcon className="text-white" icon="arrow-right" />
-        </Link>
+        </div>
       </div>
     </Link>
   );
