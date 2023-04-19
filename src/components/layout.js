@@ -1,8 +1,9 @@
 import Footer from "./footer";
 import Header from "./header";
+import LogoutToast from "./logoutToast";
 
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import Cookies from "js-cookie";
@@ -10,6 +11,8 @@ import Cookies from "js-cookie";
 import { Outfit } from "next/font/google";
 
 const { library } = require("@fortawesome/fontawesome-svg-core");
+
+import { signOutToastHandler } from "@/helpers/functions";
 
 import {
   faSearch,
@@ -53,7 +56,6 @@ const outfit = Outfit({ subsets: ["latin"] });
 
 export default function Layout({ children }) {
   const { asPath } = useRouter();
-  const [isUserSignedOut, setIsUserSignedOut] = useState(false);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
 
@@ -67,10 +69,10 @@ export default function Layout({ children }) {
       dispatch({ type: "SET_IS_LOGGED_IN", payload: true });
     } else {
       if (isLoggedIn) {
-        setIsUserSignedOut(true);
-        setTimeout(() => {
-          setIsUserSignedOut(false);
-        }, 3000);
+        signOutToastHandler(
+          "Vaša sesija je istekla. Molimo vas ulogujte se ponovo.",
+          dispatch
+        );
       }
       dispatch({ type: "SET_IS_LOGGED_IN", payload: false });
     }
@@ -79,15 +81,7 @@ export default function Layout({ children }) {
   return (
     <>
       <div className={outfit.className + " bg-white overflow-hidden relative"}>
-        <div
-          className={`${
-            isUserSignedOut
-              ? "opacity-1 scale-100 z-[99999999]"
-              : "z-[-1] opacity-0 scale-75"
-          } transform sca transition-all ease-out duration-300 absolute top-4 right-4  bg-green-500 text-green-100 px-[12px] py-[8px] rounded-lg`}
-        >
-          Vaša sesija je istekla. Molimo vas ulogujte se ponovo.
-        </div>
+        <LogoutToast />
         {showHeaderAndFooter() && <Header />}
         <main>{children}</main>
         {showHeaderAndFooter() && <Footer />}

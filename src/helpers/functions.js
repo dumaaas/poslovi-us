@@ -5,8 +5,6 @@ import {
   orderBy,
   limit,
   where,
-  doc,
-  getDoc,
 } from "firebase/firestore";
 
 import { db, auth } from "../../firebase";
@@ -14,11 +12,23 @@ import { signOut } from "firebase/auth";
 
 import Cookies from "js-cookie";
 
+export const signOutToastHandler = (msg, dispatch) => {
+  dispatch({ type: "SET_SHOW_LOGOUT_MSG", payload: true });
+  dispatch({
+    type: "SET_LOGOUT_MSG",
+    payload: msg,
+  });
+  setTimeout(() => {
+    dispatch({ type: "SET_SHOW_LOGOUT_MSG", payload: false });
+  }, 3000);
+};
+
 export const signOutFunc = (dispatch) => {
   signOut(auth)
     .then(() => {
-      dispatch({ type: "SET_IS_LOGGED_IN", payload: false });
       Cookies.remove("accessTokenPosloviLogin");
+      dispatch({ type: "SET_IS_LOGGED_IN", payload: false });
+      signOutToastHandler("Uspješno ste se odjavili", dispatch)
     })
     .catch((error) => {
       console.error(error);
@@ -102,7 +112,7 @@ export const getClientData = async (dispatch, setClientsTemp) => {
   });
   dispatch({ type: "SET_CLIENTS", payload: tempData });
 
-  if(setClientsTemp) {
+  if (setClientsTemp) {
     setClientsTemp(tempData);
   }
 };

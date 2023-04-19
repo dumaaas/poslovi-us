@@ -12,6 +12,8 @@ const reducerFn = (
     isJobLoading: false,
     isFeaturedJobLoading: false,
     isLoggedIn: false,
+    showLogOutMsg: false,
+    logOutMsg: "",
   },
   action
 ) => {
@@ -75,6 +77,16 @@ const reducerFn = (
       return {
         ...state,
         isLoggedIn: action.payload,
+      };
+    case "SET_SHOW_LOGOUT_MSG":
+      return {
+        ...state,
+        showLogOutMsg: action.payload,
+      };
+    case "SET_LOGOUT_MSG":
+      return {
+        ...state,
+        logOutMsg: action.payload,
       };
     default:
       break;
