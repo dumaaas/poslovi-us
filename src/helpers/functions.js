@@ -28,7 +28,7 @@ export const signOutFunc = (dispatch) => {
     .then(() => {
       Cookies.remove("accessTokenPosloviLogin");
       dispatch({ type: "SET_IS_LOGGED_IN", payload: false });
-      signOutToastHandler("Uspješno ste se odjavili", dispatch)
+      signOutToastHandler("Uspješno ste se odjavili", dispatch);
     })
     .catch((error) => {
       console.error(error);
@@ -364,4 +364,9 @@ export const submitJobApplication = (
     subject
   )}&body=${encodeURIComponent(content)}`;
   window.location.href = mailtoLink;
+};
+
+export const showHeaderAndFooter = (asPath) => {
+  if (asPath !== "/login") return true;
+  else return false;
 };

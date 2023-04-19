@@ -1,28 +1,13 @@
-import JobCardSecondary from "./jobCardSecondary";
-import PlaceholderSecondaryCard from "./placeholderSecondaryCard";
+import FeaturedSection from "./featuredSection";
+import JobList from "./jobList";
 
-import facebookIcon from "../../public/facebook-header-icon.svg";
-import instagramIcon from "../../public/instagram-header-icon.svg";
-
-import Image from "next/image";
-
-import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { cities, jobTypeData } from "@/helpers/staticData";
-import { getFeaturedJobs } from "@/helpers/functions";
 
 export default function jobFilters(props) {
-  const dispatch = useDispatch();
-
-  const featuredJobs = useSelector((state) => state.featuredJobs);
-  const isJobLoading = useSelector((state) => state.isJobLoading);
-  const isFeaturedJobLoading = useSelector(
-    (state) => state.isFeaturedJobLoading
-  );
-
   const [jobsTemp, setJobsTemp] = useState([]);
   const [positionSearch, setPositionSearch] = useState("");
   const [showLocationSelect, setShowLocationSelect] = useState(false);
@@ -36,10 +21,7 @@ export default function jobFilters(props) {
   const isFirstRender = useRef(true);
 
   useEffect(() => {
-    if (!featuredJobs.length) getFeaturedJobs(dispatch);
-
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -232,163 +214,11 @@ export default function jobFilters(props) {
           </div>
         </div>
         <div className="lg:col-span-5">
-          {jobsTemp.length > 0 && (
-            <p className="text-[#334155] text-xl font-bold mb-[20px]">
-              {props.isOffering
-                ? "Broj pronađenih ponuda: "
-                : "Broj pronađenih poslova: "}{" "}
-              {jobsTemp.length}
-            </p>
-          )}
-          {isJobLoading && jobsTemp.length < 1 && (
-            <div className="w-[200px] h-[28px] bg-white shine-anim mb-[20px] rounded-[8px]"></div>
-          )}
-          <div className="grid gap-y-4">
-            {jobsTemp.length > 0 &&
-              jobsTemp.map((item, index) => {
-                return <JobCardSecondary job={item} key={index} />;
-              })}
-            {!isJobLoading && jobsTemp.length < 1 && (
-              <div className="flex flex-col items-start">
-                <p className="text-[16px] leading-[24px] text-[#334155]">
-                  Nije pronađen nijedan rezultat.
-                </p>
-                <button
-                  onClick={() => resetFilters()}
-                  className="font-bold mt-4 u-btn px-4 rounded-[8px] h-[38px] text-sm bg-gray-100"
-                >
-                  Poništi filtere
-                </button>
-              </div>
-            )}
-            {isJobLoading && jobsTemp.length < 1 && (
-              <>
-                {Array.from({ length: 6 }).map((_, index) => {
-                  return <PlaceholderSecondaryCard key={index} />;
-                })}
-              </>
-            )}
-          </div>
+          <JobList isFeatured={props.isFeatured} jobs={jobsTemp} resetFilters={resetFilters} />
         </div>
-        {props.isFeatured && (
-          <div className="lg:col-span-2">
-            <p className="text-[#334155] text-xl font-bold mb-[20px]">
-              Izdvajamo
-            </p>
-            <div className="grid gap-y-4">
-              {!isFeaturedJobLoading &&
-                featuredJobs.length > 0 &&
-                featuredJobs.map((item, index) => {
-                  return <JobCardSecondary job={item} key={index} />;
-                })}
-
-              {isFeaturedJobLoading && featuredJobs.length < 1 && (
-                <>
-                  {Array.from({ length: 6 }).map((_, index) => {
-                    return <PlaceholderSecondaryCard key={index} />;
-                  })}
-                </>
-              )}
-
-              <p className="mb-[20px] px-[8px] py-[4px] rounded-[8px] text-[14px] leading-[20px] bg-red-500 text-white">
-                Želite da izdvojite vaš oglas od ostalih?{" "}
-                <a href="mailto:markodumnic8@gmail.com" className="underline">
-                  Kontaktirajte nas.
-                </a>
-              </p>
-              <div className="flex flex-col gap-[20px]">
-                <a
-                  href="https://www.instagram.com/vibecreative.digital/"
-                  target="_blank"
-                  className="rounded-[8px] transition-all ease-in-out duration-200 bg-[#F8FAFC] hover:bg-gray-200 p-4 relative cursor-pointer flex"
-                >
-                  <div className="">
-                    <p className="text-[14px] leading-[20px] font-bold text-[#334155]">
-                      Follow us on Instagram!
-                    </p>
-                    <span className="text-[14px] leading-[20px] text-[#6b7280]">
-                      @poslovius
-                    </span>
-                  </div>
-                  <Image
-                    className="w-[70px] h-[70px] absolute top-[50%] transform translate-y-[-50%] right-4 opacity-10"
-                    src={instagramIcon}
-                    alt="instagram-icon"
-                  />
-                </a>
-                <a
-                  href="https://www.instagram.com/vibecreative.digital/"
-                  target="_blank"
-                  className="rounded-[8px] transition-all ease-in-out duration-200 bg-[#F8FAFC] hover:bg-gray-200 p-4 relative cursor-pointer flex"
-                >
-                  <div className="">
-                    <p className="text-[14px] leading-[20px] font-bold text-[#334155]">
-                      Add us on Facebook!
-                    </p>
-                    <span className="text-[14px] leading-[20px] text-[#6b7280]">
-                      @poslovius
-                    </span>
-                  </div>
-                  <Image
-                    className="w-[70px] h-[70px] absolute top-[50%] transform translate-y-[-50%] right-4 opacity-10"
-                    src={facebookIcon}
-                    alt="instagram-icon"
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
-        )}
-        {!props.isFeatured && (
-          <div className="lg:col-span-2">
-            <p className="mb-[20px] px-[8px] py-[4px] rounded-[8px] text-[14px] leading-[20px] bg-red-500 text-white">
-              Želite da izdvojite vaš oglas od ostalih?{" "}
-              <a href="mailto:markodumnic8@gmail.com" className="underline">
-                Kontaktirajte nas.
-              </a>
-            </p>
-            <div className="flex flex-col gap-[20px]">
-              <a
-                href="https://www.instagram.com/vibecreative.digital/"
-                target="_blank"
-                className="rounded-[8px] transition-all ease-in-out duration-200 bg-[#F8FAFC] hover:bg-gray-200 p-4 relative cursor-pointer flex"
-              >
-                <div className="">
-                  <p className="text-[14px] leading-[20px] font-bold text-[#334155]">
-                    Follow us on Instagram!
-                  </p>
-                  <span className="text-[14px] leading-[20px] text-[#6b7280]">
-                    @poslovius
-                  </span>
-                </div>
-                <Image
-                  className="w-[70px] h-[70px] absolute top-[50%] transform translate-y-[-50%] right-4 opacity-10"
-                  src={instagramIcon}
-                  alt="instagram-icon"
-                />
-              </a>
-              <a
-                href="https://www.instagram.com/vibecreative.digital/"
-                target="_blank"
-                className="rounded-[8px] transition-all ease-in-out duration-200 bg-[#F8FAFC] hover:bg-gray-200 p-4 relative cursor-pointer flex"
-              >
-                <div className="">
-                  <p className="text-[14px] leading-[20px] font-bold text-[#334155]">
-                    Add us on Facebook!
-                  </p>
-                  <span className="text-[14px] leading-[20px] text-[#6b7280]">
-                    @poslovius
-                  </span>
-                </div>
-                <Image
-                  className="w-[70px] h-[70px] absolute top-[50%] transform translate-y-[-50%] right-4 opacity-10"
-                  src={facebookIcon}
-                  alt="instagram-icon"
-                />
-              </a>
-            </div>
-          </div>
-        )}
+        <div className="lg:col-span-2">
+          <FeaturedSection isFeatured={props.isFeatured} />
+        </div>
       </div>
     </div>
   );

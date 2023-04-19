@@ -10,6 +10,7 @@ import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { signOutFunc } from "@/helpers/functions";
+import { navMenu } from "@/helpers/staticData";
 
 export default function Header() {
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ export default function Header() {
   }, [menuOpen]);
 
   return (
-    <header className="relative py-[16px] shadow-[0_5px_5px_-5px_rgba(0,0,0,0.75)]">
+    <header className="bg-white z-[999] relative py-[16px] shadow-[0_5px_5px_-5px_rgba(0,0,0,0.75)]">
       <div className="container flex items-center justify-between ">
         <div className="flex items-center xl:gap-[80px] gap-[30px]">
           <Link href="/">
@@ -53,63 +54,29 @@ export default function Header() {
           </Link>
 
           <div className="lg:flex hidden items-center xl:gap-[25px] gap-[20px] font-bold text-[16px] leading-[24px]">
-            <Link
-              href="/"
-              className={asPath === "/" ? "text-red-500" : "text-[#334155]"}
-            >
-              Početna
-            </Link>
-            <Link
-              href="/jobs"
-              className={asPath === "/jobs" ? "text-red-500" : "text-[#334155]"}
-            >
-              Ponuda
-            </Link>
-            <Link
-              href="/offers"
-              className={
-                asPath === "/offers" ? "text-red-500" : "text-[#334155]"
-              }
-            >
-              Potražnja
-            </Link>
-            <Link
-              href="/featured"
-              className={
-                asPath === "/featured" ? "text-red-500" : "text-[#334155]"
-              }
-            >
-              Izdvajamo
-            </Link>
-            <Link
-              href="/clients"
-              className={
-                asPath === "/clients" ? "text-red-500" : "text-[#334155]"
-              }
-            >
-              Klijenti
-            </Link>
-            <Link
-              href="/blog"
-              className={asPath === "/blog" ? "text-red-500" : "text-[#334155]"}
-            >
-              Vesti
-            </Link>
-            <Link
-              href="/about"
-              className={
-                asPath === "/about" ? "text-red-500" : "text-[#334155]"
-              }
-            >
-              O nama
-            </Link>
+            {navMenu.map((item, index) => {
+              return (
+                ((!asPath.includes("dashboard") && !item.isDashboard) ||
+                  (asPath.includes("dashboard") && item.isDashboard)) && (
+                  <Link
+                    key={index}
+                    href={item.href}
+                    className={
+                      asPath === item.href ? "text-red-500" : "text-[#334155]"
+                    }
+                  >
+                    {item.name}
+                  </Link>
+                )
+              );
+            })}
           </div>
         </div>
         <div className="lg:flex hidden gap-[20px]">
           {isLoggedIn && (
             <div className="flex gap-[20px]">
               <Link
-                href="/dashboard"
+                href="/dashboard/jobs"
                 className="flex items-center text-sm bg-red-500 rounded-[8px] px-4 h-[38px] font-bold text-white border border-transparent hover:text-red-500 hover:bg-transparent hover:border-red-500 transition-all ease-out duration-250"
               >
                 Dashboard
@@ -155,80 +122,27 @@ export default function Header() {
           icon="xmark"
         />
         <div className="flex flex-col justify-start items-start gap-[20px] mt-[80px]">
-          <Link
-            href="/"
-            onClick={() => setMenuOpen(false)}
-            className={`${
-              asPath === "/" ? "text-red-500" : "text-[#334155]"
-            }  text-[15px] sm:text-[16px] md:text-[18px] font-bold
+          {navMenu.map((item, index) => {
+            return (
+              ((!asPath.includes("dashboard") && !item.isDashboard) ||
+                  (asPath.includes("dashboard") && item.isDashboard)) && (
+              <Link
+                href={item.href}
+                key={index}
+                onClick={() => setMenuOpen(false)}
+                className={`${
+                  asPath === item.href ? "text-red-500" : "text-[#334155]"
+                }  text-[15px] sm:text-[16px] md:text-[18px] font-bold
             `}
-          >
-            POČETNA
-          </Link>
-          <Link
-            href="/jobs"
-            onClick={() => setMenuOpen(false)}
-            className={`${
-              asPath === "/jobs" ? "text-red-500" : "text-[#334155]"
-            }  text-[15px] sm:text-[16px] md:text-[18px] font-bold
-            `}
-          >
-            PONUDA
-          </Link>
-          <Link
-            href="/offers"
-            onClick={() => setMenuOpen(false)}
-            className={`${
-              asPath === "/offers" ? "text-red-500" : "text-[#334155]"
-            }  text-[15px] sm:text-[16px] md:text-[18px] font-bold
-            `}
-          >
-            POTRAŽNJA
-          </Link>
-          <Link
-            href="/featured"
-            onClick={() => setMenuOpen(false)}
-            className={`${
-              asPath === "/featured" ? "text-red-500" : "text-[#334155]"
-            }  text-[15px] sm:text-[16px] md:text-[18px] font-bold
-            `}
-          >
-            IZDVAJAMO
-          </Link>
-          <Link
-            href="/clients"
-            onClick={() => setMenuOpen(false)}
-            className={`${
-              asPath === "/clients" ? "text-red-500" : "text-[#334155]"
-            }  text-[15px] sm:text-[16px] md:text-[18px] font-bold
-            `}
-          >
-            KLIJENTI
-          </Link>
-          <Link
-            href="/blog"
-            onClick={() => setMenuOpen(false)}
-            className={`${
-              asPath === "/blog" ? "text-red-500" : "text-[#334155]"
-            }  text-[15px] sm:text-[16px] md:text-[18px] font-bold
-            `}
-          >
-            VESTI
-          </Link>
-          <Link
-            href="/about"
-            onClick={() => setMenuOpen(false)}
-            className={`${
-              asPath === "/about" ? "text-red-500" : "text-[#334155]"
-            }  text-[15px] sm:text-[16px] md:text-[18px] font-bold
-            `}
-          >
-            O NAMA
-          </Link>
+              >
+                {item.name}
+              </Link>)
+            );
+          })}
           {isLoggedIn && (
             <div className="flex flex-col gap-[20px]">
               <Link
-                href="/dashboard"
+                href="/dashboard/jobs"
                 onClick={() => setMenuOpen(false)}
                 className="flex items-center justify-center text-sm bg-red-500 rounded-[8px] px-4 h-[38px] font-bold text-white border border-transparent hover:text-red-500 hover:bg-transparent hover:border-red-500 transition-all ease-out duration-250"
               >

@@ -1,3 +1,6 @@
+import instagramIcon from "../../public/instagram-header-icon.svg";
+import facebookIcon from "../../public/facebook-header-icon.svg";
+
 export const cities = [
   {
     id: 1,
@@ -65,3 +68,64 @@ export const clientColumns = [
     format: "date",
   },
 ];
+
+export const navMenu = [
+  {
+    name: "Početna",
+    href: "/",
+  },
+  {
+    name: "Ponuda",
+    href: "/jobs",
+  },
+  {
+    name: "Potražnja",
+    href: "/offers",
+  },
+  {
+    name: "Izdvajamo",
+    href: "/featured",
+  },
+  {
+    name: "Klijenti",
+    href: "/clients",
+  },
+  {
+    name: "Vesti",
+    href: "/blog",
+  },
+  {
+    name: "O nama",
+    href: "/about",
+  },
+  {
+    name: "Poslovi",
+    href: "/dashboard/jobs",
+    isDashboard: true,
+  },
+  {
+    name: "Klijenti",
+    href: "/dashboard/clients",
+    isDashboard: true,
+  },
+  {
+    name: "Vijesti",
+    href: "/dashboard/blog",
+    isDashboard: true,
+  },
+];
+
+export const socialCards = [
+  {
+    title: 'Follow us on Instagram!',
+    href: 'https://www.instagram.com/vibecreative.digital/',
+    icon: instagramIcon,
+    tag: '@poslovius'
+  },
+  {
+    title: 'Follow us on Facebook!',
+    href: 'https://www.instagram.com/vibecreative.digital/',
+    icon: facebookIcon,
+    tag: '@poslovius'
+  }
+]

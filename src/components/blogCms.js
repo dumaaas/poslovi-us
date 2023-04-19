@@ -20,6 +20,8 @@ import {
 import { Editor } from "@tinymce/tinymce-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import Link from "next/link";
+
 import {
   collection,
   updateDoc,
@@ -230,7 +232,7 @@ export default function blogCms() {
                 </FormLabel>
                 <Editor
                   apiKey="3g4bxjjckov07ymyx17x5n0p8wcwjdf1dl5ic88qad0v2ad4"
-                  onInit={(editor) => (editorRef.current = editor)}
+                  onInit={(evt, editor) => (editorRef.current = editor)}
                   initialValue=""
                   init={{
                     branding: false,
@@ -318,6 +320,12 @@ export default function blogCms() {
                       })}
                       <TableCell>
                         <div className="flex items-center justify-start gap-[10px]">
+                          <Link href={`/singleBlog/${row.id}`} target="_blank">
+                            <FontAwesomeIcon
+                              className="text-[#334155] cursor-pointer"
+                              icon="eye"
+                            />
+                          </Link>
                           <FontAwesomeIcon
                             className="text-[#334155] cursor-pointer"
                             icon="pen-to-square"

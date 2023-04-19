@@ -24,7 +24,7 @@ export default function login() {
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
 
   useEffect(() => {
-    if (isLoggedIn) Router.push("/dashboard");
+    if (isLoggedIn) Router.push("/dashboard/jobs");
   });
 
   const login = () => {
@@ -33,7 +33,7 @@ export default function login() {
         const user = userCredential.user;
         dispatch({ type: "SET_IS_LOGGED_IN", payload: true });
         saveAuthTokens(user.accessToken, user.expirationTime);
-        Router.push("/dashboard");
+        Router.push("/dashboard/jobs");
       })
       .catch((error) => {
         console.error(error.message);

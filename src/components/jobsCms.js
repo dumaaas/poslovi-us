@@ -28,6 +28,8 @@ import {
 import { Editor } from "@tinymce/tinymce-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import Link from "next/link";
+
 import {
   collection,
   updateDoc,
@@ -91,7 +93,7 @@ export default function jobsCms() {
     deleteDoc(docRef)
       .then(() => {
         handleSnackBarOpen();
-        getAllJobs(dispatch, setJobsTemp);;
+        getAllJobs(dispatch, setJobsTemp);
       })
       .catch((error) => {
         console.error(error);
@@ -140,7 +142,7 @@ export default function jobsCms() {
       featured_plus: featuredPlus,
     };
     await addDoc(collection(db, "jobs"), docData).then(() => {
-      getAllJobs(dispatch, setJobsTemp);;
+      getAllJobs(dispatch, setJobsTemp);
       handleSnackBarOpen();
       setIsDisabled(false);
       clearForm();
@@ -166,7 +168,7 @@ export default function jobsCms() {
     updateDoc(docRef, data)
       .then(() => {
         clearForm();
-        getAllJobs(dispatch, setJobsTemp);;
+        getAllJobs(dispatch, setJobsTemp);
         handleSnackBarOpen();
       })
       .catch((error) => {
@@ -476,12 +478,7 @@ export default function jobsCms() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={index}
-                    >
+                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                       {jobColumns.map((column, index) => {
                         const value = row[column.id];
                         return (
@@ -494,6 +491,12 @@ export default function jobsCms() {
                       })}
                       <TableCell>
                         <div className="flex items-center justify-start gap-[10px]">
+                          <Link href={`/singleJob/${row.id}`} target="_blank">
+                            <FontAwesomeIcon
+                              className="text-[#334155] cursor-pointer"
+                              icon="eye"
+                            />
+                          </Link>
                           <FontAwesomeIcon
                             className="text-[#334155] cursor-pointer"
                             icon="pen-to-square"

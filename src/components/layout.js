@@ -2,67 +2,25 @@ import Footer from "./footer";
 import Header from "./header";
 import LogoutToast from "./logoutToast";
 
-import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+
+import { useRouter } from "next/router";
 
 import Cookies from "js-cookie";
 
 import { Outfit } from "next/font/google";
 
-const { library } = require("@fortawesome/fontawesome-svg-core");
-
-import { signOutToastHandler } from "@/helpers/functions";
-
-import {
-  faSearch,
-  faArrowRight,
-  faAngleDown,
-  faStar,
-  faClock,
-  faEnvelope,
-  faPhone,
-  faCalendar,
-  faDollarSign,
-  faBars,
-  faXmark,
-  faCheck,
-  faSpinner,
-  faPenToSquare,
-  faTrash,
-  faExpand,
-} from "@fortawesome/free-solid-svg-icons";
-
-library.add(
-  faArrowRight,
-  faSearch,
-  faAngleDown,
-  faStar,
-  faClock,
-  faEnvelope,
-  faPhone,
-  faCalendar,
-  faDollarSign,
-  faBars,
-  faXmark,
-  faCheck,
-  faSpinner,
-  faPenToSquare,
-  faTrash,
-  faExpand
-);
+import { signOutToastHandler, showHeaderAndFooter } from "@/helpers/functions";
+require("@/helpers/fontawesomeHandler");
 
 const outfit = Outfit({ subsets: ["latin"] });
 
 export default function Layout({ children }) {
-  const { asPath } = useRouter();
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  const { asPath } = useRouter();
 
-  const showHeaderAndFooter = () => {
-    if (asPath !== "/login" && asPath !== "/dashboard") return true;
-    else return false;
-  };
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
 
   useEffect(() => {
     if (Cookies.get("accessTokenPosloviLogin")) {
@@ -82,9 +40,9 @@ export default function Layout({ children }) {
     <>
       <div className={outfit.className + " bg-white overflow-hidden relative"}>
         <LogoutToast />
-        {showHeaderAndFooter() && <Header />}
+        {showHeaderAndFooter(asPath) && <Header />}
         <main>{children}</main>
-        {showHeaderAndFooter() && <Footer />}
+        {showHeaderAndFooter(asPath) && <Footer />}
       </div>
     </>
   );
