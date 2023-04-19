@@ -23,6 +23,7 @@ export default function singleBlog() {
       const doc = await getDoc(docRef);
       setBlog(doc.data());
     } catch (e) {
+      router.push("/404");
       console.error("Error getting cached document:", e);
     }
   };

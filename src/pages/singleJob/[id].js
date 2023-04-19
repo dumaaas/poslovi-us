@@ -42,6 +42,7 @@ export default function singleJob() {
       const doc = await getDoc(docRef);
       setJob(doc.data());
     } catch (e) {
+      router.push('/404');
       console.error("Error getting cached document:", e);
     }
   };
