@@ -35,8 +35,14 @@ export const jobColumns = [
   { id: "offer_type", label: "Tip oglasa", minWidth: 100 },
   { id: "salary", label: "Plata", minWidth: 100 },
   { id: "email", label: "Email", minWidth: 100 },
-  { id: "featured", label: "Is Featured", minWidth: 50 },
-  { id: "featured_plus", label: "Is Featured +", minWidth: 50 },
+  { id: "featured", label: "Izdvojen", minWidth: 50 },
+  { id: "featured_plus", label: "Izdvojen +", minWidth: 50 },
+  {
+    id: "date_to",
+    label: "Važi do",
+    minWidth: 100,
+    format: 'date2'
+  },
   {
     id: "published_at",
     label: "Datum objavljivanja",

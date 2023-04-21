@@ -45,7 +45,12 @@ import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { jobTypeData, jobColumns } from "@/helpers/staticData";
-import { getAllJobs, getCityData, getCategoryData } from "@/helpers/functions";
+import {
+  getAllJobs,
+  getCityData,
+  getCategoryData,
+  formatDate,
+} from "@/helpers/functions";
 
 export default function jobsCms() {
   const dispatch = useDispatch();
@@ -60,6 +65,7 @@ export default function jobsCms() {
   const [jobType, setJobType] = useState("");
   const [category, setCategory] = useState("");
   const [shortDesc, setShortDesc] = useState("");
+  const [dateTo, setDateTo] = useState("");
   const [offerType, setOfferType] = useState("offer");
   const [featured, setFeatured] = useState(false);
   const [featuredPlus, setFeaturedPlus] = useState(false);
@@ -126,6 +132,8 @@ export default function jobsCms() {
       setOfferType(doc.data().offer_type);
       setJobType(doc.data().job_type);
       setCategory(doc.data().category);
+
+      setDateTo(formatDate(doc.data().date_to, true));
       setFeatured(doc.data().featured);
       setFeaturedPlus(doc.data().featured_plus);
       editorRef.current.setContent(doc.data().content);
@@ -146,6 +154,7 @@ export default function jobsCms() {
       position: position,
       salary: salary,
       location: location,
+      date_to: new Date(dateTo).getTime(),
       offer_type: offerType,
       job_type: jobType,
       featured: featured,
@@ -172,6 +181,7 @@ export default function jobsCms() {
       location: location,
       category: category,
       offer_type: offerType,
+      date_to: new Date(dateTo).getTime(),
       job_type: jobType,
       featured: featured,
       featured_plus: featuredPlus,
@@ -226,6 +236,7 @@ export default function jobsCms() {
     setOfferType("offer");
     setJobType("");
     setCategory("");
+    setDateTo("");
     setFeatured(false);
     setFeaturedPlus(false);
     editorRef.current.setContent("");
@@ -349,7 +360,7 @@ export default function jobsCms() {
                   id="outlined-basic"
                   label="Plata"
                   variant="outlined"
-                  className="flex-[40%]"
+                  className="flex-[30%]"
                   value={salary}
                   onChange={(e) => setSalary(e.target.value)}
                 />
@@ -357,9 +368,21 @@ export default function jobsCms() {
                   id="outlined-basic"
                   label="URL slike"
                   variant="outlined"
-                  className="flex-[40%]"
+                  className="flex-[30%]"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
+                />
+                <TextField
+                  id="date"
+                  label="Važi do"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  type="date"
+                  variant="outlined"
+                  className="flex-[30%]"
+                  value={dateTo}
+                  onChange={(e) => setDateTo(e.target.value)}
                 />
                 <TextField
                   id="outlined-basic"
@@ -502,7 +525,7 @@ export default function jobsCms() {
                   {column.label}
                 </TableCell>
               ))}
-              <TableCell style={{ fontWeight: "800" }}>Actions</TableCell>
+              <TableCell style={{ fontWeight: "800" }}>Akcije</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -515,9 +538,39 @@ export default function jobsCms() {
                       {jobColumns.map((column, index) => {
                         const value = row[column.id];
                         return (
-                          <TableCell key={index}>
+                          <TableCell
+                            key={index}
+                            className={`${
+                              column.format == "date2" &&
+                              value < new Date().getTime()
+                                ? "bg-red-100"
+                                : ""
+                            }`}
+                          >
                             {column.format ? (
-                              value.toDate().toLocaleDateString()
+                              column.format === "date" ? (
+                                value.toDate().toLocaleDateString()
+                              ) : (
+                                <div className="flex items-center justify-center gap-[8px]">
+                                  <p
+                                    className={`${
+                                      column.format == "date2" &&
+                                      value < new Date().getTime()
+                                        ? "text-red-500 font-bold"
+                                        : ""
+                                    }`}
+                                  >
+                                    {formatDate(value)}
+                                  </p>
+                                  {column.format == "date2" &&
+                                    value < new Date().getTime() && (
+                                      <FontAwesomeIcon
+                                        className="font-extrabold text-red-500 text-[22px]"
+                                        icon="exclamation"
+                                      />
+                                    )}
+                                </div>
+                              )
                             ) : typeof value === "boolean" ? (
                               <FontAwesomeIcon
                                 className={`${

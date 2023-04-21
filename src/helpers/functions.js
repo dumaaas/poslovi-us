@@ -43,11 +43,15 @@ export const saveAuthTokens = (accessToken, expirationTime) => {
 
 export const getFeaturedJobs = async (dispatch) => {
   dispatch({ type: "SET_IS_FEATURED_JOB_LOADING", payload: true });
+  const today = new Date().getTime();
+
   const querySnapshot = await getDocs(
     query(
       collection(db, "jobs"),
       where("featured", "==", true),
       where("offer_type", "==", "offer"),
+      where("date_to", ">=", today),
+      orderBy("date_to", "desc"),
       orderBy("published_at", "asc")
     )
   );
@@ -155,10 +159,14 @@ export const getCategoryData = async (dispatch, setCategoriesTemp) => {
 };
 
 export const getLatestJobData = async (dispatch) => {
+  const today = new Date().getTime();
+
   const querySnapshot = await getDocs(
     query(
       collection(db, "jobs"),
       where("offer_type", "==", "offer"),
+      where("date_to", ">=", today),
+      orderBy("date_to", "desc"),
       orderBy("published_at", "asc"),
       limit(6)
     )
@@ -188,11 +196,15 @@ export const getLatestJobData = async (dispatch) => {
 };
 
 export const getLatestFeaturedJobs = async (dispatch) => {
+  const today = new Date().getTime();
+
   const querySnapshot = await getDocs(
     query(
       collection(db, "jobs"),
       where("featured", "==", true),
       where("offer_type", "==", "offer"),
+      where("date_to", ">=", today),
+      orderBy("date_to", "desc"),
       orderBy("published_at", "asc"),
       limit(6)
     )
@@ -222,11 +234,15 @@ export const getLatestFeaturedJobs = async (dispatch) => {
 };
 
 export const getDemandJobs = async (dispatch) => {
+  const today = new Date().getTime();
+
   dispatch({ type: "SET_IS_JOB_LOADING", payload: true });
   const querySnapshot = await getDocs(
     query(
       collection(db, "jobs"),
       where("offer_type", "==", "offering"),
+      where("date_to", ">=", today),
+      orderBy("date_to", "desc"),
       orderBy("published_at", "asc")
     )
   );
@@ -256,10 +272,14 @@ export const getDemandJobs = async (dispatch) => {
 };
 
 export const getLatestDemandJobs = async (dispatch) => {
+  const today = new Date().getTime();
+
   const querySnapshot = await getDocs(
     query(
       collection(db, "jobs"),
       where("offer_type", "==", "offering"),
+      where("date_to", ">=", today),
+      orderBy("date_to", "desc"),
       orderBy("published_at", "asc"),
       limit(6)
     )
@@ -290,10 +310,14 @@ export const getLatestDemandJobs = async (dispatch) => {
 
 export const getJobsData = async (dispatch) => {
   dispatch({ type: "SET_IS_JOB_LOADING", payload: true });
+  const today = new Date().getTime();
+
   const querySnapshot = await getDocs(
     query(
       collection(db, "jobs"),
       where("offer_type", "==", "offer"),
+      where("date_to", ">=", today),
+      orderBy("date_to", "desc"),
       orderBy("published_at", "asc")
     )
   );
@@ -340,6 +364,8 @@ export const getAllJobs = async (dispatch, setJobsTemp) => {
       position: doc.data().position,
       salary: doc.data().salary,
       location: doc.data().location,
+      date_from: doc.data().date_from,
+      date_to: doc.data().date_to,
       category: doc.data().category,
       offer_type: doc.data().offer_type,
       job_type: doc.data().jobType,
@@ -412,4 +438,19 @@ export const submitJobApplication = (
 export const showHeaderAndFooter = (asPath) => {
   if (asPath !== "/login") return true;
   else return false;
+};
+
+export const formatDate = (date, type) => {
+  var dateToObj = new Date(date);
+  var dateToYear = dateToObj.getFullYear();
+  var dateToMonth = dateToObj.getMonth() + 1;
+  var dateToDay = dateToObj.getDate();
+  var dateToString = type
+    ? `${dateToYear}-${dateToMonth.toString().padStart(2, "0")}-${dateToDay
+        .toString()
+        .padStart(2, "0")}`
+    : `${dateToDay
+      .toString()
+      .padStart(2, "0")}/${dateToMonth.toString().padStart(2, "0")}/${dateToYear}`;
+  return dateToString;
 };

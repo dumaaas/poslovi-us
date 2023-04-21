@@ -267,7 +267,7 @@ export default function clientCms() {
                   {column.label}
                 </TableCell>
               ))}
-              <TableCell style={{ fontWeight: "800" }}>Actions</TableCell>
+              <TableCell style={{ fontWeight: "800" }}>Akcije</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
