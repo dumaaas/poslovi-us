@@ -293,12 +293,12 @@ export default function blogCms() {
                 <TableCell
                   key={index}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{ minWidth: column.minWidth, fontWeight: "800" }}
                 >
                   {column.label}
                 </TableCell>
               ))}
-              <TableCell>Actions</TableCell>
+              <TableCell style={{ fontWeight: "800" }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -320,7 +320,11 @@ export default function blogCms() {
                       })}
                       <TableCell>
                         <div className="flex items-center justify-start gap-[10px]">
-                          <Link href={`/singleBlog/${row.id}`} target="_blank">
+                          <Link
+                            href={`/singleBlog/${row.id}`}
+                            target="_blank"
+                            className="flex"
+                          >
                             <FontAwesomeIcon
                               className="text-[#334155] cursor-pointer"
                               icon="eye"

@@ -44,8 +44,8 @@ import { db } from "../../firebase";
 import { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { cities, jobTypeData, jobColumns } from "@/helpers/staticData";
-import { getAllJobs } from "@/helpers/functions";
+import { jobTypeData, jobColumns } from "@/helpers/staticData";
+import { getAllJobs, getCityData, getCategoryData } from "@/helpers/functions";
 
 export default function jobsCms() {
   const dispatch = useDispatch();
@@ -58,6 +58,7 @@ export default function jobsCms() {
   const [salary, setSalary] = useState("");
   const [location, setLocation] = useState("");
   const [jobType, setJobType] = useState("");
+  const [category, setCategory] = useState("");
   const [shortDesc, setShortDesc] = useState("");
   const [offerType, setOfferType] = useState("offer");
   const [featured, setFeatured] = useState(false);
@@ -72,6 +73,8 @@ export default function jobsCms() {
   const [search, setSearch] = useState("");
 
   const jobs = useSelector((state) => state.allJobs);
+  const cities = useSelector((state) => state.cities);
+  const categories = useSelector((state) => state.categories);
   const isJobLoading = useSelector((state) => state.isJobLoading);
 
   const editorRef = useRef(null);
@@ -81,6 +84,12 @@ export default function jobsCms() {
       getAllJobs(dispatch, setJobsTemp);
     } else {
       setJobsTemp(jobs);
+    }
+    if (!cities.length) {
+      getCityData(dispatch);
+    }
+    if (!categories.length) {
+      getCategoryData(dispatch);
     }
   }, []);
 
@@ -116,6 +125,7 @@ export default function jobsCms() {
       setLocation(doc.data().location);
       setOfferType(doc.data().offer_type);
       setJobType(doc.data().job_type);
+      setCategory(doc.data().category);
       setFeatured(doc.data().featured);
       setFeaturedPlus(doc.data().featured_plus);
       editorRef.current.setContent(doc.data().content);
@@ -160,6 +170,7 @@ export default function jobsCms() {
       position: position,
       salary: salary,
       location: location,
+      category: category,
       offer_type: offerType,
       job_type: jobType,
       featured: featured,
@@ -214,6 +225,7 @@ export default function jobsCms() {
     setLocation("");
     setOfferType("offer");
     setJobType("");
+    setCategory("");
     setFeatured(false);
     setFeaturedPlus(false);
     editorRef.current.setContent("");
@@ -269,14 +281,27 @@ export default function jobsCms() {
                   value={position}
                   onChange={(e) => setPosition(e.target.value)}
                 />
-                <TextField
-                  id="outlined-basic"
-                  label="Plata"
-                  variant="outlined"
-                  className="flex-[30%]"
-                  value={salary}
-                  onChange={(e) => setSalary(e.target.value)}
-                />
+                <FormControl variant="outlined" className="flex-[30%]">
+                  <InputLabel id="demo-simple-select-label">
+                    Kategorija
+                  </InputLabel>
+                  <Select
+                    variant="outlined"
+                    id="demo-simple-select"
+                    labelId="demo-simple-select-label"
+                    value={category}
+                    label="Kategorija"
+                    onChange={(e) => setCategory(e.target.value)}
+                  >
+                    {categories.map((item, index) => {
+                      return (
+                        <MenuItem key={index} value={item.name}>
+                          {item.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
                 <FormControl variant="outlined" className="flex-[30%]">
                   <InputLabel id="demo-simple-select-label">
                     Lokacija
@@ -322,9 +347,17 @@ export default function jobsCms() {
                 </FormControl>
                 <TextField
                   id="outlined-basic"
+                  label="Plata"
+                  variant="outlined"
+                  className="flex-[40%]"
+                  value={salary}
+                  onChange={(e) => setSalary(e.target.value)}
+                />
+                <TextField
+                  id="outlined-basic"
                   label="URL slike"
                   variant="outlined"
-                  className="flex-[100%]"
+                  className="flex-[40%]"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                 />
@@ -438,7 +471,7 @@ export default function jobsCms() {
 
       <div className="flex flex-wrap gap-[20px] items-center justify-between my-[40px]">
         <h2 className="text-[26px] leading-[34px] text-[#334155] font-bold ">
-          Prikaz klijenata
+          Prikaz oglasa
         </h2>
         <div className="w-[350px] h-[40px] relative">
           <TextField
@@ -464,12 +497,12 @@ export default function jobsCms() {
                 <TableCell
                   key={index}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  style={{ minWidth: column.minWidth, fontWeight: "800" }}
                 >
                   {column.label}
                 </TableCell>
               ))}
-              <TableCell>Actions</TableCell>
+              <TableCell style={{ fontWeight: "800" }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -483,15 +516,28 @@ export default function jobsCms() {
                         const value = row[column.id];
                         return (
                           <TableCell key={index}>
-                            {column.format
-                              ? value.toDate().toLocaleDateString()
-                              : value}
+                            {column.format ? (
+                              value.toDate().toLocaleDateString()
+                            ) : typeof value === "boolean" ? (
+                              <FontAwesomeIcon
+                                className={`${
+                                  value ? "text-yellow-500" : "text-red-500"
+                                }`}
+                                icon={`${value ? "star" : "xmark"}`}
+                              />
+                            ) : (
+                              value
+                            )}
                           </TableCell>
                         );
                       })}
                       <TableCell>
                         <div className="flex items-center justify-start gap-[10px]">
-                          <Link href={`/singleJob/${row.id}`} target="_blank">
+                          <Link
+                            href={`/singleJob/${row.id}`}
+                            target="_blank"
+                            className="flex"
+                          >
                             <FontAwesomeIcon
                               className="text-[#334155] cursor-pointer"
                               icon="eye"

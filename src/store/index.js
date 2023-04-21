@@ -14,6 +14,8 @@ const reducerFn = (
     isLoggedIn: false,
     showLogOutMsg: false,
     logOutMsg: "",
+    cities: [],
+    categories: [],
   },
   action
 ) => {
@@ -87,6 +89,16 @@ const reducerFn = (
       return {
         ...state,
         logOutMsg: action.payload,
+      };
+    case "SET_CITIES":
+      return {
+        ...state,
+        cities: action.payload,
+      };
+    case "SET_CATEGORIES":
+      return {
+        ...state,
+        categories: action.payload,
       };
     default:
       break;

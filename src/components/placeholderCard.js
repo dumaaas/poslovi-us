@@ -18,6 +18,7 @@ export default function placeholderCard() {
         <div className="flex items-center justify-between mt-[3px]">
           <div className="shine-anim w-[80px] h-[28px] rounded-[8px] bg-gray-300"></div>
           <div className="shine-anim w-[60px] h-[28px] rounded-[8px] bg-gray-300"></div>
+          <div className="shine-anim w-[60px] h-[28px] rounded-[8px] bg-gray-300"></div>
         </div>
       </div>
     </div>

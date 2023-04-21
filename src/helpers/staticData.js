@@ -29,11 +29,14 @@ export const jobTypeData = [
 
 export const jobColumns = [
   { id: "name", label: "Ime", minWidth: 170 },
-  { id: "position", label: "Pozicija", minWidth: 100 },
+  { id: "position", label: "Pozicija", minWidth: 170 },
   { id: "location", label: "Lokacija", minWidth: 100 },
+  { id: "category", label: "Kategorija", minWidth: 100 },
   { id: "offer_type", label: "Tip oglasa", minWidth: 100 },
   { id: "salary", label: "Plata", minWidth: 100 },
   { id: "email", label: "Email", minWidth: 100 },
+  { id: "featured", label: "Is Featured", minWidth: 50 },
+  { id: "featured_plus", label: "Is Featured +", minWidth: 50 },
   {
     id: "published_at",
     label: "Datum objavljivanja",
@@ -55,16 +58,37 @@ export const blogColumns = [
 
 export const clientColumns = [
   { id: "name", label: "Ime", minWidth: 170 },
-  { id: "url", label: "Logo", minWidth: 100 },
+  { id: "url", label: "Logo", minWidth: 100, format: "img" },
   {
     id: "link",
     label: "Link",
     minWidth: 170,
+    format: "link",
   },
   {
     id: "published_at",
     label: "Datum objavljivanja",
     minWidth: 100,
+    format: "date",
+  },
+];
+
+export const cityColumns = [
+  { id: "name", label: "Grad", minWidth: 200 },
+  {
+    id: "published_at",
+    label: "Datum objavljivanja",
+    minWidth: 200,
+    format: "date",
+  },
+];
+
+export const categoryColumns = [
+  { id: "name", label: "Kategorija", minWidth: 200 },
+  {
+    id: "published_at",
+    label: "Datum objavljivanja",
+    minWidth: 200,
     format: "date",
   },
 ];
@@ -113,19 +137,29 @@ export const navMenu = [
     href: "/dashboard/blog",
     isDashboard: true,
   },
+  {
+    name: "Gradovi",
+    href: "/dashboard/cities",
+    isDashboard: true,
+  },
+  {
+    name: "Kategorije",
+    href: "/dashboard/categories",
+    isDashboard: true,
+  },
 ];
 
 export const socialCards = [
   {
-    title: 'Follow us on Instagram!',
-    href: 'https://www.instagram.com/vibecreative.digital/',
+    title: "Follow us on Instagram!",
+    href: "https://www.instagram.com/vibecreative.digital/",
     icon: instagramIcon,
-    tag: '@poslovius'
+    tag: "@poslovius",
   },
   {
-    title: 'Follow us on Facebook!',
-    href: 'https://www.instagram.com/vibecreative.digital/',
+    title: "Follow us on Facebook!",
+    href: "https://www.instagram.com/vibecreative.digital/",
     icon: facebookIcon,
-    tag: '@poslovius'
-  }
-]
+    tag: "@poslovius",
+  },
+];

@@ -90,6 +90,11 @@ export default function JobCard(props) {
           <FontAwesomeIcon className="text-purple-500 " icon="dollar-sign" />
           {props.job.salary}
         </div>
+        <div
+          className={` text-blue-500 gap-[5px] bg-blue-100 items-center text-[12px] leading-[16px] font-bold rounded-lg px-1.5 py-0.5 inline-flex`}
+        >
+          {props.job.category}
+        </div>
       </div>
       <div className="flex flex-col gap-[12px] justify-between flex-1">
         <h4 className="font-bold text-[18px] leading-[28px] text-[#334155]">

@@ -32,95 +32,86 @@ import { db } from "../../firebase";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { clientColumns } from "@/helpers/staticData";
-import { getClientData } from "@/helpers/functions";
-import Link from "next/link";
+import { categoryColumns } from "@/helpers/staticData";
+import { getCategoryData } from "@/helpers/functions";
 
-export default function clientCms() {
+export default function categoryCms() {
   const dispatch = useDispatch();
 
   const [name, setName] = useState("");
-  const [url, setUrl] = useState("");
-  const [link, setLink] = useState("");
-  const [id, setId] = useState("");
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [page, setPage] = useState(0);
+  const [id, setId] = useState("");
   const [isEdit, setIsEdit] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [clientsTemp, setClientsTemp] = useState([]);
+  const [categoriesTemp, setCategoriesTemp] = useState([]);
   const [search, setSearch] = useState("");
 
-  const clients = useSelector((state) => state.clients);
+  const categories = useSelector((state) => state.categories);
   const isJobLoading = useSelector((state) => state.isJobLoading);
 
   useEffect(() => {
-    if (!clients.length) {
-      getClientData(dispatch, setClientsTemp);
+    if (!categories.length) {
+      getCategoryData(dispatch, setCategoriesTemp);
     } else {
-      setClientsTemp(clients);
+      setCategoriesTemp(categories);
     }
   }, []);
 
   useEffect(() => {
-    filterClients();
+    filterCategories();
   }, [search]);
 
-  const deleteClient = (id) => {
-    const docRef = doc(db, "clients", id);
+  const deleteCategory = (id) => {
+    const docRef = doc(db, "categories", id);
     deleteDoc(docRef)
       .then(() => {
         handleSnackBarOpen();
-        getClientData(dispatch, setClientsTemp);
+        getCategoryData(dispatch, setCategoriesTemp);
       })
       .catch((error) => {
         console.error(error);
       });
   };
 
-  const openUpdateClient = async (id) => {
+  const openUpdateCategory = async (id) => {
     setIsExpanded(true);
-    const docRef = doc(db, "clients", id);
+    const docRef = doc(db, "categories", id);
     try {
       const doc = await getDoc(docRef);
       setIsEdit(true);
-      setName(doc.data().title);
-      setUrl(doc.data().url);
-      setLink(doc.data().link);
+      setName(doc.data().name);
       setId(id);
     } catch (e) {
       console.error("Error getting cached document:", e);
     }
   };
 
-  const saveClient = async () => {
+  const saveCategory = async () => {
     setIsDisabled(true);
     var docData = {
-      title: name,
-      url: url,
-      link: link,
+      name: name,
       published_at: Timestamp.fromDate(new Date()),
     };
-    await addDoc(collection(db, "clients"), docData).then(() => {
-      getClientData(dispatch, setClientsTemp);
+    await addDoc(collection(db, "categories"), docData).then(() => {
+      getCategoryData(dispatch, setCategoriesTemp);
       handleSnackBarOpen();
       setIsDisabled(false);
       clearForm();
     });
   };
 
-  const updateClient = async () => {
-    const docRef = doc(db, "clients", id);
+  const updateCategory = async () => {
+    const docRef = doc(db, "categories", id);
     const data = {
-      title: name,
-      link: link,
-      url: url,
+      name: name,
     };
     updateDoc(docRef, data)
       .then(() => {
         clearForm();
-        getClientData(dispatch, setClientsTemp);
+        getCategoryData(dispatch, setCategoriesTemp);
         handleSnackBarOpen();
       })
       .catch((error) => {
@@ -128,15 +119,15 @@ export default function clientCms() {
       });
   };
 
-  const filterClients = () => {
-    const filteredClients = [];
-    var clientsToFilter = [...clients];
-    for (const client of clientsToFilter) {
-      if (client.name.toLowerCase().includes(search.toLowerCase())) {
-        filteredClients.push(client);
+  const filterCategories = () => {
+    const filteredCategories = [];
+    var categoriesToFilter = [...categories];
+    for (const category of categoriesToFilter) {
+      if (category.name.toLowerCase().includes(search.toLowerCase())) {
+        filteredCategories.push(category);
       }
     }
-    setClientsTemp(filteredClients);
+    setCategoriesTemp(filteredCategories);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -158,8 +149,6 @@ export default function clientCms() {
 
   const clearForm = () => {
     setName("");
-    setUrl("");
-    setLink("");
     setId("");
     setIsEdit(false);
     setIsExpanded(false);
@@ -174,7 +163,7 @@ export default function clientCms() {
         message="Uspješno sačuvano!"
       />
       <h2 className="text-[32px] leading-[40px] text-[#334155] font-bold">
-        Klijenti
+        Kategorije
       </h2>
       <Accordion className="mt-[40px]" expanded={isExpanded}>
         <AccordionSummary
@@ -183,7 +172,7 @@ export default function clientCms() {
           id="panel1a-header"
           onClick={() => setIsExpanded(!isExpanded)}
         >
-          <p>Klijent forma</p>
+          <p>Kategorija forma</p>
         </AccordionSummary>
         <AccordionDetails className="w-full">
           <div className="w-full">
@@ -191,34 +180,18 @@ export default function clientCms() {
               <div className="flex flex-row justify-between gap-[20px] flex-wrap">
                 <TextField
                   id="outlined-basic"
-                  label="Ime klijenta"
+                  label="Ime kategorije"
                   variant="outlined"
                   className="flex-[45%]"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                />
-                <TextField
-                  id="outlined-basic"
-                  label="URL slike"
-                  variant="outlined"
-                  className="flex-[45%]"
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                />
-                <TextField
-                  id="outlined-basic"
-                  label="Link"
-                  variant="outlined"
-                  className="flex-[45%]"
-                  value={link}
-                  onChange={(e) => setLink(e.target.value)}
                 />
               </div>
             </Box>
             <div className="mt-[20px] flex flex-row gap-[10px]">
               <Button
                 disabled={isDisabled}
-                onClick={isEdit ? updateClient : saveClient}
+                onClick={isEdit ? updateCategory : saveCategory}
                 color="primary"
                 variant="contained"
               >
@@ -236,7 +209,7 @@ export default function clientCms() {
 
       <div className="flex flex-wrap gap-[20px] items-center justify-between my-[40px]">
         <h2 className="text-[26px] leading-[34px] text-[#334155] font-bold ">
-          Prikaz klijenata
+          Prikaz kategorija
         </h2>
         <div className="w-[350px] h-[40px] relative">
           <TextField
@@ -258,7 +231,7 @@ export default function clientCms() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              {clientColumns.map((column, index) => (
+              {categoryColumns.map((column, index) => (
                 <TableCell
                   key={index}
                   align={column.align}
@@ -271,33 +244,19 @@ export default function clientCms() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {clientsTemp.length > 0 &&
-              clientsTemp
+            {categoriesTemp.length > 0 &&
+              categoriesTemp
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   return (
                     <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                      {clientColumns.map((column, index) => {
+                      {categoryColumns.map((column, index) => {
                         const value = row[column.id];
                         return (
                           <TableCell key={index}>
-                            {column.format === "date" &&
-                              value.toDate().toLocaleDateString()}
-                            {column.format === "link" && (
-                              <Link
-                                href={value}
-                                target="_blank"
-                                className="text-red-500 underline"
-                              >
-                                {value}
-                              </Link>
-                            )}
-                            {column.format === "img" && (
-                              <div className="bg-red-100 w-[60px] h-[60px] rounded-[8px] border flex itesm-center justify-center px-2 py-4">
-                                <img src={value} alt="logo" />
-                              </div>
-                            )}
-                            {!column.format && value}
+                            {column.format
+                              ? value.toDate().toLocaleDateString()
+                              : value}
                           </TableCell>
                         );
                       })}
@@ -306,12 +265,12 @@ export default function clientCms() {
                           <FontAwesomeIcon
                             className="text-[#334155] cursor-pointer"
                             icon="pen-to-square"
-                            onClick={() => openUpdateClient(row.id)}
+                            onClick={() => openUpdateCategory(row.id)}
                           />
                           <FontAwesomeIcon
                             className="text-[#334155] cursor-pointer"
                             icon="trash"
-                            onClick={() => deleteClient(row.id)}
+                            onClick={() => deleteCategory(row.id)}
                           />
                         </div>
                       </TableCell>
@@ -321,12 +280,12 @@ export default function clientCms() {
           </TableBody>
         </Table>
       </TableContainer>
-      {clientsTemp.length < 1 && !isJobLoading && (
+      {categoriesTemp.length < 1 && !isJobLoading && (
         <Typography className="flex items-center justify-center w-[140px] rounded-[8px] mx-[auto!important] text-center my-[10px!important] px-[12px] py-[8px] bg-red-500 text-white">
           Nema rezultata.
         </Typography>
       )}
-      {clientsTemp.length < 1 && isJobLoading && (
+      {categoriesTemp.length < 1 && isJobLoading && (
         <FontAwesomeIcon
           icon="fa-solid fa-spinner"
           className="text-[30px] spin-anim flex items-center justify-center mx-auto text-red-500 py-[20px]"
@@ -335,7 +294,7 @@ export default function clientCms() {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={clientsTemp.length}
+        count={categoriesTemp.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

@@ -66,6 +66,7 @@ export const getFeaturedJobs = async (dispatch) => {
       job_type: doc.data().job_type,
       location: doc.data().location,
       position: doc.data().position,
+      category: doc.data().category,
       salary: doc.data().salary,
       short_desc: doc.data().short_desc,
       offer_type: doc.data().offer_type,
@@ -117,6 +118,42 @@ export const getClientData = async (dispatch, setClientsTemp) => {
   }
 };
 
+export const getCityData = async (dispatch, setCitiesTemp) => {
+  const querySnapshot = await getDocs(collection(db, "cities"));
+  var tempData = [];
+
+  querySnapshot.forEach((doc) => {
+    tempData.push({
+      id: doc.id,
+      name: doc.data().name,
+      published_at: doc.data().published_at,
+    });
+  });
+  dispatch({ type: "SET_CITIES", payload: tempData });
+
+  if (setCitiesTemp) {
+    setCitiesTemp(tempData);
+  }
+};
+
+export const getCategoryData = async (dispatch, setCategoriesTemp) => {
+  const querySnapshot = await getDocs(collection(db, "categories"));
+  var tempData = [];
+
+  querySnapshot.forEach((doc) => {
+    tempData.push({
+      id: doc.id,
+      name: doc.data().name,
+      published_at: doc.data().published_at,
+    });
+  });
+  dispatch({ type: "SET_CATEGORIES", payload: tempData });
+
+  if (setCategoriesTemp) {
+    setCategoriesTemp(tempData);
+  }
+};
+
 export const getLatestJobData = async (dispatch) => {
   const querySnapshot = await getDocs(
     query(
@@ -141,6 +178,7 @@ export const getLatestJobData = async (dispatch) => {
       job_type: doc.data().job_type,
       location: doc.data().location,
       position: doc.data().position,
+      category: doc.data().category,
       salary: doc.data().salary,
       short_desc: doc.data().short_desc,
       offer_type: doc.data().offer_type,
@@ -173,6 +211,7 @@ export const getLatestFeaturedJobs = async (dispatch) => {
       featured_plus: doc.data().featured_plus,
       job_type: doc.data().job_type,
       location: doc.data().location,
+      category: doc.data().category,
       position: doc.data().position,
       salary: doc.data().salary,
       short_desc: doc.data().short_desc,
@@ -206,6 +245,7 @@ export const getDemandJobs = async (dispatch) => {
       job_type: doc.data().job_type,
       location: doc.data().location,
       position: doc.data().position,
+      category: doc.data().category,
       salary: doc.data().salary,
       short_desc: doc.data().short_desc,
       offer_type: doc.data().offer_type,
@@ -239,6 +279,7 @@ export const getLatestDemandJobs = async (dispatch) => {
       job_type: doc.data().job_type,
       location: doc.data().location,
       position: doc.data().position,
+      category: doc.data().category,
       salary: doc.data().salary,
       short_desc: doc.data().short_desc,
       offer_type: doc.data().offer_type,
@@ -271,6 +312,7 @@ export const getJobsData = async (dispatch) => {
       job_type: doc.data().job_type,
       location: doc.data().location,
       position: doc.data().position,
+      category: doc.data().category,
       salary: doc.data().salary,
       short_desc: doc.data().short_desc,
       offer_type: doc.data().offer_type,
@@ -298,6 +340,7 @@ export const getAllJobs = async (dispatch, setJobsTemp) => {
       position: doc.data().position,
       salary: doc.data().salary,
       location: doc.data().location,
+      category: doc.data().category,
       offer_type: doc.data().offer_type,
       job_type: doc.data().jobType,
       featured: doc.data().featured,

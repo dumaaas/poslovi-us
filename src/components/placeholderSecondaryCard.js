@@ -11,6 +11,7 @@ export default function placeholderSecondaryCard() {
       <div className="flex flex-row gap-[10px] items-center my-[15px]">
         <div className="shine-anim w-[60px] h-[18px] rounded-[8px] bg-gray-300"></div>
         <div className="shine-anim w-[60px] h-[18px] rounded-[8px] bg-gray-300"></div>
+        <div className="shine-anim w-[60px] h-[18px] rounded-[8px] bg-gray-300"></div>
       </div>
     </div>
   );

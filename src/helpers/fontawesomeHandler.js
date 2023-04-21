@@ -37,5 +37,5 @@ export default library.add(
   faPenToSquare,
   faTrash,
   faExpand,
-  faEye
+  faEye,
 );

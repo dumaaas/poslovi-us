@@ -84,6 +84,11 @@ export default function jobCardSecondary(props) {
           <FontAwesomeIcon className="text-purple-500 " icon="dollar-sign" />
           {props.job.salary}
         </div>
+        <div
+          className={` text-blue-500 gap-[5px] bg-blue-100 items-center text-[12px] leading-[16px] font-bold rounded-lg px-1.5 py-0.5 inline-flex`}
+        >
+          {props.job.category}
+        </div>
       </div>
       <div className="absolute transition-all duration-200 ease-in-out opacity-0 xl:group-hover:opacity-100 bottom-4 right-4">
         <div className=" bg-red-500 flex items-center gap-[10px] font-bold text-white px-3 rounded-[8px] h-[28px] text-[12px] leading-[16px]">

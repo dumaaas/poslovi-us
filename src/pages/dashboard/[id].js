@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import JobsCms from "@/components/jobsCms";
 import ClientCms from "@/components/clientCms";
 import BlogCms from "@/components/blogCms";
+import CityCms from "@/components/cityCms";
+import CategoryCms from "@/components/categoryCms";
 
 export default function dashboard() {
   const { asPath } = useRouter();
@@ -22,9 +24,13 @@ export default function dashboard() {
           <div
             className={`py-8 relative z-[99] lg:min-h-[calc(100vh-154px)] sm:min-h-[calc(100vh-135px)] min-h-[calc(100vh-129px)] w-full`}
           >
-            {(asPath === "/dashboard/jobs" || asPath === "/dashboard") && <JobsCms />}
+            {(asPath === "/dashboard/jobs" || asPath === "/dashboard") && (
+              <JobsCms />
+            )}
             {asPath === "/dashboard/clients" && <ClientCms />}
             {asPath === "/dashboard/blog" && <BlogCms />}
+            {asPath === "/dashboard/cities" && <CityCms />}
+            {asPath === "/dashboard/categories" && <CategoryCms />}
           </div>
         </div>
       )}

@@ -2,25 +2,42 @@ import FeaturedSection from "./featuredSection";
 import JobList from "./jobList";
 
 import { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { cities, jobTypeData } from "@/helpers/staticData";
+import { jobTypeData } from "@/helpers/staticData";
+import { getCityData, getCategoryData } from "@/helpers/functions";
 
 export default function jobFilters(props) {
+  const dispatch = useDispatch();
+
   const [jobsTemp, setJobsTemp] = useState([]);
   const [positionSearch, setPositionSearch] = useState("");
   const [showLocationSelect, setShowLocationSelect] = useState(false);
   const [locationSearch, setLocationSearch] = useState("");
+  const [categorySearch, setCategorySearch] = useState("");
+  const [showCategorySelect, setShowCategorySelect] = useState("");
   const [showJobTypeSelect, setShowJobTypeSelect] = useState(false);
   const [jobTypeSearch, setJobTypeSearch] = useState("");
   const [featuredSearch, setFeaturedSearch] = useState(null);
 
+  const cities = useSelector((state) => state.cities);
+  const categories = useSelector((state) => state.categories);
+
   const locationSearchRef = useRef();
   const jobTypeSearchRef = useRef();
+  const categorySearchRef = useRef();
+
   const isFirstRender = useRef(true);
 
   useEffect(() => {
+    if (!cities.length) {
+      getCityData(dispatch);
+    }
+    if (!categories.length) {
+      getCategoryData(dispatch);
+    }
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -37,12 +54,13 @@ export default function jobFilters(props) {
       return;
     }
     filterJobs();
-  }, [positionSearch, featuredSearch, jobTypeSearch, locationSearch]);
+  }, [positionSearch, featuredSearch, jobTypeSearch, locationSearch, categorySearch]);
 
   const resetFilters = () => {
     setPositionSearch("");
     setLocationSearch("");
     setJobTypeSearch("");
+    setCategorySearch("");
     setFeaturedSearch(false);
   };
 
@@ -51,10 +69,13 @@ export default function jobFilters(props) {
       locationSearchRef.current &&
       !locationSearchRef.current.contains(event.target) &&
       jobTypeSearchRef.current &&
-      !jobTypeSearchRef.current.contains(event.target)
+      !jobTypeSearchRef.current.contains(event.target) && 
+      categorySearchRef.current &&
+      !categorySearchRef.current.contains(event.target)
     ) {
       setShowLocationSelect(false);
       setShowJobTypeSelect(false);
+      setShowCategorySelect(false);
     }
   };
 
@@ -66,6 +87,7 @@ export default function jobFilters(props) {
         (!locationSearch || job.location === locationSearch) &&
         (!jobTypeSearch || job.job_type === jobTypeSearch) &&
         (!featuredSearch || job.featured_plus === featuredSearch) &&
+        (!categorySearch || job.category === categorySearch) &&
         job.position.toLowerCase().includes(positionSearch.toLowerCase())
       ) {
         filteredJobs.push(job);
@@ -102,6 +124,51 @@ export default function jobFilters(props) {
                   setPositionSearch(e.target.value);
                 }}
               />
+            </div>
+
+            <div className="h-[38px] relative cursor-pointer">
+              <FontAwesomeIcon
+                className="text-[#334155] absolute right-[10px] top-[50%] transform translate-y-[-50%]"
+                icon="angle-down"
+              />
+              {categorySearch.length > 0 && (
+                <FontAwesomeIcon
+                  onClick={() => setCategorySearch("")}
+                  className="text-red-500 absolute right-[30px] top-[50%] transform translate-y-[-50%]"
+                  icon="xmark"
+                />
+              )}
+              <input
+                readOnly
+                className="cursor-pointer border w-full h-full text-[14px] pl-[14px] pr-[34px]  leading-[20px] text-[#334155] rounded-[8px]"
+                placeholder="Filter po kategoriji..."
+                onClick={() => setShowCategorySelect(!showCategorySelect)}
+                value={categorySearch}
+              />
+
+              <div
+                ref={categorySearchRef}
+                className={`${
+                  showCategorySelect
+                    ? "scale-100 opacity-1 z-[99999]"
+                    : "scale-75 opacity-0 z-[-1]"
+                } absolute transform scale transition-all ease-in-out duration-200 border w-full max-h-[180px] overflow-auto bg-white rounded-[8px] mt-[2px]`}
+              >
+                {categories.map((item, index) => {
+                  return (
+                    <p
+                      key={index}
+                      onClick={() => {
+                        setCategorySearch(item.name);
+                        setShowCategorySelect(false);
+                      }}
+                      className="text-[14px] leading-[20px] hover:bg-red-100 text-[#334155]  px-[14px] py-[4px]"
+                    >
+                      {item.name}
+                    </p>
+                  );
+                })}
+              </div>
             </div>
 
             <div className="h-[38px] relative cursor-pointer">
@@ -214,7 +281,11 @@ export default function jobFilters(props) {
           </div>
         </div>
         <div className="lg:col-span-5">
-          <JobList isFeatured={props.isFeatured} jobs={jobsTemp} resetFilters={resetFilters} />
+          <JobList
+            isFeatured={props.isFeatured}
+            jobs={jobsTemp}
+            resetFilters={resetFilters}
+          />
         </div>
         <div className="lg:col-span-2">
           <FeaturedSection isFeatured={props.isFeatured} />
