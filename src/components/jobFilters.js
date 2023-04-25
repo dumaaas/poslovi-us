@@ -133,7 +133,7 @@ export default function jobFilters(props) {
               >
                 <div className="w-[15px] h-[15px] border flex border-[#6b7280] items-center justify-center rounded-full">
                   <FontAwesomeIcon
-                    className="cursor-pointer text-[#6b7280] text-[9px] pl-[1px]"
+                    className="cursor-pointer text-[#6b7280] text-[9px]"
                     icon="xmark"
                   />
                 </div>
