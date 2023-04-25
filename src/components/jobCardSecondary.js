@@ -71,7 +71,7 @@ export default function jobCardSecondary(props) {
           </div>
         )}
       </div>
-      <div className=" mt-[15px] flex flex-row gap-[10px] flex-wrap items-center">
+      <div className=" mt-[15px] flex flex-row gap-[6px] flex-wrap items-center">
         <div className="bg-[#F3F4F6] text-[#334155] gap-[6px] items-center text-[12px] leading-[16px] rounded-lg px-1.5 py-0.5 inline-flex">
           <div className="w-[12px] h-[12px]">
             <Image src={usPic} alt="us-logo" className="w-full h-full" />

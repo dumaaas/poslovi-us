@@ -73,7 +73,7 @@ export default function JobCard(props) {
         )}
       </div>
 
-      <div className="my-[15px] flex flex-row gap-[10px] flex-wrap items-center">
+      <div className="my-[15px] flex flex-row gap-[6px] flex-wrap items-center">
         <div
           className={`${
             props.job.featured_plus ? "bg-[#F3F4F6]" : "bg-white border"
