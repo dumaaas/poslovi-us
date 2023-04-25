@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <div>
       <Hero
-        title="Vodeći poslovni priručnik na SAD prostorima."
+        title="Vaša omiljena web platforma za traženje poslova i pronalaženje kvalitetnih kandidata u SAD-u!"
         description="Pronađite kompanije koje traže zaposlene i povežite se sa njima."
         label="#1 SAD poslovni priručnik"
         isBig="true"

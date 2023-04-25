@@ -277,7 +277,7 @@ export default function jobFilters(props) {
                   icon="check"
                 />
               </div>
-              <p className="text-[14px]  leading-[20px] text-[#334155]">
+              <p className="text-[14px] leading-[20px] text-[#334155]">
                 Izdvojeni
               </p>
             </div>

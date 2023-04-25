@@ -19,7 +19,7 @@ export default function Hero(props) {
             {props.label}
           </span>
         )}
-        <h1 className={`lg:max-w-[58%] md:max-w-[65%] max-w-[85%] font-semibold font-display  !leading-tight text-white ${props.isBig === 'true' ? 'mt-4 text-[40px] lg:text-7xl xl:text-7xl' : 'mt-0 lg:text-5xl xl:text-5xl text-[32px]'}`}>
+        <h1 className={`md:max-w-[85%] max-w-[95%] font-semibold font-display  !leading-tight text-white ${props.isBig === 'true' ? 'mt-4 text-[40px] lg:text-6xl xl:text-7xl' : 'mt-0 lg:text-5xl xl:text-5xl text-[32px]'}`}>
           {props.title}
         </h1>
         <p className={` text-red-500  ${props.isBig === 'true' ? 'text-lg lg:text-xl xl:text-3xl mt-8' : 'mt-6 text-md lg:text-lg xl:text-xl'}`}>
