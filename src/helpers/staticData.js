@@ -106,6 +106,10 @@ export const navMenu = [
     href: "/",
   },
   {
+    name: "O nama",
+    href: "/about",
+  },
+  {
     name: "Poslovi",
     href: "/jobs",
   },
@@ -124,10 +128,6 @@ export const navMenu = [
   {
     name: "Vesti",
     href: "/blog",
-  },
-  {
-    name: "O nama",
-    href: "/about",
   },
   {
     name: "Poslovi",
