@@ -9,12 +9,12 @@ import { useRouter } from "next/router";
 
 import Cookies from "js-cookie";
 
-import { Urbanist } from "next/font/google";
+import { Inter } from "next/font/google";
 
 import { signOutToastHandler, showHeaderAndFooter } from "@/helpers/functions";
 require("@/helpers/fontawesomeHandler");
 
-const urbanist = Urbanist({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Layout({ children }) {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ export default function Layout({ children }) {
 
   return (
     <>
-      <div className={urbanist.className + " bg-white overflow-hidden relative"}>
+      <div className={inter.className + " bg-white overflow-hidden relative"}>
         <LogoutToast />
         {showHeaderAndFooter(asPath) && <Header />}
         <main>{children}</main>
