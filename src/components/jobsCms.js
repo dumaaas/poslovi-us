@@ -417,12 +417,12 @@ export default function jobsCms() {
                       <FormControlLabel
                         value="offer"
                         control={<Radio />}
-                        label="Ponuda"
+                        label="Od strane kompanije"
                       />
                       <FormControlLabel
                         value="offering"
                         control={<Radio />}
-                        label="Potražnja"
+                        label="Od strane kandidata"
                       />
                     </RadioGroup>
                   </FormControl>

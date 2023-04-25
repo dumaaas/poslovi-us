@@ -35,7 +35,7 @@ export default function Home() {
       <Hero
         title="Spajamo kompanije i kandidate za uspešnu budućnost!"
         description="Pronađite kompanije koje traže zaposlene i povežite se sa njima."
-        label="#1 SAD poslovni priručnik"
+        label="Najveća poslovna baza u SAD!"
         isBig="true"
       />
       <ClientBanner clients={clients} />
@@ -44,7 +44,7 @@ export default function Home() {
         link="/jobs"
         buttonText="Svi poslovi"
         title="Pronađi posao iz snova"
-        description="Pretraži najnovije mogućnosti za zapošljavanje"
+        description="Pogledajte listu aktivnih oglasa"
         background="#fff"
         jobs={latestJobs}
       />
@@ -61,8 +61,8 @@ export default function Home() {
       <JobsHero
         link="/offers"
         buttonText="Svi kandidati"
-        title="Pronađi radnika"
-        description="Pretraži najnovije oglase potražnje"
+        title="Pronađite idealnog kandidata"
+        description="Pogledajte listu kandidata koji su u potrazi za poslom"
         background="#fff"
         jobs={demandLatestJobs}
       />

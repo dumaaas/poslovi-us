@@ -18,8 +18,8 @@ export default function jobs() {
   return (
     <div>
       <Hero
-        title="Izdvojeni poslovi"
-        description="Pretražite listu poslova, nađite savršeni spoj i aplicirajte!"
+        title="Premium poslovi"
+        description="Postanite dio renomiranih kompanija!"
         isBig="false"
       />
       <JobFilters isFeatured={false} jobs={featuredJobs} />
