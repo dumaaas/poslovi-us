@@ -139,7 +139,7 @@ export default function singleJob() {
                       Plata
                     </p>
                     <span className="text-[14px] leading-[20px] text-[#6b7280]">
-                      {job.salary}
+                      ${job.salary}
                     </span>
                   </div>
                   <div className="flex flex-col gap-[5px]">

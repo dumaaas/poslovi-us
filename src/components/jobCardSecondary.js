@@ -72,23 +72,32 @@ export default function jobCardSecondary(props) {
         )}
       </div>
       <div className=" mt-[15px] flex flex-row gap-[10px] flex-wrap items-center">
-        <div className="bg-[#F3F4F6] text-[#334155] gap-[6px] items-center text-[12px] leading-[16px] font-bold rounded-lg px-1.5 py-0.5 inline-flex">
+        <div className="bg-[#F3F4F6] text-[#334155] gap-[6px] items-center text-[12px] leading-[16px] rounded-lg px-1.5 py-0.5 inline-flex">
           <div className="w-[12px] h-[12px]">
             <Image src={usPic} alt="us-logo" className="w-full h-full" />
           </div>
           {props.job.location}
         </div>
         <div
-          className={` text-purple-500 gap-[5px] bg-purple-100 items-center text-[12px] leading-[16px] font-bold rounded-lg px-1.5 py-0.5 inline-flex`}
+          className={` text-purple-500 gap-[5px] bg-purple-100 items-center text-[12px] leading-[16px] rounded-lg px-1.5 py-0.5 inline-flex`}
         >
           <FontAwesomeIcon className="text-purple-500 " icon="dollar-sign" />
           {props.job.salary}
         </div>
         <div
-          className={` text-blue-500 gap-[5px] bg-blue-100 items-center text-[12px] leading-[16px] font-bold rounded-lg px-1.5 py-0.5 inline-flex`}
+          className={` text-blue-500 gap-[5px] bg-blue-100 items-center text-[12px] leading-[16px] rounded-lg px-1.5 py-0.5 inline-flex`}
         >
+          <FontAwesomeIcon className="text-blue-500 text-[10px]" icon="briefcase" />
           {props.job.category}
         </div>
+        {props.job.is_remote && (
+          <div
+            className={` text-green-500 gap-[5px] bg-green-100 items-center text-[12px] leading-[16px] rounded-lg px-1.5 py-0.5 inline-flex`}
+          >
+            <FontAwesomeIcon className="text-green-500 text-[10px]" icon="house" />
+            Remote
+          </div>
+        )}
       </div>
       <div className="absolute transition-all duration-200 ease-in-out opacity-0 xl:group-hover:opacity-100 bottom-4 right-4">
         <div className=" bg-red-500 flex items-center gap-[10px] font-bold text-white px-3 rounded-[8px] h-[28px] text-[12px] leading-[16px]">

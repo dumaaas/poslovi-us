@@ -19,6 +19,8 @@ import {
   faExpand,
   faEye,
   faExclamation,
+  faHouse,
+  faBriefcase,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default library.add(
@@ -39,5 +41,7 @@ export default library.add(
   faTrash,
   faExpand,
   faEye,
-  faExclamation
+  faExclamation,
+  faHouse,
+  faBriefcase
 );

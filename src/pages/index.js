@@ -51,16 +51,16 @@ export default function Home() {
 
       <JobsHero
         link="/featured"
-        buttonText="Pogledaj izdvojene"
+        buttonText="Svi premium oglasi"
         title="Izdvajamo za Vas"
-        description="Pretraži izdvojene oglase za posao"
+        description="Pretraži premium oglase za posao"
         background="#FEE2E2"
         jobs={featuredLatestJobs}
       />
 
       <JobsHero
         link="/offers"
-        buttonText="Pogledaj potražnju"
+        buttonText="Svi kandidati"
         title="Pronađi radnika"
         description="Pretraži najnovije oglase potražnje"
         background="#fff"

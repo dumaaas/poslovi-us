@@ -77,7 +77,7 @@ export default function JobCard(props) {
         <div
           className={`${
             props.job.featured_plus ? "bg-[#F3F4F6]" : "bg-white border"
-          }  text-[#334155] gap-[6px] items-center text-[12px] leading-[16px] font-bold rounded-lg px-1.5 py-0.5 inline-flex`}
+          }  text-[#334155] gap-[6px] items-center text-[12px] leading-[16px] rounded-lg px-1.5 py-0.5 inline-flex`}
         >
           <div className="w-[12px] h-[12px]">
             <Image src={usPic} alt="us-logo" className="w-full h-full" />
@@ -85,16 +85,25 @@ export default function JobCard(props) {
           {props.job.location}
         </div>
         <div
-          className={` text-purple-500 gap-[5px] bg-purple-100 items-center text-[12px] leading-[16px] font-bold rounded-lg px-1.5 py-0.5 inline-flex`}
+          className={` text-purple-500 gap-[5px] bg-purple-100 items-center text-[12px] leading-[16px]  rounded-lg px-1.5 py-0.5 inline-flex`}
         >
           <FontAwesomeIcon className="text-purple-500 " icon="dollar-sign" />
           {props.job.salary}
         </div>
         <div
-          className={` text-blue-500 gap-[5px] bg-blue-100 items-center text-[12px] leading-[16px] font-bold rounded-lg px-1.5 py-0.5 inline-flex`}
+          className={` text-blue-500 gap-[5px] bg-blue-100 items-center text-[12px] leading-[16px] rounded-lg px-1.5 py-0.5 inline-flex`}
         >
+          <FontAwesomeIcon className="text-blue-500 text-[10px]" icon="briefcase" />
           {props.job.category}
         </div>
+        {props.job.is_remote && (
+          <div
+            className={` text-green-500 gap-[5px] bg-green-100 items-center text-[12px] leading-[16px] rounded-lg px-1.5 py-0.5 inline-flex`}
+          >
+            <FontAwesomeIcon className="text-green-500 text-[10px] " icon="house" />
+            Remote
+          </div>
+        )}
       </div>
       <div className="flex flex-col gap-[12px] justify-between flex-1">
         <h4 className="font-bold text-[18px] leading-[28px] text-[#334155]">

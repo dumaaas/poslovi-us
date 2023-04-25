@@ -69,6 +69,7 @@ export default function jobsCms() {
   const [offerType, setOfferType] = useState("offer");
   const [featured, setFeatured] = useState(false);
   const [featuredPlus, setFeaturedPlus] = useState(false);
+  const [isRemote, setIsRemote] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -136,6 +137,7 @@ export default function jobsCms() {
       setDateTo(formatDate(doc.data().date_to, true));
       setFeatured(doc.data().featured);
       setFeaturedPlus(doc.data().featured_plus);
+      setIsRemote(doc.data().is_remote);
       editorRef.current.setContent(doc.data().content);
     } catch (e) {
       console.error("Error getting cached document:", e);
@@ -159,6 +161,7 @@ export default function jobsCms() {
       job_type: jobType,
       featured: featured,
       featured_plus: featuredPlus,
+      is_remote: isRemote,
     };
     await addDoc(collection(db, "jobs"), docData).then(() => {
       getAllJobs(dispatch, setJobsTemp);
@@ -185,6 +188,7 @@ export default function jobsCms() {
       job_type: jobType,
       featured: featured,
       featured_plus: featuredPlus,
+      is_remote: isRemote,
     };
     updateDoc(docRef, data)
       .then(() => {
@@ -239,6 +243,7 @@ export default function jobsCms() {
     setDateTo("");
     setFeatured(false);
     setFeaturedPlus(false);
+    setIsRemote(false);
     editorRef.current.setContent("");
     setIsExpanded(false);
     setIsEdit(false);
@@ -446,6 +451,15 @@ export default function jobsCms() {
                       }
                       label="Izdvojeni +"
                     />
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={isRemote}
+                          onChange={(e) => setIsRemote(e.target.checked)}
+                        />
+                      }
+                      label="Remote"
+                    />
                   </FormControl>
                 </div>
               </div>
@@ -578,6 +592,12 @@ export default function jobsCms() {
                                 }`}
                                 icon={`${value ? "star" : "xmark"}`}
                               />
+                            ) : value === "offer" || value === "offering" ? (
+                              value === "offer" ? (
+                                "Ponuda"
+                              ) : (
+                                "Potražnja"
+                              )
                             ) : (
                               value
                             )}

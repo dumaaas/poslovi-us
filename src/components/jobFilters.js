@@ -21,6 +21,7 @@ export default function jobFilters(props) {
   const [showJobTypeSelect, setShowJobTypeSelect] = useState(false);
   const [jobTypeSearch, setJobTypeSearch] = useState("");
   const [featuredSearch, setFeaturedSearch] = useState(null);
+  const [remoteSearch, setRemoteSearch] = useState(null);
 
   const cities = useSelector((state) => state.cities);
   const categories = useSelector((state) => state.categories);
@@ -54,7 +55,7 @@ export default function jobFilters(props) {
       return;
     }
     filterJobs();
-  }, [positionSearch, featuredSearch, jobTypeSearch, locationSearch, categorySearch]);
+  }, [positionSearch, featuredSearch, jobTypeSearch, locationSearch, categorySearch, remoteSearch]);
 
   const resetFilters = () => {
     setPositionSearch("");
@@ -62,6 +63,7 @@ export default function jobFilters(props) {
     setJobTypeSearch("");
     setCategorySearch("");
     setFeaturedSearch(false);
+    setRemoteSearch(false);
   };
 
   const handleClickOutside = (event) => {
@@ -87,6 +89,7 @@ export default function jobFilters(props) {
         (!locationSearch || job.location === locationSearch) &&
         (!jobTypeSearch || job.job_type === jobTypeSearch) &&
         (!featuredSearch || job.featured_plus === featuredSearch) &&
+        (!remoteSearch || job.is_remote === remoteSearch) &&
         (!categorySearch || job.category === categorySearch) &&
         job.position.toLowerCase().includes(positionSearch.toLowerCase())
       ) {
@@ -276,6 +279,24 @@ export default function jobFilters(props) {
               </div>
               <p className="text-[14px]  leading-[20px] text-[#334155]">
                 Izdvojeni
+              </p>
+            </div>
+            <div className="flex items-center gap-[10px]">
+              <div
+                onClick={() => setRemoteSearch(!remoteSearch)}
+                className="h-[24px] relative cursor-pointer border w-[24px] flex items-center justify-center rounded-[4px]"
+              >
+                <FontAwesomeIcon
+                  className={`${
+                    remoteSearch
+                      ? "scale-100 opacity-1"
+                      : "scale-75 opacity-0"
+                  } text-red-500 transition-all duration-200 ease-in-out`}
+                  icon="check"
+                />
+              </div>
+              <p className="text-[14px]  leading-[20px] text-[#334155]">
+                Remote
               </p>
             </div>
           </div>

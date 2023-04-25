@@ -28,7 +28,7 @@ export const jobTypeData = [
 ];
 
 export const jobColumns = [
-  { id: "name", label: "Ime", minWidth: 170 },
+  { id: "name", label: "Ime", minWidth: 150 },
   { id: "position", label: "Pozicija", minWidth: 170 },
   { id: "location", label: "Lokacija", minWidth: 100 },
   { id: "category", label: "Kategorija", minWidth: 100 },
@@ -36,7 +36,8 @@ export const jobColumns = [
   { id: "salary", label: "Plata", minWidth: 100 },
   { id: "email", label: "Email", minWidth: 100 },
   { id: "featured", label: "Izdvojen", minWidth: 50 },
-  { id: "featured_plus", label: "Izdvojen +", minWidth: 50 },
+  { id: "featured_plus", label: "Izdvojen +", minWidth: 80 },
+  { id: "is_remote", label: "Remote", minWidth: 50 },
   {
     id: "date_to",
     label: "Važi do",
@@ -45,7 +46,7 @@ export const jobColumns = [
   },
   {
     id: "published_at",
-    label: "Datum objavljivanja",
+    label: "Objavljeno",
     minWidth: 100,
     format: "date",
   },
@@ -105,15 +106,15 @@ export const navMenu = [
     href: "/",
   },
   {
-    name: "Ponuda",
+    name: "Poslovi",
     href: "/jobs",
   },
   {
-    name: "Potražnja",
+    name: "Kandidati",
     href: "/offers",
   },
   {
-    name: "Izdvajamo",
+    name: "Premium oglasi",
     href: "/featured",
   },
   {
