@@ -55,7 +55,14 @@ export default function jobFilters(props) {
       return;
     }
     filterJobs();
-  }, [positionSearch, featuredSearch, jobTypeSearch, locationSearch, categorySearch, remoteSearch]);
+  }, [
+    positionSearch,
+    featuredSearch,
+    jobTypeSearch,
+    locationSearch,
+    categorySearch,
+    remoteSearch,
+  ]);
 
   const resetFilters = () => {
     setPositionSearch("");
@@ -66,12 +73,23 @@ export default function jobFilters(props) {
     setRemoteSearch(false);
   };
 
+  const showResetButton = () => {
+    return positionSearch.length ||
+      featuredSearch ||
+      remoteSearch ||
+      categorySearch.length ||
+      jobTypeSearch.length ||
+      locationSearch.length
+      ? true
+      : false;
+  };
+
   const handleClickOutside = (event) => {
     if (
       locationSearchRef.current &&
       !locationSearchRef.current.contains(event.target) &&
       jobTypeSearchRef.current &&
-      !jobTypeSearchRef.current.contains(event.target) && 
+      !jobTypeSearchRef.current.contains(event.target) &&
       categorySearchRef.current &&
       !categorySearchRef.current.contains(event.target)
     ) {
@@ -104,9 +122,26 @@ export default function jobFilters(props) {
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-9">
         <div className=" lg:col-span-2 lg:sticky">
           <div className="lg:top-[20px] lg:sticky flex flex-col gap-4">
-            <h5 className="text-[16px] leading-[24px] font-bold text-[#6b7280]">
-              Filteri
-            </h5>
+            <div className="flex flex-row items-center justify-between">
+              <h5 className="text-[16px] leading-[24px] font-bold text-[#6b7280]">
+                Filteri
+              </h5>
+
+              <div
+                onClick={() => resetFilters()}
+                className={`${showResetButton() === true ? 'z-20 opacity-100' : 'z-[-1] opacity-0'} transition-all ease-in-out duration-300 cursor-pointer flex flex-row gap-[5px] items-center justify-center`}
+              >
+                <div className="w-[15px] h-[15px] border flex border-[#6b7280] items-center justify-center rounded-full">
+                  <FontAwesomeIcon
+                    className="cursor-pointer text-[#6b7280] text-[9px] pl-[1px]"
+                    icon="xmark"
+                  />
+                </div>
+
+                <p className="text-[14px] text-[#6b7280]">Poništi</p>
+              </div>
+            </div>
+
             <div className="h-[38px] relative">
               <FontAwesomeIcon
                 className="cursor-pointer text-[#334155] absolute left-[10px] top-[50%] transform translate-y-[-50%]"
@@ -115,7 +150,7 @@ export default function jobFilters(props) {
               {positionSearch.length > 0 && (
                 <FontAwesomeIcon
                   onClick={() => setPositionSearch("")}
-                  className="text-red-500 absolute right-[10px] top-[50%] transform translate-y-[-50%]"
+                  className="cursor-pointer text-red-500 absolute right-[10px] top-[50%] transform translate-y-[-50%]"
                   icon="xmark"
                 />
               )}
@@ -288,9 +323,7 @@ export default function jobFilters(props) {
               >
                 <FontAwesomeIcon
                   className={`${
-                    remoteSearch
-                      ? "scale-100 opacity-1"
-                      : "scale-75 opacity-0"
+                    remoteSearch ? "scale-100 opacity-1" : "scale-75 opacity-0"
                   } text-red-500 transition-all duration-200 ease-in-out`}
                   icon="check"
                 />
@@ -306,6 +339,7 @@ export default function jobFilters(props) {
             isFeatured={props.isFeatured}
             jobs={jobsTemp}
             resetFilters={resetFilters}
+            showResetButton={showResetButton}
           />
         </div>
         <div className="lg:col-span-2">

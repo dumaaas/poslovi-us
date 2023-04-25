@@ -29,12 +29,14 @@ export default function jobList(props) {
             <p className="text-[16px] leading-[24px] text-[#334155]">
               Nije pronađen nijedan rezultat.
             </p>
-            <button
-              onClick={() => props.resetFilters()}
-              className="font-bold mt-4 u-btn px-4 rounded-[8px] h-[38px] text-sm bg-gray-100"
-            >
-              Poništi filtere
-            </button>
+            {props.showResetButton() && (
+              <button
+                onClick={() => props.resetFilters()}
+                className="font-bold mt-4 u-btn px-4 rounded-[8px] h-[38px] text-sm bg-gray-100"
+              >
+                Poništi filtere
+              </button>
+            )}
           </div>
         )}
         {isJobLoading && props.jobs.length < 1 && (
